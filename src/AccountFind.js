@@ -2,43 +2,53 @@ import { useState } from "react";
 import "./AccountFind.css";
 
 function AccountFind() {
-    const [birthDate, setBirthDate] = useState(''); // 초깃값 설정
+    const [birthDate, setBirthDate] = useState("");
+    const [name, setName] = useState("");
 
     const handleDateChange = (e) => {
         setBirthDate(e.target.value); // 선택된 날짜를 상태로 저장
     }
 
     const handleAccount = () => {
+        console.log("Name:", name);
+        console.log("BirthDate:", birthDate);
         alert(`ID/PW 찾기 시도`);
-    };
+        alert(`사용자 이름: ${name} \n사용자 생년월일: ${birthDate}`);
+        //alert(`사용자 ID; ${id} \n사용자 비밀번호: ${password}`)
 
+    };
 
     return (
         <div className="AccountFind">
             <header className="AccountFind-header">
                 <h1>We go high</h1>
-                <div className="Container">
-                    <div className="Container-e">
-                        <div className="Container-name">
-                            <p className="Name-box">이름</p>
-                            <input className="Name-textbox"/>
+                <div className="AccountFind-container">
+                    <div className="AccountFind-container-element">
+                        <div className="AccountFind-element-container">
+                            <p className="AccountFind-name-box">이름</p>
+                            <input
+                                className="AccountFind-element-textbox"
+                                type="text"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                            />
                         </div>
 
-                        <div className="Container-birth">
-                            <p className="Birth-box">생년월일</p>
+                        <div className="AccountFind-element-container">
+                            <p className="AccountFind-birth-box">생년월일</p>
                             <input
-                                className="Birth-textbox"
+                                className="AccountFind-element-textbox"
                                 type="date"
                                 id="startDate"
-                                value={birthDate} // 상태에 바인딩
-                                onChange={handleDateChange} // 사용자 입력 처리
+                                value={birthDate}
+                                onChange={handleDateChange}
                                 max="9999-12-31"
                             />
 
                         </div>
 
-                        <div className="Container-find">
-                            <button className="Find-button" onClick={handleAccount}>
+                        <div className="AccountFind-find-container">
+                            <button className="AccountFind-find-button" onClick={handleAccount}>
                                 ID/PW 찾기
                             </button>
                         </div>
