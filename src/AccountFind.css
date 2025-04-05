@@ -1,0 +1,91 @@
+.AccountFind {
+    text-align: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .AccountFind-logo {
+        animation: AccountFind-logo-spin infinite 20s linear;
+    }
+}
+
+.AccountFind-header {
+    background : linear-gradient(#E4FCFC, #C6DDFF, #EFBEF3);
+    #background-color: #E4FCFC;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    font-size: calc(10px + 2vmin);
+    color: black;
+}
+
+.Container-name, .Container-birth{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+}
+
+.Container-find{
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.Name-box{
+    width: 80px;
+    height: 40px;
+    padding: 5px 10px;
+    background-color: transparent;
+    color: black;
+    border: 4px solid black;
+    border-radius: 20px;
+}
+
+.Birth-box {
+    width: 80px;
+    height: 40px;
+    font-size: 20px;
+    padding: 5px 10px;
+    background-color: transparent;
+    color: black;
+    border: 4px solid black;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.Name-textbox, .Birth-textbox{
+    width: 200px;
+    height: 40px;
+    padding: 5px 10px;
+    font-size: 16px;
+    background-color: transparent;
+    color: black;
+    border: 4px solid black;
+    border-radius: 20px;
+}
+
+.Find-button {
+    width: 200px;
+    height: 50px;
+    padding: 5px 10px;
+    background-color: transparent;
+    font-size: 20px;
+    color: black;
+    border: 4px solid black;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+@keyframes AccountFind-logo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
