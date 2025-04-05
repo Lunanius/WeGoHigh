@@ -3,6 +3,7 @@ import './App.css';
 import Login from './Login';
 import AccountFind from "./AccountFind";
 import SignUp from "./SignUp";
+import main from "./main";
 
 function Home() {
     const navigate = useNavigate();
@@ -17,7 +18,7 @@ function Home() {
                     </button>
                 </div>
                 <p className="Home-body">정보를 원하는 기사의 URL을<br />입력해 보세요.</p>
-                <div className="Home-Search">
+                <div className="Home-Seayrch">
                     <input id="Home-search-input" placeholder="뉴스 URL을 입력하세요." />
                     <img className="Home-search-img" src="/icon.png" alt="돋보기" />
                 </div>
@@ -35,6 +36,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/accountFind" element={<AccountFind />} />
                 <Route path="/signup" element={<SignUp />} />
+                <Route path="/main" element={<main />} />
             </Routes>
         </Router>
     );
