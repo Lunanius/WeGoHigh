@@ -11,7 +11,7 @@ function Home() {
         <div className="Home">
             <header className="Home-header">
                 <div className="Home-title">
-                    <h1>We go high</h1>
+                    <button className="Home-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
                     <button className="Home-login-button" type="button" onClick={() => navigate("/login")}>
                         로그인
                     </button>

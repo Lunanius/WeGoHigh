@@ -14,6 +14,15 @@
     color: black;
 }
 
+.Login-home-button{
+    margin-top: 30px;
+    font-size: 80px;
+    font-weight: bold;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
 .Login-container{
     width: 500px;
     height: 400px;

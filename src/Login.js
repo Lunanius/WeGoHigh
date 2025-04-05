@@ -10,13 +10,25 @@ function Login() {
     const handleLogin = () => {
         console.log("ID:", id);
         console.log("Password:", password);
-        alert(`로그인 시도: ${id}`);
+        console.log("==========================");
+        if (id === "" || password === "") {
+            alert("로그인 시도 실패..")
+        }
+        else {
+            alert("로그인 시도 중...")
+            if (id === {id} && password === {password}) {
+                alert("로그인 성공!")
+            }
+            else {
+                alert("존재하지 않는 아이디 또는 패스워드 입니다.")
+            }
+        }
     };
 
     return (
         <div className="Login">
             <header className="Login-header">
-                <h1>We go high</h1>
+                <button className="Login-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
                 <div className="Login-container">
                     <div className="Login-container-element">
                         <div className="Login-element-container">
