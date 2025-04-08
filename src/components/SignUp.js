@@ -1,43 +1,91 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./SignUp.css";
+import "../css/SignUp.css";
+import axios from "axios";
 
 function SignUp() {
     const [birthDate, setBirthDate] = useState("");
     const [name, setName] = useState("");
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
+    let [samevalue, setSamevalue] = useState(false);
     const navigate = useNavigate();
-    const [samevalue, setSamevalue] = useState(false);
     const handleDateChange = (e) => {
         setBirthDate(e.target.value); // 선택된 날짜를 상태로 저장
     }
 
-    const handleSignUp = () => {
-        console.log("Name:", name);
-        console.log("BirthDate:", birthDate);
-        console.log("Id:", id);
-        console.log("Password:", password);
-        console.log("==========================");
-        if (name !== "" && birthDate !== "" && id !== "" && password !== "" && samevalue === true) {
-            alert("회원가입 성공");
-        }
-        else {
-            alert("다시 시도해보세요")
+    // const handleSignUp = () => {
+    //     console.log("Name:", name);
+    //     console.log("BirthDate:", birthDate);
+    //     console.log("Id:", id);
+    //     console.log("Password:", password);
+    //     console.log("==========================");
+    //     if (name !== "" && birthDate !== "" && id !== "" && password !== "" && samevalue === true) {
+    //         alert("회원가입 성공");
+    //     }
+    //     else {
+    //         alert("다시 시도해보세요")
+    //     }
+    // };
+    const handleSignUp = (e) => {
+        e.preventDefault();
+
+        if (name === "") {
+            alert("이름을 입력해주세요.");
+        } else if (birthDate === "") {
+            alert("날짜를 입력해주세요.");
+        } else if (id === "") {
+            alert("아이디를 입력해주세요.");
+        } else if (password === "") {
+            alert("비밀번호를 입력해주세요.");
+        } else if (!samevalue) {
+            alert("아이디 중복을 체크해주세요.");
+        } else {
+            const userData = {
+                birthDate: birthDate,
+                name: name,
+                id: id,
+                password: password,
+            };
+
+            const url = `http://localhost:8080/api/signup`;
+
+            axios
+                .post(url, userData)
+                .then((_response) => {
+                    alert(`${id}님 회원가입 성공`);
+                    navigate("/");
+                })
+                .catch((error) => {
+                    alert("회원가입 실패");
+                });
         }
     };
 
-    const handleSame = () => {
-        console.log("Id:", id);
-        if (id === {id}) {
-            alert(`해당 아이디는 중복되어 사용할 수 없습니다.`)
-            setSamevalue(false);
-        }
-        else {
-            alert(`해당 아이디는 사용할 수 있습니다.`)
-            setSamevalue(true);
-        }
-    }
+    const handleSame = (e) => {
+        e.preventDefault();
+        const userData = {
+            id: id,
+        };
+
+        console.log("보내는 ID:", userData.id);
+        axios.get(`http://localhost:8080/api/signup/IdCheck/${userData.id}`)
+            .then((response) =>{
+                if(response.data === true){
+                    alert('사용 가능한 아이디입니다')
+                    setSamevalue(true);
+                } else {
+                    alert('중복된 아이디입니다')
+                    setSamevalue(false);
+
+                }
+
+            }).catch((_error) => {
+                alert('적절한 값을 입력하세요')
+                setSamevalue(false)
+        });
+    };
+
 
     return (
         <div className="SignUp">
@@ -75,7 +123,7 @@ function SignUp() {
                                 value={id}
                                 onChange={(e) => {
                                     setId(e.target.value);
-                                    setSamevalue(false);
+                                     setSamevalue(false);
                                 }}
                                 maxLength="10"
                                 placeholder="아이디 입력"/>

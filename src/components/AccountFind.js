@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./AccountFind.css";
+import "../css/AccountFind.css";
 
 function AccountFind() {
     const [birthDate, setBirthDate] = useState("");

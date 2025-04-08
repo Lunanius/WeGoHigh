@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Login.css";
+import "../css/Login.css";
 
 function Login() {
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
     const navigate = useNavigate();
 
     const handleLogin = () => {
         console.log("ID:", id);
         console.log("Password:", password);
+        console.log("email:", email);
         console.log("==========================");
         if (id === "" || password === "") {
             alert("로그인 시도 실패..")
@@ -24,6 +26,7 @@ function Login() {
             }
         }
     };
+
 
     return (
         <div className="Login">
@@ -49,6 +52,15 @@ function Login() {
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="비밀번호 입력"/>
                         </div>
+                        <div className="Login-element-container">
+                            <p className="Login-pw-box">Email</p>
+                            <input className="Login-pw-textbox"
+                                   type="email"
+                                   value={email}
+                                   onChange={(e) => setEmail(e.target.value)}
+                                   placeholder="비밀번호 입력"/>
+                        </div>
+
 
                         <div className="Login-element-container">
                             <button className="Login-login-button" onClick={handleLogin}>
