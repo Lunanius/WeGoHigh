@@ -11,5 +11,10 @@ public interface UserRepository extends JpaRepository<SiteUser, Long> {
 
     SiteUser findByNameAndBirthDate(String name, Date birthDate);
 
-    boolean existsById(String id);
+    SiteUser findByNameAndBirthDateAndUsername(String name, Date birthDate, String username);
+
+    boolean existsByUsername(String id);
+
+
+    Optional<SiteUser> findByUsername(String username);
 }

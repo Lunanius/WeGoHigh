@@ -32,8 +32,20 @@ public class UserService {
         return userRepository.findByNameAndBirthDate(name,birthDate);
     }
 
-    public boolean checkIdDuplicate(String id) {
-        return userRepository.existsById(id);
+    public boolean checkIdDuplicate(String loginId) {
+        return userRepository.existsByUsername(loginId);
     }
+    public SiteUser findByUsername(String username) {
+        return userRepository.findByUsername(username).orElse(null);
+    }
+    public SiteUser findByNameAndBirthDate(String name, Date birthDate) {
+        return userRepository.findByNameAndBirthDate(name,birthDate);
+    }
+    public SiteUser findByNameAndBirthDateAndUsername(String name, Date birthDate, String username) {
+        return userRepository.findByNameAndBirthDateAndUsername(name,birthDate,username);
+    }
+
+
+
 
 }
