@@ -14,31 +14,18 @@ function HomeLoginVer() {
         }
     };
 
-    const toggleBox2 = () => {
-        setResetPasswordBox(!resetPasswordBox)
-    }
-
     return (
         <div className="Home">
             <header className="Home-header">
                 <div className="Home-title">
-                    <button className="Home-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
+                    <button className="Home-home-button" type="button" onClick={() => navigate("/homeloginver")}>We go high</button>
                     <img className="Home-profile-img" src="/profile.png" alt="프로필" onClick={toggleBox} />
                 </div>
 
                 {profileBox && (
                     <div className="ProfileBox" id="myBox">
-                        <button className="ProfileBox-logout" onClick={() => navigate("/")}>최근 기록</button>
-                        <button className="ProfileBox-logout" onClick={toggleBox2}>비밀번호 변경</button>
+                        <button className="ProfileBox-logout" onClick={() => navigate("/mypage")}>내 정보</button>
                         <button className="ProfileBox-logout" onClick={() => navigate("/")}>로그아웃</button>
-
-                        {resetPasswordBox && (
-                            <div className="ResetPasswordBox" id="myBox">
-                                <p>비밀번호 재설정</p>
-                            </div>
-                        )
-
-                        }
                     </div>
                 )}
 

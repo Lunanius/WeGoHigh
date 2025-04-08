@@ -15,7 +15,7 @@ function News() {
         <div className="News">
             <header className="News-header">
                 <div className="News-title">
-                    <button className="News-News-button" type="button" onClick={() => navigate("/")}>We go high</button>
+                    <button className="News-News-button" type="button" onClick={() => navigate("/homeloginver")}>We go high</button>
                     <img className="Home-profile-img" src="/profile.png" alt="프로필" onClick={toggleBox} />
                 </div>
 
