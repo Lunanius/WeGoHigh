@@ -5,13 +5,9 @@ import '../css/App.css';
 function HomeLoginVer() {
     const navigate = useNavigate();
     const [profileBox, setProfileBox] = useState(false);
-    const [resetPasswordBox, setResetPasswordBox] = useState(false);
 
-    const toggleBox = () => {
+    const profileToggleBox = () => {
         setProfileBox(!profileBox);
-        if(resetPasswordBox === true){
-            setResetPasswordBox(!resetPasswordBox)
-        }
     };
 
     return (
@@ -19,13 +15,13 @@ function HomeLoginVer() {
             <header className="Home-header">
                 <div className="Home-title">
                     <button className="Home-home-button" type="button" onClick={() => navigate("/homeloginver")}>We go high</button>
-                    <img className="Home-profile-img" src="/profile.png" alt="프로필" onClick={toggleBox} />
+                    <img className="Home-profile-img" src="/profile.png" alt="프로필" onClick={profileToggleBox} />
                 </div>
 
                 {profileBox && (
-                    <div className="ProfileBox" id="myBox">
-                        <button className="ProfileBox-logout" onClick={() => navigate("/mypage")}>내 정보</button>
-                        <button className="ProfileBox-logout" onClick={() => navigate("/")}>로그아웃</button>
+                    <div className="Home-profileBox" id="myBox">
+                        <button className="Home-profileBox-element" onClick={() => navigate("/mypage")}>내 정보</button>
+                        <button className="Home-profileBox-element" onClick={() => navigate("/")}>로그아웃</button>
                     </div>
                 )}
 
@@ -34,7 +30,6 @@ function HomeLoginVer() {
                     <input id="Home-search-input" placeholder="뉴스 URL을 입력하세요." />
                     <img className="Home-search-img" src="/icon.png" alt="돋보기" onClick={() => navigate("/newsloginver")}/>
                 </div>
-                <p className="Home-tail">로그인해서 전에 검색했던 내용을<br />다시 확인하세요!</p>
             </header>
         </div>
     );

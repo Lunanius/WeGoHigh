@@ -6,7 +6,7 @@ function News() {
     const navigate = useNavigate();
     const [profileBox, setProfileBox] = useState(false);
 
-    const toggleBox = () => {
+    const profileToggleBox = () => {
         setProfileBox(!profileBox);
     };
 
@@ -16,12 +16,13 @@ function News() {
             <header className="News-header">
                 <div className="News-title">
                     <button className="News-News-button" type="button" onClick={() => navigate("/homeloginver")}>We go high</button>
-                    <img className="Home-profile-img" src="/profile.png" alt="프로필" onClick={toggleBox} />
+                    <img className="Home-profile-img" src="/profile.png" alt="프로필" onClick={profileToggleBox} />
                 </div>
 
                 {profileBox && (
-                    <div className="ProfileBox" id="myBox">
-                        <button className="ProfileBox-logout" onClick={() => navigate("/")}>로그아웃</button>
+                    <div className="News-profileBox" id="myBox">
+                        <button className="News-profileBox-element" onClick={() => navigate("/mypage")}>내 정보</button>
+                        <button className="News-profileBox-element" onClick={() => navigate("/")}>로그아웃</button>
                     </div>
                 )}
 

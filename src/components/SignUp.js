@@ -32,15 +32,15 @@ function SignUp() {
         e.preventDefault();
 
         if (name === "") {
-            alert("이름을 입력해주세요.");
+            alert("이름을 입력하세요.");
         } else if (birthDate === "") {
-            alert("생년월일을 입력해주세요.");
+            alert("생년월일을 입력하세요.");
         } else if (id === "") {
-            alert("아이디를 입력해주세요.");
+            alert("아이디를 입력하세요.");
         } else if (password === "") {
-            alert("비밀번호를 입력해주세요.");
+            alert("비밀번호를 입력하세요.");
         } else if (!samevalue) {
-            alert("아이디 중복을 체크해주세요.");
+            alert("아이디 중복을 체크하세요.");
         } else {
             const userData = {
                 birthDate: birthDate,
@@ -126,6 +126,7 @@ function SignUp() {
                                     setId(e.target.value);
                                      setSamevalue(false);
                                 }}
+                                minLength="6"
                                 maxLength="10"
                                 placeholder="아이디 입력"/>
                             <button className="SignUp-same-button" onClick={handleSame}>

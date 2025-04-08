@@ -11,16 +11,21 @@ function Login() {
         console.log("ID:", id);
         console.log("Password:", password);
         console.log("==========================");
-        if (id === "" || password === "") {
-            alert("로그인 시도 실패..")
+        if (id === "") {
+            alert("아이디를 입력하세요.")
+        }
+        else if (password === "") {
+            alert("비밀번호를 입력하세요.")
+        }
+        else if (password.length < 8 || password.length > 16) {
+            alert("비밀번호 길이는 최소 8글자 최대 16글자입니다.")
         }
         else {
-            alert("로그인 시도 중...")
             if (id === {id} && password === {password}) {
                 alert("로그인 성공!")
             }
             else {
-                alert("존재하지 않는 아이디 또는 패스워드 입니다.")
+                alert("존재하지 않는 아이디 또는 비밀번호입니다.")
             }
         }
     };

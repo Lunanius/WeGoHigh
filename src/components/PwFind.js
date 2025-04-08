@@ -15,15 +15,25 @@ function PwFind() {
     const handlePw = () => {
         console.log("Name:", name);
         console.log("BirthDate:", birthDate);
+        console.log("Id:", id);
         console.log("==========================");
-        alert(`PW 찾기 시도`);
-        if (name === "" && birthDate === "" ){
-            alert("ID/PW 찾기 시도 실패")
+        if (name === "") {
+            alert("이름을 입력하세요.")
+        }
+        else if (birthDate === "") {
+            alert("생년월일을 입력하세요.")
+        }
+        else if (id === "") {
+            alert("아이디를 입력하세요.")
         }
         else {
-            alert("ID/PW 찾기 시도 성공")
-            alert(`사용자 이름: ${name} \n사용자 생년월일: ${birthDate}`);
-            //alert(`사용자 아이디: ${id} \n사용자 비밀번호: ${password}`)
+            if (name === {name} && birthDate === {birthDate} && id === {id}) {
+                alert(`사용자 이름: ${name} \n사용자 생년월일: ${birthDate} \n사용자 아이디: ${id}`);
+                //alert(`사용자 비밀번호: ${password}`)
+            }
+            else {
+                alert("존재하지 않는 회원정보입니다.")
+            }
         }
 
     };
