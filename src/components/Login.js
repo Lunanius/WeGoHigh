@@ -23,6 +23,7 @@ function Login() {
         else {
             if (id === {id} && password === {password}) {
                 alert("로그인 성공!")
+                navigate("/homeloginver");
             }
             else {
                 alert("존재하지 않는 아이디 또는 비밀번호입니다.")
