@@ -1,21 +1,22 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../css/AccountFind.css";
+import "../css/Find.css";
 
-function AccountFind() {
+function PwFind() {
     const [birthDate, setBirthDate] = useState("");
     const navigate = useNavigate();
     const [name, setName] = useState("");
+    const [id, setId] = useState("");
 
     const handleDateChange = (e) => {
         setBirthDate(e.target.value); // 선택된 날짜를 상태로 저장
     }
 
-    const handleAccount = () => {
+    const handlePw = () => {
         console.log("Name:", name);
         console.log("BirthDate:", birthDate);
         console.log("==========================");
-        alert(`ID/PW 찾기 시도`);
+        alert(`PW 찾기 시도`);
         if (name === "" && birthDate === "" ){
             alert("ID/PW 찾기 시도 실패")
         }
@@ -28,37 +29,46 @@ function AccountFind() {
     };
 
     return (
-        <div className="AccountFind">
-            <header className="AccountFind-header">
-                <button className="AccountFind-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
-                <div className="AccountFind-container">
-                    <div className="AccountFind-container-element">
-                        <div className="AccountFind-element-container">
-                            <p className="AccountFind-name-box">이름</p>
+        <div className="Find">
+            <header className="Find-header">
+                <button className="Find-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
+                <div className="Find-container">
+                    <div className="Find-container-element">
+                        <div className="Find-element-container">
+                            <p className="Find-name-box">이름</p>
                             <input
-                                className="AccountFind-element-textbox"
+                                className="Find-element-textbox"
                                 type="text"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                            />
+                                placeholder="이름 입력"/>
                         </div>
 
-                        <div className="AccountFind-element-container">
-                            <p className="AccountFind-birth-box">생년월일</p>
+                        <div className="Find-element-container">
+                            <p className="Find-birth-box">생년월일</p>
                             <input
-                                className="AccountFind-element-textbox"
+                                className="Find-element-textbox"
                                 type="date"
                                 id="startDate"
                                 value={birthDate}
                                 onChange={handleDateChange}
                                 max="9999-12-31"
                             />
-
                         </div>
 
-                        <div className="AccountFind-find-container">
-                            <button className="AccountFind-find-button" onClick={handleAccount}>
-                                ID/PW 찾기
+                        <div className="Find-element-container">
+                            <p className="Find-id-box">ID</p>
+                            <input className="Find-element-textbox"
+                                   type="text"
+                                   value={id}
+                                   onChange={(e) => setId(e.target.value)}
+                                   placeholder="ID 입력"/>
+                        </div>
+
+
+                        <div className="Find-find-container">
+                            <button className="Find-find-button" onClick={handlePw}>
+                                PW 찾기
                             </button>
                         </div>
 
@@ -70,4 +80,4 @@ function AccountFind() {
     );
 }
 
-export default AccountFind;
+export default PwFind;

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../css/SignUp.css";
 import axios from "axios";
 
+
 function SignUp() {
     const [birthDate, setBirthDate] = useState("");
     const [name, setName] = useState("");
@@ -33,7 +34,7 @@ function SignUp() {
         if (name === "") {
             alert("이름을 입력해주세요.");
         } else if (birthDate === "") {
-            alert("날짜를 입력해주세요.");
+            alert("생년월일을 입력해주세요.");
         } else if (id === "") {
             alert("아이디를 입력해주세요.");
         } else if (password === "") {
@@ -90,7 +91,7 @@ function SignUp() {
     return (
         <div className="SignUp">
             <header className="SignUp-header">
-                <button className="AccountFind-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
+                <button className="SignUp-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
                 <div className="SignUp-container">
                     <div className="SignUp-container-element">
                         <div className="SignUp-element-container">
