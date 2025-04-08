@@ -1,31 +1,53 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Login.css";
+import "../css/Login.css";
+import axios from "axios";
 
 function Login() {
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
-    const [email, setEmail] = useState("");
     const navigate = useNavigate();
 
-    const handleLogin = () => {
-        console.log("ID:", id);
-        console.log("Password:", password);
-        console.log("email:", email);
-        console.log("==========================");
-        if (id === "" || password === "") {
-            alert("로그인 시도 실패..")
-        }
-        else {
-            alert("로그인 시도 중...")
-            if (id == {id} && password == {password}) {
-                alert("로그인 성공!")
-            }
-            else {
-                alert("존재하지 않는 아이디 또는 패스워드 입니다.")
-            }
-        }
+    // const handleLogin = () => {
+    //     console.log("ID:", id);
+    //     console.log("Password:", password);
+    //     console.log("==========================");
+    //     // if (id === "" || password === "") {
+    //     //     alert("로그인 시도 실패..")
+    //     // }
+    //     // else {
+    //     //     alert("로그인 시도 중...")
+    //     //     if (id == {id} && password == {password}) {
+    //     //         alert("로그인 성공!")
+    //     //     }
+    //     //     else {
+    //     //         alert("존재하지 않는 아이디 또는 패스워드 입니다.")
+    //     //     }
+    //     }
+    // }
+
+const handleLogin = (e) => {
+    e.preventDefault();
+    const userData = {
+        username: id,
+        password: password
     };
+
+    const url = `http://localhost:8080/api/login`;
+
+    axios.defaults.withCredentials = true;
+    axios
+        .post(url, userData)
+        .then((response) => {
+            alert(`${id}님 환영합니다!`);
+            navigate('/');
+        })
+        .catch((error) => {
+            const msg = error.response?.data || "로그인 실패"
+            alert(msg);
+        });
+}
+
 
 
     return (
@@ -52,14 +74,6 @@ function Login() {
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="비밀번호 입력"/>
                         </div>
-                        <div className="Login-element-container">
-                            <p className="Login-pw-box">Email</p>
-                            <input className="Login-pw-textbox"
-                                   type="email"
-                                   value={email}
-                                   onChange={(e) => setEmail(e.target.value)}
-                                   placeholder="비밀번호 입력"/>
-                        </div>
 
 
                         <div className="Login-element-container">
@@ -69,8 +83,11 @@ function Login() {
                         </div>
 
                         <div className="Login-element-container">
-                            <button className="Login-menu-button" type="button" onClick={() => navigate("/accountFind")}>
-                                ID/PW 찾기
+                            <button className="Login-menu-button" type="button" onClick={() => navigate("/IdFind")}>
+                                ID 찾기
+                            </button>
+                            <button className="Login-menu-button" type="button" onClick={() => navigate("/PwFind")}>
+                                PW 찾기
                             </button>
                             <button className="Login-menu-button" type="button" onClick={() => navigate("/signup")}>
                                 회원가입

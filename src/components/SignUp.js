@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./SignUp.css";
+import "../css/SignUp.css";
 import axios from "axios";
 
 function SignUp() {
@@ -44,7 +44,7 @@ function SignUp() {
             const userData = {
                 birthDate: birthDate,
                 name: name,
-                id: id,
+                username: id,
                 password: password,
             };
 
@@ -65,11 +65,11 @@ function SignUp() {
     const handleSame = (e) => {
         e.preventDefault();
         const userData = {
-            id: id,
+            username: id,
         };
 
-        console.log("보내는 ID:", userData.id);
-        axios.get(`http://localhost:8080/api/signup/IdCheck/${userData.id}`)
+        console.log("보내는 ID:", userData.username);
+        axios.get(`http://localhost:8080/api/signup/IdCheck/${userData.username}`)
             .then((response) =>{
                 if(response.data === true){
                     alert('사용 가능한 아이디입니다')

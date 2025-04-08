@@ -1,22 +1,34 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import './News.css';
+import '../css/News.css';
 
 function News() {
     const navigate = useNavigate();
+    const [profileBox, setProfileBox] = useState(false);
+
+    const profileToggleBox = () => {
+        setProfileBox(!profileBox);
+    };
+
 
     return (
         <div className="News">
             <header className="News-header">
                 <div className="News-title">
-                    <button className="News-News-button" type="button" onClick={() => navigate("/")}>We go high</button>
-                    <button className="News-login-button" type="button" onClick={() => navigate("/login")}>
-                        로그인
-                    </button>
+                    <button className="News-News-button" type="button" onClick={() => navigate("/homeloginver")}>We go high</button>
+                    <img className="Home-profile-img" src="/public/profile.png" alt="프로필" onClick={profileToggleBox} />
                 </div>
+
+                {profileBox && (
+                    <div className="News-profileBox" id="myBox">
+                        <button className="News-profileBox-element" onClick={() => navigate("/mypage")}>내 정보</button>
+                        <button className="News-profileBox-element" onClick={() => navigate("/")}>로그아웃</button>
+                    </div>
+                )}
+
                 <div className="News-Search">
                     <input id="News-search-input" placeholder="뉴스 URL을 입력하세요." />
-                    <img className="News-search-img" src="/icon.png" alt="돋보기" />
+                    <img className="News-search-img" src="/public/icon.png" alt="돋보기" />
                 </div>
                 <div className="News-container">
                     <div className="News-container-news">
@@ -25,7 +37,7 @@ function News() {
                         </div>
                         <div className="News-news">
                             <div className="News-news-title">
-                                <p>손흥민 이대로 괜찮은가?</p>
+                                <p>손흥민 이대로 괜찮은가?손흥민 이대로 괜찮은가?손흥민 이대로 괜찮은가?손흥민 이대로 괜찮은가?</p>
                             </div>
                             <div className="News-news-detail">
                                 <p>손흥민 토트넘 이대로 괜찮은가?</p>

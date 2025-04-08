@@ -1,9 +1,5 @@
-import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
-import './App.css';
-import Login from './Login';
-import AccountFind from "./AccountFind";
-import SignUp from "./SignUp";
-import News from "./News";
+import {useNavigate} from "react-router-dom";
+import '../css/Home.css';
 
 function Home() {
     const navigate = useNavigate();
@@ -15,6 +11,9 @@ function Home() {
                     <button className="Home-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
                     <button className="Home-login-button" type="button" onClick={() => navigate("/login")}>
                         로그인
+                    </button>
+                    <button className="Home-loginhome-button" type="button" onClick={() => navigate("/homeloginver")}>
+                        로그인 홈 화면 가기
                     </button>
                 </div>
                 <p className="Home-body">정보를 원하는 기사의 URL을<br />입력해 보세요.</p>
@@ -28,18 +27,4 @@ function Home() {
     );
 }
 
-function App() {
-    return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/accountFind" element={<AccountFind />} />
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="/news" element={<News />} />
-            </Routes>
-        </Router>
-    );
-}
-
-export default App;
+export default Home;
