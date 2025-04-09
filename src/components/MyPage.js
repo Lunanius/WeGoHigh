@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/MyPage.css";
 
@@ -7,6 +7,14 @@ function MyPage() {
     const [newpassword, setNewPassword] = useState("");
     const [resetPasswordBox, setResetPasswordBox] = useState(false);
     const [profileBox, setProfileBox] = useState(false);
+    const [isLogin, setIsLogin] = useState(false);
+
+    useEffect(() => {
+        const storedLogin = localStorage.getItem("isLogin");
+        if (storedLogin === "true") {
+            setIsLogin(true);
+        }
+    }, []);
 
     const handleResetPassword = () => {
         if (newpassword.length < 8 || newpassword.length > 16) {
@@ -14,6 +22,9 @@ function MyPage() {
         }
         else {
             // 유저의 비밀번호가 sql에 갱신하는 코드
+            alert("비밀번호 변경 완료.")
+            setResetPasswordBox(false);
+            setNewPassword("");
         }
     }
 
@@ -23,18 +34,28 @@ function MyPage() {
 
     const resetPasswordToggleBox = () => {
         setResetPasswordBox(!resetPasswordBox)
+        setNewPassword("");
     };
+
+    const handleLogout = () => {
+        setIsLogin(false);
+        localStorage.removeItem("isLogin");
+        setProfileBox(false);
+        navigate("/");
+    }
 
     return (
         <div className="MyPage">
             <header className="MyPage-header">
-                <button className="MyPage-home-button" type="button" onClick={() => navigate("/homeloginver")}>We go high</button>
+                <button className="MyPage-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
                 <img className="MyPage-profile-img" src="/profile.png" alt="프로필" onClick={profileToggleBox} />
 
                 {profileBox && (
                     <div className="MyPage-profileBox" id="myBox">
-                        <button className="MyPage-profileBox-element" onClick={() => navigate("/mypage")}>내 정보</button>
-                        <button className="MyPage-profileBox-element" onClick={() => navigate("/")}>로그아웃</button>
+                        <button className="MyPage-profileBox-element" onClick={() => {
+                            setProfileBox(false);
+                            navigate("/mypage")}}>내 정보</button>
+                        <button className="MyPage-profileBox-element" onClick={handleLogout}>로그아웃</button>
                     </div>
                 )}
 

@@ -39,7 +39,10 @@ function SignUp() {
             alert("아이디를 입력하세요.");
         } else if (password === "") {
             alert("비밀번호를 입력하세요.");
-        } else if (!samevalue) {
+        }else if (password.length < 8 || password.length > 16) {
+            alert("비밀번호 길이는 최소 8글자 최대 16글자입니다.")
+        }
+        else if (!samevalue) {
             alert("아이디 중복을 체크하세요.");
         } else {
             const userData = {

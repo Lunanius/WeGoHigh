@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/Login.css";
 
@@ -6,6 +6,14 @@ function Login() {
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const [isLogin, setIsLogin] = useState(false);
+
+    useEffect(() => {
+        const storedLogin = localStorage.getItem("isLogin");
+        if (storedLogin === "true") {
+            setIsLogin(true);
+        }
+    }, []);
 
     const handleLogin = () => {
         console.log("ID:", id);
@@ -23,7 +31,9 @@ function Login() {
         else {
             if (id === {id} && password === {password}) {
                 alert("로그인 성공!")
-                navigate("/homeloginver");
+                setIsLogin(true);
+                localStorage.setItem("isLogin", "true");
+                navigate("/");
             }
             else {
                 alert("존재하지 않는 아이디 또는 비밀번호입니다.")
