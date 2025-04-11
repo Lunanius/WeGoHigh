@@ -5,11 +5,13 @@ import "../css/Login.css";
 function Login() {
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
+    const [birthDate, setBirthDate] = useState("");
+    const [name, setName] = useState("");
     const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(false);
 
     useEffect(() => {
-        const storedLogin = localStorage.getItem("isLogin");
+        const storedLogin = sessionStorage.getItem("isLogin");
         if (storedLogin === "true") {
             setIsLogin(true);
         }
@@ -32,7 +34,10 @@ function Login() {
             if (id === {id} && password === {password}) {
                 alert("로그인 성공!")
                 setIsLogin(true);
-                localStorage.setItem("isLogin", "true");
+                sessionStorage.setItem("isLogin", "true");
+                sessionStorage.setItem("userName", name);
+                sessionStorage.setItem("userBirthDate", birthDate);
+                sessionStorage.setItem("userId", id);
                 navigate("/");
             }
             else {

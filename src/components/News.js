@@ -8,7 +8,7 @@ function News() {
     const [profileBox, setProfileBox] = useState(false); // 프로필 박스 토글
 
     useEffect(() => {
-        const storedLogin = localStorage.getItem("isLogin");
+        const storedLogin = sessionStorage.getItem("isLogin");
         if (storedLogin === "true") {
             setIsLogin(true);
         }
@@ -19,8 +19,7 @@ function News() {
     };
 
     const handleLogout = () => {
-        setIsLogin(false);
-        localStorage.removeItem("isLogin");
+        sessionStorage.clear();
         setProfileBox(false);
         navigate("/");
     };
@@ -70,10 +69,10 @@ function News() {
                         </div>
                         <div className="News-news">
                             <div className="News-news-title">
-                                <p>손흥민 이대로 괜찮은가?손흥민 이대로 괜찮은가?손흥민 이대로 괜찮은가?손흥민 이대로 괜찮은가?</p>
+                                <p>기사 제목 최대 2줄로 표기 넘어가는 글자는 ...으로 표현했음 으아아아아아아아아아아아아아아아아</p>
                             </div>
                             <div className="News-news-detail">
-                                <p>손흥민 토트넘 이대로 괜찮은가?</p>
+                                <p>기사 내용은 최대 8줄로 표기함</p>
                             </div>
                             <div className="News-news-date">
                                 <p>2021.08.08 서울경제</p>
@@ -83,7 +82,7 @@ function News() {
 
                     <div className="News-container-summation">
                         <div className="News-summation-detail">
-                            <p>해당 뉴스 키워드로는 "손흥민, 토트넘, EPL"가 있으며, 주가가 ??로 예상</p>
+                            <p>해당 뉴스 키워드가 나오는 부분입니다 아래는 해당 기업의 주식 차트가 나옵니다.</p>
                         </div>
                         <div className="News-summation-chart">
                             <img src="/chart.png" alt="chart" />

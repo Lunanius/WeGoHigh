@@ -1,21 +1,22 @@
 .SignUp {
     text-align: center;
 }
-
 .SignUp-header {
-    background : linear-gradient(#E4FCFC, #C6DDFF, #EFBEF3);
-    #background-color: #E4FCFC;
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: start;
-    font-size: calc(10px + 2vmin);
     color: black;
 }
 
+.SignUp-home-container{
+    width: 100%;
+    height: 100px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    border-bottom: 2px solid black;
+}
+
 .SignUp-home-button{
-    margin-top: 30px;
     font-size: 80px;
     font-weight: bold;
     border: none;
@@ -23,107 +24,111 @@
     cursor: pointer;
 }
 
+.SignUp-location-container {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    background: midnightblue;
+}
+
+.SignUp-location{
+    width: 10%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 100px;
+    color: white;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+}
+
 .SignUp-container{
-    width: 700px;
-    height: 550px;
-    padding: 5px 10px;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    margin-top: 120px;
-    background-color: transparent;
     color: black;
-    border: 4px solid black;
-    border-radius: 50px;
+    border-top: 3px solid black;
 }
 
 .SignUp-container-element{
+    width: 60%;
+    margin-top: 100px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .SignUp-element-container{
+    width: 100%;
+    height: 80px;
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 20px;
-}
-
-.SignUp-element-container-id{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 20px;
-    margin-left: 140px;
+    border-bottom: 1px solid darkgray;
+    border-top: 1px solid darkgray;
 }
 
 .SignUp-container-signup{
-    margin-top: 30px;
+    width: 100%;
+    height: 80px;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .SignUp-element-box{
-    width: 80px;
-    height: 40px;
-    padding: 5px 10px;
-    background-color: transparent;
-    color: black;
-    border: 4px solid black;
-    border-radius: 20px;
-}
-
-.SignUp-birth-box {
-    width: 80px;
-    height: 40px;
-    font-size: 20px;
-    padding: 5px 10px;
-    background-color: transparent;
-    color: black;
-    border: 4px solid black;
-    border-radius: 20px;
+    width: 150px;
+    height: 100%;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    background-color: lightgray;
+    border-right: 1px solid darkgray;
+    border-bottom: 1px solid darkgray;
+    color: black;
 }
 
-.SignUp-id-box {
+.SignUp-same-box{
+    width: 150px;
+    height: 100%;
     display: flex;
-    gap: 10px;
-    margin-top: 5px;
+    align-items: center;
+    justify-content: center;
+    color: black;
 }
 
 .SignUp-textbox{
     width: 200px;
-    height: 40px;
+    height: 50%;
     padding: 5px 10px;
     font-size: 16px;
     background-color: transparent;
     color: black;
-    border: 4px solid black;
-    border-radius: 20px;
+    border: 2px solid black;
 }
+
 .SignUp-same-button {
     width: 120px;
-    height: 60px;
-    padding: 5px 10px;
+    height: 50px;
     background-color: transparent;
     font-size: 20px;
     color: black;
-    border: 4px solid black;
-    border-radius: 20px;
+    border: 2px solid black;
     cursor: pointer;
 }
 .Sign-up-button {
-    width: 200px;
+    width: 180px;
     height: 50px;
     padding: 5px 10px;
     background-color: transparent;
     font-size: 20px;
     color: black;
-    border: 4px solid black;
-    border-radius: 20px;
+    border: 1px solid black;
     cursor: pointer;
 }

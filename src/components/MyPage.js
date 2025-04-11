@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/MyPage.css";
 
@@ -7,14 +7,6 @@ function MyPage() {
     const [newpassword, setNewPassword] = useState("");
     const [resetPasswordBox, setResetPasswordBox] = useState(false);
     const [profileBox, setProfileBox] = useState(false);
-    const [isLogin, setIsLogin] = useState(false);
-
-    useEffect(() => {
-        const storedLogin = localStorage.getItem("isLogin");
-        if (storedLogin === "true") {
-            setIsLogin(true);
-        }
-    }, []);
 
     const handleResetPassword = () => {
         if (newpassword.length < 8 || newpassword.length > 16) {
@@ -38,8 +30,7 @@ function MyPage() {
     };
 
     const handleLogout = () => {
-        setIsLogin(false);
-        localStorage.removeItem("isLogin");
+        sessionStorage.clear();
         setProfileBox(false);
         navigate("/");
     }
@@ -65,7 +56,7 @@ function MyPage() {
                             <p>이름</p>
                         </div>
                         <div className="MyPage-element-value">
-                            <p>진짜 이름</p>
+                            <p>{sessionStorage.getItem("userName") || "Guest"}</p>
                         </div>
                     </div>
 
@@ -74,7 +65,7 @@ function MyPage() {
                             <p>생년월일</p>
                         </div>
                         <div className="MyPage-element-value">
-                            <p>진짜 생년월일</p>
+                            <p>{sessionStorage.getItem("userBirthDate") || "Unknown"}</p>
                         </div>
                     </div>
 
@@ -83,7 +74,7 @@ function MyPage() {
                             <p>아이디</p>
                         </div>
                         <div className="MyPage-element-value">
-                            <p>진짜 아이디</p>
+                            <p>{sessionStorage.getItem("userId") || "Unknown"}</p>
                         </div>
                     </div>
 

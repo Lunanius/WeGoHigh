@@ -8,7 +8,7 @@ function Home() {
     const [profileBox, setProfileBox] = useState(false);
 
     useEffect(() => {
-        const storedLogin = localStorage.getItem("isLogin");
+        const storedLogin = sessionStorage.getItem("isLogin");
         if (storedLogin === "true") {
             setIsLogin(true);
         }
@@ -21,12 +21,11 @@ function Home() {
     // 임시 로그인 화면으로 가기 위해 둠
     const handleLogin = () => {
         setIsLogin(true);
-        localStorage.setItem("isLogin", "true");
+        sessionStorage.setItem("isLogin", "true");
     };
 
     const handleLogout = () => {
-        setIsLogin(false);
-        localStorage.removeItem("isLogin");
+        sessionStorage.clear();
         setProfileBox(false);
         navigate("/");
     };
