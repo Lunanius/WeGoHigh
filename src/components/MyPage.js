@@ -11,6 +11,7 @@ function MyPage() {
     const [name, setName] = useState(null);
     const [birthDate, setBirthDate] = useState(null);
     const [id, setId] = useState(null);
+    const [email, setEmail] = useState(null);
 
 
 
@@ -24,8 +25,7 @@ function MyPage() {
                         setName(response.data.name)
                         setBirthDate(response.data.birthDate)
                         setId(response.data.username)
-
-
+                        setEmail(response.data.email)
 
                     })
                     .catch((err) => {
@@ -152,6 +152,14 @@ function MyPage() {
                             </div>
                         )}
 
+                    </div>
+                    <div className="MyPage-container-element">
+                        <div className="MyPage-element">
+                            <p>이메일</p>
+                        </div>
+                        <div className="MyPage-element-value">
+                            <p>{email}</p>
+                        </div>
                     </div>
 
                 </div>

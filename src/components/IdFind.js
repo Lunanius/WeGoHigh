@@ -7,23 +7,24 @@ function IdFind() {
     const [birthDate, setBirthDate] = useState("");
     const navigate = useNavigate();
     const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
 
     const handleDateChange = (e) => {
         setBirthDate(e.target.value); // 선택된 날짜를 상태로 저장
     }
 
     const handleId = () => {
-        console.log("Name:", name);
-        console.log("BirthDate:", birthDate);
-        console.log("==========================");
         if (name === "") {
             alert("이름을 입력하세요.")
         } else if (birthDate === "") {
             alert("생년월일을 입력하세요.")
+        } else if (email === "") {
+            alert("이메일을 입력하세요.")
         } else {
             const userData = {
                 name: name,
-                birthDate: birthDate
+                birthDate: birthDate,
+                email: email
             };
 
             const url = `http://localhost:8080/api/IdFind`;
@@ -49,7 +50,7 @@ function IdFind() {
                 <div className="Find-container">
                     <div className="Find-container-element">
                         <div className="Find-element-container">
-                            <p className="Find-name-box">이름</p>
+                            <p className="Find-name-box">아이디</p>
                             <input
                                 className="Find-element-textbox"
                                 type="text"
@@ -69,6 +70,18 @@ function IdFind() {
                                 max="9999-12-31"
                             />
                         </div>
+                        <div className="Find-container-element">
+                            <div className="Find-element-container">
+                                <p className="Find-name-box">이메일</p>
+                                <input
+                                    className="Find-element-textbox"
+                                    type="text"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="example@example.com"/>
+                            </div>
+                        </div>
+
 
                         <div className="Find-find-container">
                             <button className="Find-find-button" onClick={handleId}>

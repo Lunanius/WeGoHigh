@@ -24,8 +24,8 @@
 }
 
 .SignUp-container{
-    width: 700px;
-    height: 550px;
+    width: 800px;
+    height: 700px;
     padding: 5px 10px;
     display: flex;
     flex-direction: row;

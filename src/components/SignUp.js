@@ -8,25 +8,18 @@ function SignUp() {
     const [name, setName] = useState("");
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
+    const [email,setEmail] = useState("");
     let [samevalue, setSamevalue] = useState(false);
     const navigate = useNavigate();
+
     const handleDateChange = (e) => {
         setBirthDate(e.target.value); // 선택된 날짜를 상태로 저장
     }
+    const isValidEmail = (email) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
 
-    // const handleSignUp = () => {
-    //     console.log("Name:", name);
-    //     console.log("BirthDate:", birthDate);
-    //     console.log("Id:", id);
-    //     console.log("Password:", password);
-    //     console.log("==========================");
-    //     if (name !== "" && birthDate !== "" && id !== "" && password !== "" && samevalue === true) {
-    //         alert("회원가입 성공");
-    //     }
-    //     else {
-    //         alert("다시 시도해보세요")
-    //     }
-    // };
     const handleSignUp = (e) => {
         e.preventDefault();
 
@@ -38,6 +31,10 @@ function SignUp() {
             alert("아이디를 입력해주세요.");
         } else if (password === "") {
             alert("비밀번호를 입력해주세요.");
+        } else if (email === ""){
+            alert("이메일을 입력해주세요.");
+        } else if (!isValidEmail(email)) {
+            alert("유효한 이메일 형식이 아닙니다.");
         } else if (!samevalue) {
             alert("아이디 중복을 체크해주세요.");
         } else {
@@ -46,6 +43,7 @@ function SignUp() {
                 name: name,
                 username: id,
                 password: password,
+                email: email
             };
 
             const url = `http://localhost:8080/api/signup`;
@@ -116,7 +114,7 @@ function SignUp() {
 
                         </div>
                         <div className="SignUp-element-container-id">
-                            <p className="SignUp-element-box">ID</p>
+                            <p className="SignUp-element-box">아이디</p>
                             <input
                                 className="SignUp-textbox"
                                 type="text"
@@ -133,7 +131,7 @@ function SignUp() {
                         </div>
 
                         <div className="SignUp-element-container">
-                            <p className="SignUp-element-box">PW</p>
+                            <p className="SignUp-element-box">비밀번호</p>
                             <input className="SignUp-textbox"
                                    type="password"
                                    value={password}
@@ -141,6 +139,15 @@ function SignUp() {
                                    minLength="8"
                                    maxLength="16"
                                    placeholder="비밀번호 입력"/>
+                        </div>
+
+                        <div className="SignUp-element-container">
+                            <p className="SignUp-element-box">이메일</p>
+                            <input className="SignUp-textbox"
+                                   type="email"
+                                   value={email}
+                                   onChange={(e) => setEmail(e.target.value)}
+                                   placeholder="example@example.com"/>
                         </div>
 
                         <div className="SignUp-container-signup">
