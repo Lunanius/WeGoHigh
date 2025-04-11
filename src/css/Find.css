@@ -1,0 +1,106 @@
+.Find {
+    text-align: center;
+}
+
+.Find-header {
+    background : linear-gradient(#E4FCFC, #C6DDFF, #EFBEF3);
+    #background-color: #E4FCFC;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    font-size: calc(10px + 2vmin);
+    color: black;
+}
+
+.Find-home-button{
+    margin-top: 30px;
+    font-size: 80px;
+    font-weight: bold;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.Find-container{
+    width: 500px;
+    height: 400px;
+    padding: 5px 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 150px;
+    background-color: transparent;
+    color: black;
+    border: 4px solid black;
+    border-radius: 50px;
+}
+
+.Find-container-element{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Find-element-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+}
+
+.Find-find-container{
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.Find-name-box, .Find-email-box, .Find-id-box{
+    width: 80px;
+    height: 40px;
+    padding: 5px 10px;
+    background-color: transparent;
+    color: black;
+    border: 4px solid black;
+    border-radius: 20px;
+}
+
+.Find-birth-box {
+    width: 80px;
+    height: 40px;
+    font-size: 20px;
+    padding: 5px 10px;
+    background-color: transparent;
+    color: black;
+    border: 4px solid black;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.Find-element-textbox{
+    width: 200px;
+    height: 40px;
+    padding: 5px 10px;
+    font-size: 16px;
+    background-color: transparent;
+    color: black;
+    border: 4px solid black;
+    border-radius: 20px;
+}
+
+.Find-find-button {
+    width: 200px;
+    height: 50px;
+    padding: 5px 10px;
+    background-color: transparent;
+    font-size: 20px;
+    color: black;
+    border: 4px solid black;
+    border-radius: 20px;
+    cursor: pointer;
+}

@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import "../css/Login.css";
 import axios from "axios";
 
+
+axios.defaults.withCredentials = true;
+
 function Login() {
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
