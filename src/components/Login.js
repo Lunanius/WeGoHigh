@@ -1,50 +1,67 @@
 import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/Login.css";
+import axios from "axios";
+
+
+axios.defaults.withCredentials = true;
 
 function Login() {
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
-    const [birthDate, setBirthDate] = useState("");
-    const [name, setName] = useState("");
     const navigate = useNavigate();
-    const [isLogin, setIsLogin] = useState(false);
 
-    useEffect(() => {
-        const storedLogin = sessionStorage.getItem("isLogin");
-        if (storedLogin === "true") {
-            setIsLogin(true);
-        }
-    }, []);
+    // const handleLogin = () => {
+    //     console.log("ID:", id);
+    //     console.log("Password:", password);
+    //     console.log("==========================");
+    //     if (id === "") {
+    //         alert("아이디를 입력하세요.")
+    //     }
+    //     else if (password === "") {
+    //         alert("비밀번호를 입력하세요.")
+    //     }
+    //     else if (password.length < 8 || password.length > 16) {
+    //         alert("비밀번호 길이는 최소 8글자 최대 16글자입니다.")
+    //     }
+    //     else {
+    //         if (id === {id} && password === {password}) {
+    //             alert("로그인 성공!")
+    //             setIsLogin(true);
+    //             sessionStorage.setItem("isLogin", "true");
+    //             sessionStorage.setItem("userName", name);
+    //             sessionStorage.setItem("userBirthDate", birthDate);
+    //             sessionStorage.setItem("userId", id);
+    //             navigate("/");
+    //         }
+    //         else {
+    //             alert("존재하지 않는 아이디 또는 비밀번호입니다.")
+    //         }
+    //     }
+    // };
 
-    const handleLogin = () => {
-        console.log("ID:", id);
-        console.log("Password:", password);
-        console.log("==========================");
-        if (id === "") {
-            alert("아이디를 입력하세요.")
-        }
-        else if (password === "") {
-            alert("비밀번호를 입력하세요.")
-        }
-        else if (password.length < 8 || password.length > 16) {
-            alert("비밀번호 길이는 최소 8글자 최대 16글자입니다.")
-        }
-        else {
-            if (id === {id} && password === {password}) {
-                alert("로그인 성공!")
-                setIsLogin(true);
-                sessionStorage.setItem("isLogin", "true");
-                sessionStorage.setItem("userName", name);
-                sessionStorage.setItem("userBirthDate", birthDate);
-                sessionStorage.setItem("userId", id);
-                navigate("/");
-            }
-            else {
-                alert("존재하지 않는 아이디 또는 비밀번호입니다.")
-            }
-        }
-    };
+    const handleLogin = (e) => {
+        e.preventDefault();
+        const userData = {
+            username: id,
+            password: password
+        };
+
+    const url = `http://localhost:8080/api/login`;
+
+    axios.defaults.withCredentials = true;
+    axios
+        .post(url, userData)
+        .then((response) => {
+            alert(`${id}님 환영합니다!`);
+            navigate('/');
+        })
+        .catch((error) => {
+            const msg = error.response?.data || "로그인 실패"
+            alert(msg);
+        });
+}
+
 
 
     return (

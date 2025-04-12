@@ -8,9 +8,14 @@ function PwFind() {
     const [name, setName] = useState("");
     const [id, setId] = useState("");
     const [email, setEmail] = useState("");
+    const [elementBox, setElementBox] = useState(false);
 
     const handleDateChange = (e) => {
         setBirthDate(e.target.value); // 선택된 날짜를 상태로 저장
+    }
+
+    const elementToggleBox = () => {
+        setElementBox(!elementBox);
     }
 
     const handlePw = () => {
@@ -50,10 +55,39 @@ function PwFind() {
                     <button className="Find-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
                 </div>
                 <div className="Find-location-container">
-                    <div className="Find-location">
-                        <button className="Find-location-button" type="button"
-                                onClick={() => navigate("/pwfind")}>PW 찾기
-                        </button>
+                    <div className="Login-location-element">
+                        <div className="Login-location">
+                            <button className="Login-location-button" type="button"
+                                    onClick={() => navigate("/")}>홈
+                            </button>
+                        </div>
+                        <div className="Login-location-down"></div>
+                        <div className="Login-location">
+                            <button className="Login-location-button" type="button"
+                                    onClick={() => navigate("/login")}>로그인
+                            </button>
+                        </div>
+                        <div className="Login-location-down"></div>
+                        <div className="Login-location">
+                            <button className="Find-Box-element" onClick={elementToggleBox}>비밀번호 찾기</button>
+                        </div>
+
+                        {elementBox && (
+                            <div className="Find-Box" id="myBox">
+                                <button className="Find-Box-element" onClick={() => {
+                                    setElementBox(false);
+                                    navigate("/idfind")}}>아이디 찾기
+                                </button>
+                                <button className="Find-Box-element" onClick={() => {
+                                    setElementBox(false);
+                                    navigate("/pwfind")}}>비밀번호 찾기
+                                </button>
+                                <button className="Find-Box-element" onClick={() => {
+                                    setElementBox(false);
+                                    navigate("/signup")}}>회원가입
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div className="Find-container">
@@ -81,24 +115,23 @@ function PwFind() {
                         </div>
 
                         <div className="Find-element-container">
-                            <p className="Find-element-box">Email</p>
+                            <p className="Find-element-box">이메일</p>
                             <input
                                 className="Find-element-textbox"
-                                type="text"
+                                type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                placeholder="이메일 입력"/>
+                                placeholder="example@example.com"/>
                         </div>
 
                         <div className="Find-element-container">
-                            <p className="Find-element-box">ID</p>
+                            <p className="Find-element-box">아이디</p>
                             <input className="Find-element-textbox"
                                    type="text"
                                    value={id}
                                    onChange={(e) => setId(e.target.value)}
-                                   placeholder="ID 입력"/>
+                                   placeholder="아이디 입력"/>
                         </div>
-
 
                         <div className="Find-find-container">
                             <button className="Find-find-button" onClick={handlePw}>

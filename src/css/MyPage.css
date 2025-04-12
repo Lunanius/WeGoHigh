@@ -3,24 +3,33 @@
 }
 
 .MyPage-header {
-    background : linear-gradient(#E4FCFC, #C6DDFF, #EFBEF3);
-    #background-color: #E4FCFC;
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: start;
-    font-size: calc(10px + 2vmin);
     color: black;
 }
 
+.MyPage-home-container{
+    width: 100%;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+}
+
 .MyPage-home-button{
-    margin-top: 30px;
     font-size: 80px;
     font-weight: bold;
     border: none;
     background-color: transparent;
     cursor: pointer;
+}
+
+.MyPage-profile-container {
+    display: flex;
+    align-items: center;
+    justify-content: end;
 }
 
 .MyPage-container{
@@ -118,7 +127,6 @@
 
 .MyPage-profile-img {
     position: absolute;
-    top: 50px;
     right: 50px;
     width: 64px;
     height: 64px;

@@ -1,73 +1,55 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import '../css/Home.css';
+import axios from "axios";
+
 
 function Home() {
     const navigate = useNavigate();
-    const [isLogin, setIsLogin] = useState(false);
     const [profileBox, setProfileBox] = useState(false);
-
-    useEffect(() => {
-        const storedLogin = sessionStorage.getItem("isLogin");
-        if (storedLogin === "true") {
-            setIsLogin(true);
-        }
-    }, []);
+    const [userInfo, setUserInfo] = useState(null);
 
     const profileToggleBox = () => {
         setProfileBox(!profileBox);
     };
 
-    // 임시 로그인 화면으로 가기 위해 둠
-    const handleLogin = () => {
-        setIsLogin(true);
-        sessionStorage.setItem("isLogin", "true");
-    };
+    useEffect(() => {
+        axios.get("http://localhost:8080/api/session-user", { withCredentials: true })
+            .then(res => {
+                setUserInfo(res.data);
+            })
+            .catch((err) => {
+                setUserInfo(null);
+            });
+    }, []);
 
     const handleLogout = () => {
-        sessionStorage.clear();
-        setIsLogin(false);
-        setProfileBox(false);
-        navigate("/");
+        axios.post("http://localhost:8080/api/logout", {}, { withCredentials: true })
+            .finally(() => {
+                setUserInfo(null);
+                setProfileBox(false);
+                navigate("/");
+            });
     };
+
+    const isLogin = !!userInfo?.username;
 
     return (
         <div className="Home">
             <header className="Home-header">
-                <div className="Home-title">
-                    <button
-                        className="Home-home-button"
-                        type="button"
-                        onClick={() => navigate("/")}
-                    >
-                        We go high
-                    </button>
-
-                    {isLogin ? (
-                        <img
-                            className="Home-profile-img"
-                            src="/profile.png"
-                            alt="프로필"
-                            onClick={profileToggleBox}
-                        />
-                    ) : (
-                        <>
-                            <button
-                                className="Home-login-button"
-                                type="button"
-                                onClick={() => navigate("/login")}
-                            >
-                                로그인
-                            </button>
-                            <button
-                                className="Home-loginhome-button"
-                                type="button"
-                                onClick={handleLogin} // 임시용
-                            >
-                                로그인 홈 화면 가기
-                            </button>
-                        </>
-                    )}
+                <div className="Home-home-container">
+                    <button className="Home-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
+                    <div className="Home-button-container">
+                        {isLogin ? (
+                            <img className="Home-profile-img" src="/profile.png" alt="프로필" onClick={profileToggleBox}/>
+                        ) : (
+                            <>
+                                <button className="Home-login-button" type="button" onClick={() => navigate("/login")}>
+                                    로그인
+                                </button>
+                            </>
+                        )}
+                    </div>
                 </div>
 
                 {isLogin && profileBox && (

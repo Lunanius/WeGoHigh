@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/Find.css";
+import axios from "axios";
 
 function IdFind() {
     const [birthDate, setBirthDate] = useState("");
@@ -30,18 +31,28 @@ function IdFind() {
         }
         else if (email === "") {
             alert("이메일을 입력하세요.")
-        }
-        else {
-            if (name === {name} && birthDate === {birthDate} && email === {email}) {
-                alert(`사용자 이름: ${name} \n사용자 생년월일: ${birthDate} \n사용자 이메일: ${email}`);
-                //alert(`사용자 아이디: ${id}`)
-            }
-            else {
-                alert("존재하지 않는 회원정보입니다.")
-            }
-        }
+        } else {
+            const userData = {
+                name: name,
+                birthDate: birthDate,
+                email: email
+            };
 
-    };
+            const url = `http://localhost:8080/api/IdFind`;
+
+            axios
+                .post(url, userData)
+                .then((response) => {
+                    alert(`${name}님의 아이디는 ${response?.data} 입니다`);
+                    navigate('/Login');
+                })
+                .catch((error) => {
+                    const msg = error.response?.data || '입니다';
+                    alert(msg);
+                });
+        }
+    }
+
 
     return (
         <div className="Find">
@@ -50,31 +61,32 @@ function IdFind() {
                     <button className="Find-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
                 </div>
                 <div className="Find-location-container">
-                    <div className="Login-location-element">
-                        <div className="Login-location">
-                            <button className="Login-location-button" type="button"
+                    <div className="Find-location-element">
+                        <div className="Find-location">
+                            <button className="Find-location-button" type="button"
                                     onClick={() => navigate("/")}>홈
                             </button>
                         </div>
-                        <div className="Login-location-down"></div>
-                        <div className="Login-location">
-                            <button className="Login-location-button" type="button"
+                        <div className="Find-location-down"></div>
+                        <div className="Find-location">
+                            <button className="Find-location-button" type="button"
                                     onClick={() => navigate("/login")}>로그인
                             </button>
                         </div>
-                        <div className="Login-location-down"></div>
-                        <div className="Login-location">
-                            <button className="Find-Box-element" onClick={elementToggleBox}>ID 찾기</button>
+                        <div className="Find-location-down"></div>
+                        <div className="Find-location">
+                            <button className="Find-Box-element" onClick={elementToggleBox}>아이디 찾기</button>
                         </div>
+
                         {elementBox && (
                             <div className="Find-Box" id="myBox">
                                 <button className="Find-Box-element" onClick={() => {
                                     setElementBox(false);
-                                    navigate("/idfind")}}>ID 찾기
+                                    navigate("/idfind")}}>아이디 찾기
                                 </button>
                                 <button className="Find-Box-element" onClick={() => {
                                     setElementBox(false);
-                                    navigate("/pwfind")}}>PW 찾기
+                                    navigate("/pwfind")}}>비밀번호 찾기
                                 </button>
                                 <button className="Find-Box-element" onClick={() => {
                                     setElementBox(false);
@@ -109,13 +121,13 @@ function IdFind() {
                         </div>
 
                         <div className="Find-element-container">
-                            <p className="Find-element-box">Email</p>
+                            <p className="Find-element-box">이메일</p>
                             <input
                                 className="Find-element-textbox"
-                                type="text"
+                                type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                placeholder="이메일 입력"/>
+                                placeholder="example@example.com"/>
                         </div>
 
                         <div className="Find-find-container">

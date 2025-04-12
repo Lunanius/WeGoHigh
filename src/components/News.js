@@ -27,27 +27,28 @@ function News() {
     return (
         <div className="News">
             <header className="News-header">
-                <div className="News-title">
-                    <button className="News-News-button" type="button" onClick={() => navigate("/")}>
+                <div className="News-home-container">
+                    <button className="News-home-button" type="button" onClick={() => navigate("/")}>
                         We go high
                     </button>
-
-                    {isLogin ? (
-                        <img
-                            className="Home-profile-img"
-                            src="/profile.png"
-                            alt="프로필"
-                            onClick={profileToggleBox}
-                        />
-                    ) : (
-                        <button
-                            className="News-login-button"
-                            type="button"
-                            onClick={() => navigate("/login")}
-                        >
-                            로그인
-                        </button>
-                    )}
+                    <div className="News-button-container">
+                        {isLogin ? (
+                            <img
+                                className="Home-profile-img"
+                                src="/profile.png"
+                                alt="프로필"
+                                onClick={profileToggleBox}
+                            />
+                        ) : (
+                            <button
+                                className="News-login-button"
+                                type="button"
+                                onClick={() => navigate("/login")}
+                            >
+                                로그인
+                            </button>
+                        )}
+                    </div>
                 </div>
 
                 {isLogin && profileBox && (
