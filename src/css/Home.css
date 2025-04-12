@@ -3,24 +3,22 @@
 }
 
 .Home-header {
-  background : linear-gradient(#E4FCFC, #C6DDFF, #EFBEF3);
-  #background-color: #E4FCFC;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: start;
-  font-size: calc(10px + 2vmin);
   color: black;
 }
 
-.Home-title{
+.Home-home-container{
+  width: 100%;
+  height: 100px;
   display: flex;
   flex-direction: row;
+  align-content: center;
+  justify-content: center;
 }
 
 .Home-home-button{
-  margin-top: 30px;
   font-size: 80px;
   font-weight: bold;
   border: none;
@@ -28,9 +26,14 @@
   cursor: pointer;
 }
 
+.Home-button-container {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
 .Home-login-button {
   position: absolute;
-  top: 50px;
   right: 40px;
   padding: 8px 16px;
   font-size: 14px;
@@ -54,10 +57,14 @@
 
 .Home-body {
   margin-top: 150px;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .Home-tail {
   margin-top: 80px;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .Home-Search {
@@ -86,7 +93,6 @@
 
 .Home-profile-img {
   position: absolute;
-  top: 50px;
   right: 50px;
   width: 64px;
   height: 64px;

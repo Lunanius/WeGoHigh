@@ -13,9 +13,6 @@ function MyPage() {
     const [id, setId] = useState(null);
     const [email, setEmail] = useState(null);
 
-
-
-
     useEffect(() => {
 
         axios.get("http://localhost:8080/api/session-user", { withCredentials: true })
@@ -39,7 +36,7 @@ function MyPage() {
                 navigate('/')
             });
 
-    }, []);
+    }, [navigate]);
 
     const handleLogout = () => {
         axios.post("http://localhost:8080/api/logout", {}, { withCredentials: true })
@@ -70,7 +67,7 @@ function MyPage() {
                 .post(url,userData)
                 .then((response) => {
 
-                   alert("갱신되었습니다\n 다시 로그인해주세요")
+                    alert("갱신되었습니다\n 다시 로그인해주세요")
                     handleLogout()
                     navigate('/')
                 })
@@ -87,21 +84,26 @@ function MyPage() {
 
     const resetPasswordToggleBox = () => {
         setResetPasswordBox(!resetPasswordBox)
+        setNewPassword("");
     };
 
     return (
         <div className="MyPage">
             <header className="MyPage-header">
-                <button className="MyPage-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
-                <img className="MyPage-profile-img" src="profile.png" alt="프로필" onClick={profileToggleBox} />
-
-                {profileBox && (
-                    <div className="MyPage-profileBox" id="myBox">
-                        <button className="MyPage-profileBox-element" onClick={() => navigate("/mypage")}>내 정보</button>
-                        <button className="Home-profileBox-element" onClick={handleLogout}>로그아웃</button>
+                <div className="MyPage-home-container">
+                    <button className="MyPage-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
+                    <div className="MyPage-profile-container">
+                        <img className="MyPage-profile-img" src="/profile.png" alt="프로필" onClick={profileToggleBox} />
+                        {profileBox && (
+                            <div className="MyPage-profileBox" id="myBox">
+                                <button className="MyPage-profileBox-element" onClick={() => {
+                                    setProfileBox(false);
+                                    navigate("/mypage")}}>내 정보</button>
+                                <button className="MyPage-profileBox-element" onClick={handleLogout}>로그아웃</button>
+                            </div>
+                        )}
                     </div>
-                )}
-
+                </div>
                 <div className="MyPage-container">
                     <div className="MyPage-container-element">
                         <div className="MyPage-element">

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/Find.css";
 import axios from "axios";
+const API_BASE = process.env.REACT_APP_API_BASE;
+
 
 function PwFind() {
     const [birthDate, setBirthDate] = useState("");
@@ -61,14 +63,53 @@ function PwFind() {
 
     };
 
+
     return (
         <div className="Find">
             <header className="Find-header">
-                <button className="Find-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
+                <div className="Find-home-container">
+                    <button className="Find-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
+                </div>
+                <div className="Find-location-container">
+                    <div className="Login-location-element">
+                        <div className="Login-location">
+                            <button className="Login-location-button" type="button"
+                                    onClick={() => navigate("/")}>홈
+                            </button>
+                        </div>
+                        <div className="Login-location-down"></div>
+                        <div className="Login-location">
+                            <button className="Login-location-button" type="button"
+                                    onClick={() => navigate("/login")}>로그인
+                            </button>
+                        </div>
+                        <div className="Login-location-down"></div>
+                        <div className="Login-location">
+                            <button className="Find-Box-element" onClick={elementToggleBox}>비밀번호 찾기</button>
+                        </div>
+
+                        {elementBox && (
+                            <div className="Find-Box" id="myBox">
+                                <button className="Find-Box-element" onClick={() => {
+                                    setElementBox(false);
+                                    navigate("/idfind")}}>아이디 찾기
+                                </button>
+                                <button className="Find-Box-element" onClick={() => {
+                                    setElementBox(false);
+                                    navigate("/pwfind")}}>비밀번호 찾기
+                                </button>
+                                <button className="Find-Box-element" onClick={() => {
+                                    setElementBox(false);
+                                    navigate("/signup")}}>회원가입
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
                 <div className="Find-container">
                     <div className="Find-container-element">
                         <div className="Find-element-container">
-                            <p className="Find-name-box">이름</p>
+                            <p className="Find-element-box">이름</p>
                             <input
                                 className="Find-element-textbox"
                                 type="text"
@@ -78,7 +119,7 @@ function PwFind() {
                         </div>
 
                         <div className="Find-element-container">
-                            <p className="Find-birth-box">생년월일</p>
+                            <p className="Find-element-box">생년월일</p>
                             <input
                                 className="Find-element-textbox"
                                 type="date"
@@ -90,14 +131,23 @@ function PwFind() {
                         </div>
 
                         <div className="Find-element-container">
-                            <p className="Find-id-box">ID</p>
+                            <p className="Find-element-box">이메일</p>
+                            <input
+                                className="Find-element-textbox"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="example@example.com"/>
+                        </div>
+
+                        <div className="Find-element-container">
+                            <p className="Find-element-box">아이디</p>
                             <input className="Find-element-textbox"
                                    type="text"
                                    value={id}
                                    onChange={(e) => setId(e.target.value)}
-                                   placeholder="ID 입력"/>
+                                   placeholder="아이디 입력"/>
                         </div>
-
 
                         <div className="Find-find-container">
                             <button className="Find-find-button" onClick={handlePw}>

@@ -3,15 +3,17 @@ import { useNavigate } from "react-router-dom";
 import "../css/SignUp.css";
 import axios from "axios";
 
+
 function SignUp() {
     const [birthDate, setBirthDate] = useState("");
     const [name, setName] = useState("");
     const [id, setId] = useState("");
+    const [email, setEmail] = useState("")
     const [password, setPassword] = useState("");
-    const [email,setEmail] = useState("");
+    const [elementBox, setElementBox] = useState(false);
+
     let [samevalue, setSamevalue] = useState(false);
     const navigate = useNavigate();
-
     const handleDateChange = (e) => {
         setBirthDate(e.target.value); // 선택된 날짜를 상태로 저장
     }
@@ -20,23 +22,30 @@ function SignUp() {
         return emailRegex.test(email);
     };
 
+    const elementToggleBox = () => {
+        setElementBox(!elementBox);
+    }
+
     const handleSignUp = (e) => {
         e.preventDefault();
 
         if (name === "") {
-            alert("이름을 입력해주세요.");
+            alert("이름을 입력하세요.");
         } else if (birthDate === "") {
-            alert("날짜를 입력해주세요.");
+            alert("생년월일을 입력하세요.");
         } else if (id === "") {
-            alert("아이디를 입력해주세요.");
+            alert("아이디를 입력하세요.");
         } else if (password === "") {
-            alert("비밀번호를 입력해주세요.");
+            alert("비밀번호를 입력하세요.");
+        }else if (password.length < 8 || password.length > 16) {
+            alert("비밀번호 길이는 최소 8글자 최대 16글자입니다.")
         } else if (email === ""){
-            alert("이메일을 입력해주세요.");
-        } else if (!isValidEmail(email)) {
-            alert("유효한 이메일 형식이 아닙니다.");
-        } else if (!samevalue) {
-            alert("아이디 중복을 체크해주세요.");
+            alert("이메일을 입력하세요.")
+        } else if (!isValidEmail(email)){
+            alert("적절한 이메일 형식이 아닙니다")
+        }
+        else if (!samevalue) {
+            alert("아이디 중복을 체크하세요.");
         } else {
             const userData = {
                 birthDate: birthDate,
@@ -78,9 +87,9 @@ function SignUp() {
 
                 }
 
-            }).catch((error) => {
-                alert('적절한 값을 입력하세요')
-                setSamevalue(false)
+            }).catch((_error) => {
+            alert('적절한 값을 입력하세요')
+            setSamevalue(false)
         });
     };
 
@@ -88,7 +97,45 @@ function SignUp() {
     return (
         <div className="SignUp">
             <header className="SignUp-header">
-                <button className="AccountFind-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
+                <div className="SignUp-home-container">
+                    <button className="SignUp-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
+                </div>
+                <div className="SignUp-location-container">
+                    <div className="SignUp-location-element">
+                        <div className="SignUp-location">
+                            <button className="SignUp-location-button" type="button"
+                                    onClick={() => navigate("/")}>홈
+                            </button>
+                        </div>
+                        <div className="SignUp-location-down"></div>
+                        <div className="SignUp-location">
+                            <button className="SignUp-location-button" type="button"
+                                    onClick={() => navigate("/login")}>로그인
+                            </button>
+                        </div>
+                        <div className="SignUp-location-down"></div>
+                        <div className="SignUp-location">
+                            <button className="SignUp-Box-element" onClick={elementToggleBox}>회원가입</button>
+                        </div>
+
+                        {elementBox && (
+                            <div className="SignUp-Box" id="myBox">
+                                <button className="SignUp-Box-element" onClick={() => {
+                                    setElementBox(false);
+                                    navigate("/idfind")}}>아이디 찾기
+                                </button>
+                                <button className="SignUp-Box-element" onClick={() => {
+                                    setElementBox(false);
+                                    navigate("/pwfind")}}>비밀번호 찾기
+                                </button>
+                                <button className="SignUp-Box-element" onClick={() => {
+                                    setElementBox(false);
+                                    navigate("/signup")}}>회원가입
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
                 <div className="SignUp-container">
                     <div className="SignUp-container-element">
                         <div className="SignUp-element-container">
@@ -98,11 +145,8 @@ function SignUp() {
                                 type="text"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                            />
-                        </div>
-
-                        <div className="SignUp-element-container">
-                            <p className="SignUp-birth-box">생년월일</p>
+                                placeholder="이름 입력"/>
+                            <p className="SignUp-element-box">생년월일</p>
                             <input
                                 className="SignUp-textbox"
                                 type="date"
@@ -111,9 +155,8 @@ function SignUp() {
                                 onChange={handleDateChange}
                                 max="9999-12-31"
                             />
-
                         </div>
-                        <div className="SignUp-element-container-id">
+                        <div className="SignUp-element-container">
                             <p className="SignUp-element-box">아이디</p>
                             <input
                                 className="SignUp-textbox"
@@ -121,13 +164,14 @@ function SignUp() {
                                 value={id}
                                 onChange={(e) => {
                                     setId(e.target.value);
-                                     setSamevalue(false);
+                                    setSamevalue(false);
                                 }}
-                                maxLength="10"
                                 placeholder="아이디 입력"/>
-                            <button className="SignUp-same-button" onClick={handleSame}>
-                                중복확인
-                            </button>
+                            <div className="SignUp-same-box">
+                                <button className="SignUp-same-button" onClick={handleSame}>
+                                    중복확인
+                                </button>
+                            </div>
                         </div>
 
                         <div className="SignUp-element-container">
