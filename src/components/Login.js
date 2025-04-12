@@ -50,7 +50,24 @@ function Login() {
     return (
         <div className="Login">
             <header className="Login-header">
-                <button className="Login-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
+                <div className="Login-home-container">
+                    <button className="Login-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
+                </div>
+                <div className="Login-location-container">
+                    <div className="Login-location-element">
+                        <div className="Login-location">
+                            <button className="Login-location-button" type="button"
+                                    onClick={() => navigate("/")}>홈
+                            </button>
+                        </div>
+                        <div className="Login-location-down"></div>
+                        <div className="Login-location">
+                            <button className="Login-location-button" type="button"
+                                    onClick={() => navigate("/login")}>로그인
+                            </button>
+                        </div>
+                    </div>
+                </div>
                 <div className="Login-container">
                     <div className="Login-container-element">
                         <div className="Login-element-container">
@@ -72,17 +89,17 @@ function Login() {
                                 placeholder="비밀번호 입력"/>
                         </div>
 
-                        <div className="Login-element-container">
+                        <div className="Login-login-container">
                             <button className="Login-login-button" onClick={handleLogin}>
                                 로그인
                             </button>
                         </div>
 
-                        <div className="Login-element-container">
-                            <button className="Login-menu-button" type="button" onClick={() => navigate("/IdFind")}>
+                        <div className="Login-menu-container">
+                            <button className="Login-menu-button" type="button" onClick={() => navigate("/idfind")}>
                                 ID 찾기
                             </button>
-                            <button className="Login-menu-button" type="button" onClick={() => navigate("/PwFind")}>
+                            <button className="Login-menu-button" type="button" onClick={() => navigate("/pwfind")}>
                                 PW 찾기
                             </button>
                             <button className="Login-menu-button" type="button" onClick={() => navigate("/signup")}>

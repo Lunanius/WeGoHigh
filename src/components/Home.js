@@ -26,6 +26,7 @@ function Home() {
 
     const handleLogout = () => {
         sessionStorage.clear();
+        setIsLogin(false);
         setProfileBox(false);
         navigate("/");
     };
@@ -72,7 +73,7 @@ function Home() {
                 {isLogin && profileBox && (
                     <div className="Home-profileBox" id="myBox">
                         <button className="Home-profileBox-element" onClick={() => navigate("/mypage")}>내 정보</button>
-                        <button className="Home-profileBox-element" onClick={() => {handleLogout(); navigate("/")}}>로그아웃</button>
+                        <button className="Home-profileBox-element" onClick={() =>handleLogout()}>로그아웃</button>
                     </div>
                 )}
 

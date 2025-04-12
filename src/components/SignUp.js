@@ -101,7 +101,7 @@ function SignUp() {
                 </div>
                 <div className="SignUp-location-container">
                     <div className="SignUp-location">
-                        회원가입
+                        <button className="SignUp-location-button" type="button" onClick={() => navigate("/signup")}>회원가입</button>
                     </div>
                 </div>
                 <div className="SignUp-container">
@@ -113,7 +113,7 @@ function SignUp() {
                                 type="text"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                            />
+                                placeholder="이름 입력"/>
                             <p className="SignUp-element-box">생년월일</p>
                             <input
                                 className="SignUp-textbox"

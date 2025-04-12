@@ -3,7 +3,7 @@
 }
 
 .Home-header {
-  background : linear-gradient(#E4FCFC, #C6DDFF, #EFBEF3);
+  #background : linear-gradient(#E4FCFC, #C6DDFF, #EFBEF3);
   #background-color: #E4FCFC;
   min-height: 100vh;
   display: flex;
