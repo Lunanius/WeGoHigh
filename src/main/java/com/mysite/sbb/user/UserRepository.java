@@ -9,7 +9,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<SiteUser, Long> {
 
-    SiteUser findByNameAndBirthDate(String name, Date birthDate);
+    SiteUser findByNameAndBirthDateAndEmail(String name, Date birthDate, String email);
 
     SiteUser findByNameAndBirthDateAndUsername(String name, Date birthDate, String username);
 
@@ -17,4 +17,6 @@ public interface UserRepository extends JpaRepository<SiteUser, Long> {
 
 
     Optional<SiteUser> findByUsername(String username);
+
+    SiteUser findByNameAndBirthDate(String name, java.sql.Date birthDate);
 }

@@ -2,10 +2,15 @@ package com.mysite.sbb.user;
 
 import com.mysite.sbb.util.ConversionUtil;
 import com.mysite.sbb.util.PasswordRandom;
+import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import jakarta.servlet.http.Cookie;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Map;
 
 @RestController
@@ -35,12 +41,11 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, Object> map, HttpSession session) {
         // 1. 사용자 정보 조회
-        System.out.println(map);
+
         String username = map.get("username").toString();
         String password = map.get("password").toString();
 
-        System.out.println(username);
-        System.out.println(password);
+
         SiteUser user = userService.findByUsername(username);
 
 
@@ -52,24 +57,46 @@ public class UserController {
         if (passwordEncoder.matches(password, user.getPassword())) {
             // 로그인 성공
             session.setAttribute("loginUser", user);
+
+
+
+
             return ResponseEntity.ok("로그인 성공");
         } else {
             // 비밀번호 틀림
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 틀렸습니다");
         }
    }
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpSession session) {
+        session.invalidate(); // 세션 무효화
+        return ResponseEntity.ok("로그아웃 성공");
+    }
+    @GetMapping("/session-user")
+    public ResponseEntity<?> getSessionUser(HttpSession session) {
+        SiteUser user = (SiteUser) session.getAttribute("loginUser");
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 안 되어 있음");
+        }
+
+        return ResponseEntity.ok(Map.of(
+                "username", user.getUsername()
+        ));
+    }
 
    @PostMapping("/IdFind")
    public ResponseEntity<?> IdFind(@RequestBody Map<String, Object> map) throws ParseException {
         String name = map.get("name").toString();
        String birthDateStr = map.get("birthDate").toString();
+       String email = map.get("email").toString();
 
 
        // 문자열 -> java.sql.Date로 파싱
        ConversionUtil conUtil = new ConversionUtil();
        Date birthDate = conUtil.stringToDate(birthDateStr);
 
-        SiteUser user = userService.findByNameAndBirthDate(name,birthDate);
+        SiteUser user = userService.findByNameAndBirthDateAndEmail(name,birthDate,email);
 
        if (user == null) {
            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("존재하지 않는 사용자");
@@ -110,14 +137,39 @@ public class UserController {
 
     @GetMapping("signup/IdCheck/{id}")
     public ResponseEntity<?> checkIdDuplicate(@PathVariable("id") String id){
-        if(userService.checkIdDuplicate(id)){
+        if(userService.checkUsernameDuplicate(id)){
             return ResponseEntity.status(HttpStatus.OK).body(false);
         }
         return ResponseEntity.status(HttpStatus.OK).body(true);
     }
+    @GetMapping("userData/{username}")
+    public ResponseEntity<?> getUserData(@PathVariable("username") String username){
+
+        SiteUser user = userService.findByUsername(username);
+        return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/newPw")
+    public ResponseEntity<?> setNewPassword(@RequestBody Map<String, Object> map, HttpSession session) {
+        // 1. 사용자 정보 조회
+        String username = map.get("username").toString();
+        String password = map.get("password").toString();
 
 
+        SiteUser user = userService.findByUsername(username);
 
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("존재하지 않는 사용자");
+        }
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(password);
+
+        user.setPassword(encodedPassword);
+        userRepository.save(user);
+        return ResponseEntity.ok().build();
+    }
 
 
 }

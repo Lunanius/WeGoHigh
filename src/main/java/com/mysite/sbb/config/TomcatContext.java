@@ -7,7 +7,7 @@ import org.springframework.boot.web.embedded.tomcat.TomcatContextCustomizer;
 
 public class TomcatContext {
     @Configuration
-    public class CookieConfig {
+    public static class CookieConfig {
 
         @Bean
         public TomcatContextCustomizer sameSiteCookieConfig() {

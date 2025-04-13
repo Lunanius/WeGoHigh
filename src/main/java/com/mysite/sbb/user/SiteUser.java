@@ -14,16 +14,19 @@ public class SiteUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long user_id;
+    private long user_id; // sql 관리번호
 
     @Column(unique = true)
-    private String username;
-    private String password;
+    private String username; // 아이디
+    private String password;  // 비밀번호
+
+    @Column(unique = true)
+    private String email;
 
     @Column(nullable = false)
-    private String name;
+    private String name;  //사용자 이름
 
     @Column
-    private Date birthDate;
+    private Date birthDate; // 사용자 생일
 
 }
