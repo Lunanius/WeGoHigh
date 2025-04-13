@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/Find.css";
 import axios from "axios";
-const API_BASE = process.env.REACT_APP_API_BASE;
+
 
 
 function PwFind() {
@@ -10,9 +10,13 @@ function PwFind() {
     const navigate = useNavigate();
     const [name, setName] = useState("");
     const [id, setId] = useState("");
+    const [elementBox, setElementBox] = useState(false);
 
     const handleDateChange = (e) => {
         setBirthDate(e.target.value); // 선택된 날짜를 상태로 저장
+    }
+    const elementToggleBox = () => {
+        setElementBox(!elementBox);
     }
 
     const handlePw = () => {
@@ -130,15 +134,6 @@ function PwFind() {
                             />
                         </div>
 
-                        <div className="Find-element-container">
-                            <p className="Find-element-box">이메일</p>
-                            <input
-                                className="Find-element-textbox"
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="example@example.com"/>
-                        </div>
 
                         <div className="Find-element-container">
                             <p className="Find-element-box">아이디</p>

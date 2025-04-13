@@ -1,11 +1,18 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import '../css/News.css';
+import axios from "axios";
 
 function News() {
     const navigate = useNavigate();
+    const location = useLocation();
     const [isLogin, setIsLogin] = useState(false); // 로그인 여부
     const [profileBox, setProfileBox] = useState(false); // 프로필 박스 토글
+    const [urlInput, setUrlInput] = useState("");
+    const [newsData, setNewsData] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    const url = location.state?.url;
 
     useEffect(() => {
         const storedLogin = sessionStorage.getItem("isLogin");
@@ -13,6 +20,23 @@ function News() {
             setIsLogin(true);
         }
     }, []);
+
+    useEffect(() => {
+        if (!url) return;
+
+        axios.post("http://localhost:8080/api/parse-news", { url })
+            .then((res) => {
+                setNewsData(res.data);
+            })
+            .catch((err) => {
+                console.error("뉴스 파싱 실패:", err);
+                setNewsData(null);
+            })
+            .finally(() => setLoading(false));
+    }, [url]);
+
+    if (loading) return <p>로딩 중...</p>;
+    if (!newsData) return <p>뉴스 정보를 가져오지 못했습니다.</p>;
 
     const profileToggleBox = () => {
         setProfileBox(!profileBox);
@@ -22,6 +46,25 @@ function News() {
         sessionStorage.clear();
         setProfileBox(false);
         navigate("/");
+    };
+
+    const handleSearch = () => {
+        const trimmedUrl = urlInput.trim();
+
+        if (!trimmedUrl) return alert("URL을 입력해주세요!");
+
+        // 간단한 URL 패턴 검사 (http/https로 시작하고 .으로 끝나는 도메인 포함 여부)
+        const urlPattern = /^(https?:\/\/)?([\w.-]+\.[a-z]{2,})(\/\S*)?$/i;
+        if (!urlPattern.test(trimmedUrl)) {
+            alert("올바른 URL 형식이 아닙니다!");
+            return;
+        }
+        if (!trimmedUrl.includes("naver.com") && !trimmedUrl.includes("daum.net")) {
+            alert("현재는 네이버와 다음 뉴스만 지원합니다!");
+            return;
+        }
+
+        navigate("/news", { state: { url: urlInput } });
     };
 
     return (
@@ -57,26 +100,34 @@ function News() {
                         <button className="News-profileBox-element" onClick={handleLogout}>로그아웃</button>
                     </div>
                 )}
-
                 <div className="News-Search">
-                    <input id="News-search-input" placeholder="뉴스 URL을 입력하세요." />
-                    <img className="News-search-img" src="/icon.png" alt="돋보기" />
+                    <input id="News-search-input" placeholder="뉴스 URL을 입력하세요." value={urlInput} onChange={(e) => setUrlInput(e.target.value)} />
+                    <img
+                        className="News-search-img"
+                        src="/icon.png"
+                        alt="돋보기"
+                        onClick={handleSearch}
+                    />
                 </div>
 
                 <div className="News-container">
                     <div className="News-container-news">
                         <div className="News-news-img">
-                            <img src="/news.png" alt="news" />
+                            {newsData.thumbnail_url ? (
+                                <img src={newsData.thumbnail_url} alt="썸네일" />
+                            ) : (
+                                <img src="/default-thumbnail.png" alt="기본 썸네일" />
+                            )}
                         </div>
                         <div className="News-news">
                             <div className="News-news-title">
-                                <p>기사 제목 최대 2줄로 표기 넘어가는 글자는 ...으로 표현했음 으아아아아아아아아아아아아아아아아</p>
+                                <p>{newsData.title}</p>
                             </div>
                             <div className="News-news-detail">
-                                <p>기사 내용은 최대 8줄로 표기함</p>
+                                <p>{newsData.content}</p>
                             </div>
                             <div className="News-news-date">
-                                <p>2021.08.08 서울경제</p>
+                                <p>{newsData.time}</p>
                             </div>
                         </div>
                     </div>

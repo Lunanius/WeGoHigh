@@ -8,6 +8,7 @@ function Home() {
     const navigate = useNavigate();
     const [profileBox, setProfileBox] = useState(false);
     const [userInfo, setUserInfo] = useState(null);
+    const [urlInput, setUrlInput] = useState("");
 
     const profileToggleBox = () => {
         setProfileBox(!profileBox);
@@ -31,6 +32,25 @@ function Home() {
                 navigate("/");
             });
     };
+    const handleSearch = () => {
+        const trimmedUrl = urlInput.trim();
+
+        if (!trimmedUrl) return alert("URL을 입력해주세요!");
+
+        // 간단한 URL 패턴 검사 (http/https로 시작하고 .으로 끝나는 도메인 포함 여부)
+        const urlPattern = /^(https?:\/\/)?([\w.-]+\.[a-z]{2,})(\/\S*)?$/i;
+        if (!urlPattern.test(trimmedUrl)) {
+            alert("올바른 URL 형식이 아닙니다!");
+            return;
+        }
+        if (!trimmedUrl.includes("naver.com") && !trimmedUrl.includes("daum.net")) {
+            alert("현재는 네이버와 다음 뉴스만 지원합니다!");
+            return;
+        }
+
+        navigate("/news", { state: { url: urlInput } });
+    };
+
 
     const isLogin = !!userInfo?.username;
 
@@ -62,12 +82,12 @@ function Home() {
                 <p className="Home-body">정보를 원하는 기사의 URL을<br />입력해 보세요.</p>
 
                 <div className="Home-Search">
-                    <input id="Home-search-input" placeholder="뉴스 URL을 입력하세요." />
+                    <input id="Home-search-input" placeholder="뉴스 URL을 입력하세요." value={urlInput} onChange={(e) => setUrlInput(e.target.value)} />
                     <img
                         className="Home-search-img"
                         src="/icon.png"
                         alt="돋보기"
-                        onClick={() => navigate("/news")}
+                        onClick={handleSearch}
                     />
                 </div>
 
