@@ -36,7 +36,7 @@ function MyPage() {
                 navigate('/')
             });
 
-    }, []);
+    }, [navigate]);
 
     const handleLogout = () => {
         axios.post("http://localhost:8080/api/logout", {}, { withCredentials: true })
@@ -67,7 +67,7 @@ function MyPage() {
                 .post(url,userData)
                 .then((response) => {
 
-                   alert("갱신되었습니다\n 다시 로그인해주세요")
+                    alert("갱신되었습니다\n 다시 로그인해주세요")
                     handleLogout()
                     navigate('/')
                 })

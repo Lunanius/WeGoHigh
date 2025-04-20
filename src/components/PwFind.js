@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/Find.css";
+import axios from "axios";
+const API_BASE = process.env.REACT_APP_API_BASE;
+
 
 function PwFind() {
     const [birthDate, setBirthDate] = useState("");
     const navigate = useNavigate();
     const [name, setName] = useState("");
     const [id, setId] = useState("");
-    const [email, setEmail] = useState("");
+    // const [email, setEmail] = useState("");
     const [elementBox, setElementBox] = useState(false);
 
     const handleDateChange = (e) => {
@@ -19,10 +22,11 @@ function PwFind() {
     }
 
     const handlePw = () => {
+        alert("회원의 정보가 확인되면 임시비밀번호가 생성됩니다\n" +
+            "비밀번호를 복사해주세요")
         console.log("Name:", name);
         console.log("BirthDate:", birthDate);
         console.log("Id:", id);
-        console.log("Email", email);
         console.log("==========================");
         if (name === "") {
             alert("이름을 입력하세요.")
@@ -30,23 +34,41 @@ function PwFind() {
         else if (birthDate === "") {
             alert("생년월일을 입력하세요.")
         }
-        else if (email === "") {
-            alert("이메일을 입력하세요.")
-        }
         else if (id === "") {
             alert("아이디를 입력하세요.")
         }
         else {
-            if (name === {name} && birthDate === {birthDate} && email === {email} && id === {id}) {
-                alert(`사용자 이름: ${name} \n사용자 생년월일: ${birthDate} \n사용자 이메일: ${email} \n사용자 아이디: ${id}`);
-                //alert(`사용자 비밀번호: ${password}`)
-            }
-            else {
-                alert("존재하지 않는 회원정보입니다.")
-            }
+            const userData = {
+                name: name,
+                birthDate: birthDate,
+                username: id
+            };
+
+            const url = `http://localhost:8080/api/pwFind`;
+
+            axios
+                .post(url, userData)
+                .then((response) => {
+                    if (window.confirm(`${name}님의 임시 비밀번호는 "${response?.data}"입니다.\n복사하시겠습니까?`)) {
+                        navigator.clipboard.writeText(response?.data)
+                            .then(() => {
+                                alert("복사되었습니다!\n" +
+                                    "내 정보에서 비밀번호를 변경해주세요!");
+                            })
+                            .catch((err) => {
+                                alert("복사 실패: " + err);
+                            });
+                    }
+                    navigate('/Login');
+                })
+                .catch((error) => {
+                    const msg = error.response?.data || '입니다';
+                    alert(msg);
+                });
         }
 
     };
+
 
     return (
         <div className="Find">
@@ -114,15 +136,16 @@ function PwFind() {
                             />
                         </div>
 
-                        <div className="Find-element-container">
-                            <p className="Find-element-box">이메일</p>
-                            <input
-                                className="Find-element-textbox"
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="example@example.com"/>
-                        </div>
+                        {/* 이메일 기능 */}
+                        {/*<div className="Find-element-container">*/}
+                        {/*    <p className="Find-element-box">이메일</p>*/}
+                        {/*    <input*/}
+                        {/*        className="Find-element-textbox"*/}
+                        {/*        type="email"*/}
+                        {/*        value={email}*/}
+                        {/*        onChange={(e) => setEmail(e.target.value)}*/}
+                        {/*        placeholder="example@example.com"/>*/}
+                        {/*</div>*/}
 
                         <div className="Find-element-container">
                             <p className="Find-element-box">아이디</p>

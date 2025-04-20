@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import { useState} from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/Login.css";
 import axios from "axios";
@@ -47,20 +47,20 @@ function Login() {
             password: password
         };
 
-    const url = `http://localhost:8080/api/login`;
+        const url = `http://localhost:8080/api/login`;
 
-    axios.defaults.withCredentials = true;
-    axios
-        .post(url, userData)
-        .then((response) => {
-            alert(`${id}님 환영합니다!`);
-            navigate('/');
-        })
-        .catch((error) => {
-            const msg = error.response?.data || "로그인 실패"
-            alert(msg);
-        });
-}
+        axios.defaults.withCredentials = true;
+        axios
+            .post(url, userData)
+            .then((response) => {
+                alert(`${id}님 환영합니다!`);
+                navigate('/');
+            })
+            .catch((error) => {
+                const msg = error.response?.data || "로그인 실패"
+                alert(msg);
+            });
+    }
 
 
 
@@ -100,10 +100,10 @@ function Login() {
                         <div className="Login-element-container">
                             <p className="Login-pw-box">PW</p>
                             <input className="Login-pw-textbox"
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                placeholder="비밀번호 입력"/>
+                                   type="password"
+                                   value={password}
+                                   onChange={(e) => setPassword(e.target.value)}
+                                   placeholder="비밀번호 입력"/>
                         </div>
 
                         <div className="Login-login-container">

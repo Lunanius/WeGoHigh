@@ -41,6 +41,8 @@ function SignUp() {
             alert("비밀번호 길이는 최소 8글자 최대 16글자입니다.")
         } else if (email === ""){
             alert("이메일을 입력하세요.")
+        } else if (!isValidEmail(email)){
+            alert("적절한 이메일 형식이 아닙니다")
         }
         else if (!samevalue) {
             alert("아이디 중복을 체크하세요.");
@@ -86,8 +88,8 @@ function SignUp() {
                 }
 
             }).catch((_error) => {
-                alert('적절한 값을 입력하세요')
-                setSamevalue(false)
+            alert('적절한 값을 입력하세요')
+            setSamevalue(false)
         });
     };
 
@@ -162,7 +164,7 @@ function SignUp() {
                                 value={id}
                                 onChange={(e) => {
                                     setId(e.target.value);
-                                     setSamevalue(false);
+                                    setSamevalue(false);
                                 }}
                                 placeholder="아이디 입력"/>
                             <div className="SignUp-same-box">

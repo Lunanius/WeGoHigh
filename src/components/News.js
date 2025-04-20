@@ -66,14 +66,18 @@ function News() {
                 <div className="News-container">
                     <div className="News-container-news">
                         <div className="News-news-img">
-                            <img src="/news.png" alt="news" />
+                            <img className="News-newsimg" src="/news.png" alt="news" />
                         </div>
                         <div className="News-news">
                             <div className="News-news-title">
-                                <p>기사 제목 최대 2줄로 표기 넘어가는 글자는 ...으로 표현했음 으아아아아아아아아아아아아아아아아</p>
+                                <p>기사 제목 최대 2줄로 표기 넘어가는 글자는 ...으로 표현했음 으아아아아아아아아아아아아아아아아아아아아</p>
                             </div>
                             <div className="News-news-detail">
-                                <p>기사 내용은 최대 8줄로 표기함</p>
+                                <p>기사 내용은 최대 8줄로 표기함기사 내용은 최대 8줄로 표기함기사 내용은 최대 8줄로 표기함기사 내용은 최대 8줄로 표기함
+                                    기사 내용은 최대 8줄로 표기함기사 내용은 최대 8줄로 표기함기사 내용은 최대 8줄로 표기함기사 내용은 최대 8줄로 표기함
+                                    기사 내용은 최대 8줄로 표기함기사 내용은 최대 8줄로 표기함기사 내용은 최대 8줄로 표기함기사 내용은 최대 8줄로 표기함
+                                    기사 내용은 최대 8줄로 표기함기사 내용은 최대 8줄로 표기함기사 내용은 최대 8줄로 표기함기사 내용은 최대 8줄로 표기함
+                                    기사 내용은 최대 8줄로 표기함기사 내용은 최대 8줄로 표기함기사 내용은 최대 8줄로 표기함기사 내용은 최대 8줄로 표기함</p>
                             </div>
                             <div className="News-news-date">
                                 <p>2021.08.08 서울경제</p>
@@ -86,7 +90,7 @@ function News() {
                             <p>해당 뉴스 키워드가 나오는 부분입니다 아래는 해당 기업의 주식 차트가 나옵니다.</p>
                         </div>
                         <div className="News-summation-chart">
-                            <img src="/chart.png" alt="chart" />
+                            <img className="News-chart-img" src="/chart.png" alt="chart" />
                         </div>
                     </div>
                 </div>
