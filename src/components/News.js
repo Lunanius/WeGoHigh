@@ -6,19 +6,22 @@ import axios from "axios";
 function News() {
     const navigate = useNavigate();
     const location = useLocation();
-    const [isLogin, setIsLogin] = useState(false); // 로그인 여부
     const [profileBox, setProfileBox] = useState(false); // 프로필 박스 토글
     const [urlInput, setUrlInput] = useState("");
     const [newsData, setNewsData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [userInfo, setUserInfo] = useState(null);
 
     const url = location.state?.url;
 
     useEffect(() => {
-        const storedLogin = sessionStorage.getItem("isLogin");
-        if (storedLogin === "true") {
-            setIsLogin(true);
-        }
+        axios.get("http://localhost:8080/api/session-user", { withCredentials: true })
+            .then(res => {
+                setUserInfo(res.data);
+            })
+            .catch((err) => {
+                setUserInfo(null);
+            });
     }, []);
 
     useEffect(() => {
@@ -67,6 +70,10 @@ function News() {
         navigate("/news", { state: { url: urlInput } });
     };
 
+    const isLogin = !!userInfo?.username;
+
+
+
     return (
         <div className="News">
             <header className="News-header">
@@ -114,7 +121,7 @@ function News() {
                     <div className="News-container-news">
                         <div className="News-news-img">
                             {newsData.thumbnail_url ? (
-                                <img src={newsData.thumbnail_url} alt="썸네일" />
+                                <img className="News-newsimg" src={newsData.thumbnail_url} alt="썸네일" />
                             ) : (
                                 <img src="/default-thumbnail.png" alt="기본 썸네일" />
                             )}
@@ -134,7 +141,7 @@ function News() {
 
                     <div className="News-container-summation">
                         <div className="News-summation-detail">
-                            <p>해당 뉴스 키워드가 나오는 부분입니다 아래는 해당 기업의 주식 차트가 나옵니다.</p>
+                            <p>해당 뉴스의 키워드는 {newsData.keyword}입니다 아래는 해당 기업의 주식 차트가 나옵니다.</p>
                         </div>
                         <div className="News-summation-chart">
                             <img src="/chart.png" alt="chart" />
