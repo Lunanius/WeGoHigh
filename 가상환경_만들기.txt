@@ -1,0 +1,31 @@
+아 이거 필요할때 읽으셈
+
+파이썬 3.10 버전 써야댐 그래야 tensorflow torch 쓸수 있음
+
+#이거 깔아두삼
+pip install virtualenv
+
+# 1번 원하는 디렉토리로 이동 후 가상 환경을 만듭니다. 
+cd C:\Users\woosu\OneDrive\바탕 화면\RNN  # 원하는 프로젝트 디렉토리로 이동
+
+# 2번 가상 환경 생성 (env는 가상 환경의 이름, 원하는 이름을 지정 가능)
+python -m venv env
+
+# 3번 가상 환경 활성화, 가상환경 만들었으면 이것만 쳐도됨
+.\env\Scripts\activate
+
+# 가상 환경 활성화 <== mac전용
+source env/bin/activate
+
+#이거는 가상환경 비활성화
+deactivate
+ 
+
+# 4번 
+py -3.10 -m pip install virtualenv   
+
+#5번 
+virtualenv env --python=python3.10 
+
+
+
