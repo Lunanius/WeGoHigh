@@ -4,7 +4,6 @@
 
 .Home-img{
   width: 100%;
-  height: 100%;
   position: absolute;
   z-index: -1;
   background: url('/public/background.jpg') no-repeat;
@@ -156,4 +155,86 @@
   background-color: transparent;
   border: none;
   cursor: pointer;
+}
+
+/*검색기록 기능 추가 버전*/
+.Home-news-list{
+  background: white;
+  border-radius: 5px;
+  border: black solid 2px;
+  margin-bottom: 10px;
+}
+.Home-news-container{
+  width: 1000px;
+  height: 220px;
+  gap: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.Home-news-img-container{
+  width: 320px;
+  height: 200px;
+  border: 2px solid black;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.Home-news-img{
+  width: 400px;
+  height: 300px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.Home-news-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.Home-news-detail-container{
+  width: 600px;
+  height: 200px;
+  border: 2px solid black;
+}
+.Home-news-title{
+  width: 580px;
+  height: 65px;
+  font-size: 23px;
+  font-weight: bold;
+  display: -webkit-box;
+  margin-left: 10px;
+  text-align: left;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color: black;
+  text-shadow: none;
+}
+.Home-news-summary{
+  width: 580px;
+  height: 130px;
+  font-size: 15px;
+  display: -webkit-box;
+  align-items: start;
+  margin-left: 10px;
+  text-align: left;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color: black;
+  text-shadow: none;
+}
+.pagination button {
+  margin: 0 5px;
+  padding: 5px 10px;
+}
+
+.pagination .active {
+  background-color: blue;
+  color: white;
 }
