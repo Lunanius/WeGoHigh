@@ -195,11 +195,7 @@ function Home() {
                     />
                 </div>
 
-                {!isLogin ? (
-                    <p className="Home-tail">
-                        로그인해서 전에 검색했던 내용을<br />다시 확인하세요!
-                    </p>
-                ) : (
+                 (
                     <>
                         <div className="Home-news-list">
                             {currentNews.map((news, idx) => (
@@ -228,7 +224,7 @@ function Home() {
                         ))}
                         </div>
                     </>
-                )}
+                )
             </header>
         </div>
     );

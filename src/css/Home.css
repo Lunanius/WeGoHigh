@@ -159,6 +159,7 @@
 
 /*검색기록 기능 추가 버전*/
 .Home-news-list{
+  margin-top: 30px;
   background: white;
   border-radius: 5px;
   border: black solid 2px;
@@ -203,13 +204,13 @@
 }
 .Home-news-title{
   width: 580px;
-  height: 65px;
+  height: 30px;
   font-size: 23px;
   font-weight: bold;
   display: -webkit-box;
   margin-left: 10px;
   text-align: left;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
   color: black;
