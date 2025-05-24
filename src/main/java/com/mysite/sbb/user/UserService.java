@@ -21,6 +21,9 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public void joinUser(SiteUser user) {
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new IllegalArgumentException("이미 등록된 이메일입니다.");
+        }
         String rawPassword = user.getPassword();
         String encPassword = passwordEncoder.encode(rawPassword);
         System.out.println("비밀번호 인코딩:" + encPassword);
@@ -35,6 +38,7 @@ public class UserService {
     public boolean checkUsernameDuplicate(String loginId) {
         return userRepository.existsByUsername(loginId);
     }
+
     public SiteUser findByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
     }

@@ -1,5 +1,7 @@
 package com.mysite.sbb.user;
 
+import com.mysite.sbb.fastapi.FastApiEntity;
+import com.mysite.sbb.fastapi.FastApiService;
 import com.mysite.sbb.util.ConversionUtil;
 import com.mysite.sbb.util.PasswordRandom;
 import jakarta.servlet.ServletResponse;
@@ -8,6 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import jakarta.servlet.http.Cookie;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -22,6 +25,7 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -32,11 +36,18 @@ public class UserController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final FastApiService fastApiService;
 
     @PostMapping("/signup")
     public ResponseEntity<?> postUser(@RequestBody SiteUser user) {
-        userService.joinUser(user);
-        return ResponseEntity.ok().build();
+        try {
+            userService.joinUser(user);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage()); // "이미 등록된 이메일입니다."
+        }
     }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, Object> map, HttpSession session) {
@@ -169,6 +180,11 @@ public class UserController {
         user.setPassword(encodedPassword);
         userRepository.save(user);
         return ResponseEntity.ok().build();
+    }
+    @GetMapping("/posts")
+    public ResponseEntity<List<FastApiEntity>> getPosts(@RequestParam("username") String username) {
+        List<FastApiEntity> posts = fastApiService.getUserById(username);
+        return ResponseEntity.ok(posts);
     }
 
 

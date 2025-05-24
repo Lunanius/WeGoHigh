@@ -13,11 +13,10 @@ import java.sql.Date;
 public class SiteUser {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long user_id; // sql 관리번호
+    @Column(nullable = false, unique = true)
+    private String username; // 아이디
 
     @Column(unique = true)
-    private String username; // 아이디
     private String password;  // 비밀번호
 
     @Column(unique = true)
