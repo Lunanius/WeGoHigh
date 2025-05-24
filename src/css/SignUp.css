@@ -1,6 +1,18 @@
 .SignUp {
     text-align: center;
 }
+
+.SignUp-img{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -1;
+    background: url('/public/background.jpg') no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center center;
+}
+
 .SignUp-header {
     display: flex;
     flex-direction: column;
@@ -9,9 +21,9 @@
 
 .SignUp-home-container{
     width: 100%;
-    height: 100px;
+    height: 150px;
     display: flex;
-    align-content: center;
+    align-items: end;
     justify-content: center;
     border-bottom: 2px solid black;
 }
@@ -23,6 +35,17 @@
     background-color: transparent;
     cursor: pointer;
 }
+
+.SignUp-home-button-img {
+    width: 500px;
+    height: 100%;
+    margin-top: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
 .SignUp-location-button{
     border: none;
     background: transparent;
@@ -95,6 +118,7 @@
     align-items: center;
     gap: 20px;
     border-top: 1px solid darkgray;
+    background: white;
 }
 
 .SignUp-container-signup{

@@ -69,11 +69,17 @@ function SignUp() {
         }
     };
 
-    const handleSame = (e) => {
+    const handleIdSame = (e) => {
         e.preventDefault();
         const userData = {
             username: id,
         };
+
+    // const handleEmailSame = (e) => {
+    //     e.preventDefault();
+    //     const userData = {
+    //         email: email,
+    //     };
 
         console.log("보내는 ID:", userData.username);
         axios.get(`http://localhost:8080/api/signup/IdCheck/${userData.username}`)
@@ -96,9 +102,16 @@ function SignUp() {
 
     return (
         <div className="SignUp">
+            <div className="SignUp-img"></div>
             <header className="SignUp-header">
                 <div className="SignUp-home-container">
-                    <button className="SignUp-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
+                    <button className="SignUp-home-button" type="button" onClick={() => navigate("/")}>
+                        <img
+                            className="SignUp-home-button-img"
+                            src="/snake.png"
+                            alt="타이틀 이미지"
+                        />
+                    </button>
                 </div>
                 <div className="SignUp-location-container">
                     <div className="SignUp-location-element">
@@ -168,7 +181,7 @@ function SignUp() {
                                 }}
                                 placeholder="아이디 입력"/>
                             <div className="SignUp-same-box">
-                                <button className="SignUp-same-button" onClick={handleSame}>
+                                <button className="SignUp-same-button" onClick={handleIdSame}>
                                     중복확인
                                 </button>
                             </div>
@@ -192,6 +205,24 @@ function SignUp() {
                                    value={email}
                                    onChange={(e) => setEmail(e.target.value)}
                                    placeholder="example@example.com"/>
+                        </div>
+
+                        <div className="SignUp-element-container">
+                            <p className="SignUp-element-box">인증번호</p>
+                            <input
+                                className="SignUp-textbox"
+                                type="text"
+                                value={id}
+                                onChange={(e) => {
+                                    setId(e.target.value);
+                                    setSamevalue(false);
+                                }}
+                                placeholder="인증번호 입력"/>
+                            <div className="SignUp-same-box">
+                                <button className="SignUp-same-button" onClick={handleIdSame}>
+                                    중복확인
+                                </button>
+                            </div>
                         </div>
 
                         <div className="SignUp-container-signup">

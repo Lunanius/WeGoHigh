@@ -1,17 +1,21 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import '../css/News.css';
+import axios from "axios";
 
 function News() {
     const navigate = useNavigate();
-    const [isLogin, setIsLogin] = useState(false); // 로그인 여부
     const [profileBox, setProfileBox] = useState(false); // 프로필 박스 토글
+    const [userInfo, setUserInfo] = useState(null);
 
     useEffect(() => {
-        const storedLogin = sessionStorage.getItem("isLogin");
-        if (storedLogin === "true") {
-            setIsLogin(true);
-        }
+        axios.get("http://localhost:8080/api/session-user", { withCredentials: true })
+            .then(res => {
+                setUserInfo(res.data);
+            })
+            .catch((err) => {
+                setUserInfo(null);
+            });
     }, []);
 
     const profileToggleBox = () => {
@@ -24,12 +28,19 @@ function News() {
         navigate("/");
     };
 
+    const isLogin = !!userInfo?.username;
+
     return (
         <div className="News">
+            <div className="News-img"></div>
             <header className="News-header">
                 <div className="News-home-container">
                     <button className="News-home-button" type="button" onClick={() => navigate("/")}>
-                        We go high
+                        <img
+                            className="News-home-button-img"
+                            src="/snake.png"
+                            alt="타이틀 이미지"
+                        />
                     </button>
                     <div className="News-button-container">
                         {isLogin ? (
@@ -90,7 +101,9 @@ function News() {
                             <p>해당 뉴스 키워드가 나오는 부분입니다 아래는 해당 기업의 주식 차트가 나옵니다.</p>
                         </div>
                         <div className="News-summation-chart">
-                            <img className="News-chart-img" src="/chart.png" alt="chart" />
+                            <div className="News-summation-container-chart">
+                                <img className="News-chart-img" src="/chart.png" alt="chart" />
+                            </div>
                         </div>
                     </div>
                 </div>

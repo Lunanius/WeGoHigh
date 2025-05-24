@@ -36,9 +36,19 @@ function Home() {
 
     return (
         <div className="Home">
+            <div className="Home-img"></div>
             <header className="Home-header">
                 <div className="Home-home-container">
-                    <button className="Home-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
+                    <div className="Home-title-container">
+                        <button className="Home-home-button" type="button" onClick={() => navigate("/")}>
+                            <img
+                                className="Home-home-button-img"
+                                src="/snake.png"
+                                alt="타이틀 이미지"
+                            />
+                        </button>
+                    </div>
+
                     <div className="Home-button-container">
                         {isLogin ? (
                             <img className="Home-profile-img" src="/profile.png" alt="프로필" onClick={profileToggleBox}/>
@@ -62,7 +72,7 @@ function Home() {
                 <p className="Home-body">정보를 원하는 기사의 URL을<br />입력해 보세요.</p>
 
                 <div className="Home-Search">
-                    <input id="Home-search-input" placeholder="뉴스 URL을 입력하세요." />
+                    <input id="Home-search-input" placeholder="뉴스 URL을 입력하세요." onFocus={(e) => e.target.select()}/>
                     <img
                         className="Home-search-img"
                         src="/icon.png"

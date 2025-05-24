@@ -55,6 +55,7 @@ function Login() {
             .then((response) => {
                 alert(`${id}님 환영합니다!`);
                 navigate('/');
+
             })
             .catch((error) => {
                 const msg = error.response?.data || "로그인 실패"
@@ -66,9 +67,16 @@ function Login() {
 
     return (
         <div className="Login">
+            <div className="Login-img"></div>
             <header className="Login-header">
                 <div className="Login-home-container">
-                    <button className="Login-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
+                    <button className="Login-home-button" type="button" onClick={() => navigate("/")}>
+                        <img
+                            className="Login-home-button-img"
+                            src="/snake.png"
+                            alt="타이틀 이미지"
+                        />
+                    </button>
                 </div>
                 <div className="Login-location-container">
                     <div className="Login-location-element">

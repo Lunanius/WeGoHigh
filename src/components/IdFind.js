@@ -56,9 +56,16 @@ function IdFind() {
 
     return (
         <div className="Find">
+            <div className="Find-img"></div>
             <header className="Find-header">
                 <div className="Find-home-container">
-                    <button className="Find-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
+                    <button className="Find-home-button" type="button" onClick={() => navigate("/")}>
+                        <img
+                            className="Find-home-button-img"
+                            src="/snake.png"
+                            alt="타이틀 이미지"
+                        />
+                    </button>
                 </div>
                 <div className="Find-location-container">
                     <div className="Find-location-element">

@@ -89,9 +89,16 @@ function MyPage() {
 
     return (
         <div className="MyPage">
+            <div className="News-img"></div>
             <header className="MyPage-header">
                 <div className="MyPage-home-container">
-                    <button className="MyPage-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
+                    <button className="MyPage-home-button" type="button" onClick={() => navigate("/")}>
+                        <img
+                            className="MyPage-home-button-img"
+                            src="/snake.png"
+                            alt="타이틀 이미지"
+                        />
+                    </button>
                     <div className="MyPage-profile-container">
                         <img className="MyPage-profile-img" src="/profile.png" alt="프로필" onClick={profileToggleBox} />
                         {profileBox && (
