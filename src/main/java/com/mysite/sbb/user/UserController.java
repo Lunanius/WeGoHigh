@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import jakarta.servlet.http.Cookie;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -182,8 +184,11 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
     @GetMapping("/posts")
-    public ResponseEntity<List<FastApiEntity>> getPosts(@RequestParam("username") String username) {
-        List<FastApiEntity> posts = fastApiService.getUserById(username);
+    public ResponseEntity<Page<FastApiEntity>> getPosts(@RequestParam("username") String username,
+                                                        @RequestParam(name = "page",defaultValue = "0") int page,
+                                                        @RequestParam(name = "size", defaultValue = "5") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<FastApiEntity> posts = fastApiService.getUserById(username, pageable);
         return ResponseEntity.ok(posts);
     }
 
