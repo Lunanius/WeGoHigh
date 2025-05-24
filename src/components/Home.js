@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import '../css/Home.css';
 import axios from "axios";
 
@@ -9,6 +9,8 @@ function Home() {
     const [profileBox, setProfileBox] = useState(false);
     const [userInfo, setUserInfo] = useState(null);
     const [urlInput, setUrlInput] = useState("");
+    const [id, setId] = useState("");
+    const [posts,setPosts] = useState([]);
 
     const profileToggleBox = () => {
         setProfileBox(!profileBox);
@@ -17,10 +19,25 @@ function Home() {
     useEffect(() => {
         axios.get("http://localhost:8080/api/session-user", { withCredentials: true })
             .then(res => {
-                setUserInfo(res.data);
+                const user = res.data;
+                if (!user || !user.username) {
+                    // 로그인 상태 아님
+                    setUserInfo(null);
+                    return;
+                }
+
+                setUserInfo(user);
+                return axios.get(`http://localhost:8080/api/userData/${user.username}`);
             })
-            .catch((err) => {
+            .then(response => {
+                if (response) {
+                    setId(response.data.username);
+                }
+            })
+            .catch(err => {
+                console.error("초기 유저 정보 불러오기 실패:", err);
                 setUserInfo(null);
+                // navigate("/") 는 로그인 실패 시만 이동하게끔 조절
             });
     }, []);
 
@@ -48,8 +65,25 @@ function Home() {
             return;
         }
 
-        navigate("/news", { state: { url: urlInput } });
+        navigate("/news", { state: { url: urlInput, id: id } });
     };
+    const getPostList = () => {
+        axios.get("http://localhost:8080/api/posts", {
+            params: {
+                username: id
+            }
+        }).then(res => {
+            setPosts(res.data);
+        }).catch(err => {
+            console.error("유저 정보 불러오기 실패:", err);
+        })
+    }
+    useEffect(() => {
+        if (id) {
+            // id가 빈 값이 아닐 때 실행할 로직
+            getPostList();
+        }
+    }, [id]);
 
 
     const isLogin = !!userInfo?.username;
@@ -96,8 +130,28 @@ function Home() {
                         로그인해서 전에 검색했던 내용을<br />다시 확인하세요!
                     </p>
                 ) : (
-                    <div>
-                        <p>여기에 최근 검색했던 뉴스 이미지 제목 가게끔??</p>
+                    <div className="News-container">
+                        <div className="News-container-news">
+                            {posts.map(post => (
+                                <div key={post.id} className="post-card">
+                                    <div className="News-news-img">
+                                        {post.thumbnailUrl ? (
+                                            <img className="News-newsimg" src={post.thumbnailUrl} alt="썸네일"/>
+                                        ) : (
+                                            <img src="/default-thumbnail.png" alt="기본 썸네일"/>
+                                        )}
+                                    </div>
+                                    <div className="News-news">
+                                    <h2 className="News-news-title">
+                                        <Link to="/news" state={{ url: post.url, id: post.user.username }}>{post.title}</Link>
+                                    </h2>
+                                    <p className="News-news-detail">
+                                        <Link to="/news" state={{ url: post.url, id: post.user.username }}>{post.content}</Link>
+                                    </p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 )}
             </header>
