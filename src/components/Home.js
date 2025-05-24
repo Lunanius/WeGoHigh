@@ -12,6 +12,10 @@ function Home() {
     const [id, setId] = useState("");
     const [posts,setPosts] = useState([]);
 
+    const postsPerPage = 5;
+    const [totalPages, setTotalPages] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
+
     const profileToggleBox = () => {
         setProfileBox(!profileBox);
     };
@@ -70,10 +74,13 @@ function Home() {
     const getPostList = () => {
         axios.get("http://localhost:8080/api/posts", {
             params: {
+                page: currentPage - 1,
+                size: postsPerPage,
                 username: id
             }
         }).then(res => {
-            setPosts(res.data);
+            setPosts(res.data.content);
+            setTotalPages(res.data.totalPages);
         }).catch(err => {
             console.error("유저 정보 불러오기 실패:", err);
         })
@@ -83,8 +90,12 @@ function Home() {
             // id가 빈 값이 아닐 때 실행할 로직
             getPostList();
         }
-    }, [id]);
+    }, [id,currentPage]);
+    const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
 
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
 
     const isLogin = !!userInfo?.username;
 
@@ -152,7 +163,21 @@ function Home() {
                                 </div>
                             ))}
                         </div>
+                        <div className="pagination">
+                            {pageNumbers.map((number) => (
+                                <button
+                                    key={number}
+                                    className={`page-btn ${number === currentPage ? 'active' : ''}`}
+                                    onClick={() => handlePageChange(number)}
+                                >
+                                    {number}
+                                </button>
+                            ))}
+                        </div>
+
                     </div>
+
+
                 )}
             </header>
         </div>
