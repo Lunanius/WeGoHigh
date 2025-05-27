@@ -12,9 +12,9 @@ function News() {
     const [loading, setLoading] = useState(true);
     const [userInfo, setUserInfo] = useState(null);
 
-
     const url = location.state?.url;
-    const id = location.state?.id;
+    let id = location.state?.id;
+
 
 
     useEffect(() => {
@@ -59,9 +59,13 @@ function News() {
     };
 
     const handleLogout = () => {
-        sessionStorage.clear();
-        setProfileBox(false);
-        navigate("/");
+        axios.post("http://localhost:8080/api/logout", {}, { withCredentials: true })
+            .finally(() => {
+                setUserInfo(null);
+                id = "";
+                setProfileBox(false);
+                navigate("/");
+            });
     };
 
     const handleSearch = () => {

@@ -49,6 +49,7 @@ function Home() {
         axios.post("http://localhost:8080/api/logout", {}, { withCredentials: true })
             .finally(() => {
                 setUserInfo(null);
+                setId("");
                 setProfileBox(false);
                 navigate("/");
             });
