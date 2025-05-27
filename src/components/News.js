@@ -16,6 +16,7 @@ function News() {
     const url = location.state?.url;
     const id = location.state?.id;
 
+
     useEffect(() => {
         axios.get("http://localhost:8080/api/session-user", { withCredentials: true })
             .then(res => {
@@ -79,7 +80,7 @@ function News() {
             return;
         }
 
-        navigate("/news", { state: { url: urlInput } });
+        navigate("/news", { state: { url: urlInput, id: id } });
     };
 
     const isLogin = !!userInfo?.username;

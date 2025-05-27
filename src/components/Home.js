@@ -11,7 +11,7 @@ function Home() {
     const [urlInput, setUrlInput] = useState("");
     const [id, setId] = useState("");
     const [posts,setPosts] = useState([]);
-
+    const [msg,getmsg] = useState("");
     const postsPerPage = 5;
     const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
@@ -82,7 +82,11 @@ function Home() {
             setPosts(res.data.content);
             setTotalPages(res.data.totalPages);
         }).catch(err => {
-            console.error("유저 정보 불러오기 실패:", err);
+            if (err.response) {
+                getmsg(err.response.data.message);
+            } else {
+                console.error("요청 실패:", err);
+            }
         })
     }
     useEffect(() => {
@@ -171,38 +175,46 @@ function Home() {
                     </p>
                 ) : (
                     <>
-                        <div className="Home-news-list">
-                            {posts.map(post => (
-                                <div key={post.id} className="Home-news-container">
-                                    <div className="Home-news-img-container">
-                                        {post.thumbnailUrl ? (
-                                            <img className="Home-news-img" src={post.thumbnailUrl} alt="썸네일"/>
-                                        ) : (
-                                            <img className="Home-news-img" src="/default-thumbnail.png" alt="기본 썸네일"/>
-                                        )}
-                                    </div>
-                                    <div className="Home-news-detail-container">
-                                    <h2 className="Home-news-title">
-                                        <Link to="/news" state={{ url: post.url, id: post.user.username }}>{post.title}</Link>
-                                    </h2>
-                                    <p className="Home-news-summary">
-                                        <Link to="/news" state={{ url: post.url, id: post.user.username }}>{post.content}</Link>
-                                    </p>
-                                    </div>
+                        {msg && (
+                            <p className="Home-tail">{msg}</p>
+                        )}
+
+                        {!msg && (
+                            <>
+                                <div className="Home-news-list">
+                                    {posts.map(post => (
+                                        <div key={post.id} className="Home-news-container">
+                                            <div className="Home-news-img-container">
+                                                {post.thumbnailUrl ? (
+                                                    <img className="Home-news-img" src={post.thumbnailUrl} alt="썸네일"/>
+                                                ) : (
+                                                    <img className="Home-news-img" src="/default-thumbnail.png" alt="기본 썸네일"/>
+                                                )}
+                                            </div>
+                                            <div className="Home-news-detail-container">
+                                                <h2 className="Home-news-title">
+                                                    <Link to="/news" state={{ url: post.url, id: post.user.username }}>{post.title}</Link>
+                                                </h2>
+                                                <p className="Home-news-summary">
+                                                    <Link to="/news" state={{ url: post.url, id: post.user.username }}>{post.content}</Link>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
-                            ))}
-                        </div>
-                        <div className="pagination">
-                            {pageNumbers.map((number) => (
-                                <button
-                                    key={number}
-                                    className={`page-btn ${number === currentPage ? 'active' : ''}`}
-                                    onClick={() => handlePageChange(number)}
-                                >
-                                    {number}
-                                </button>
-                            ))}
-                        </div>
+                                <div className="pagination">
+                                    {pageNumbers.map((number) => (
+                                        <button
+                                            key={number}
+                                            className={`page-btn ${number === currentPage ? 'active' : ''}`}
+                                            onClick={() => handlePageChange(number)}
+                                        >
+                                            {number}
+                                        </button>
+                                    ))}
+                                </div>
+                            </>
+                        )}
                     </>
                 )}
             </header>
