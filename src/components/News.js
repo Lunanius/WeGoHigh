@@ -175,7 +175,7 @@ function News() {
                     </div>
                 )}
                 <div className="News-Search">
-                    <input id="News-search-input" placeholder="뉴스 URL을 입력하세요." value={urlInput} onChange={(e) => setUrlInput(e.target.value)} />
+                    <input id="News-search-input" placeholder="뉴스 URL을 입력하세요." value={urlInput} onChange={(e) => setUrlInput(e.target.value)} onClick={(e) => e.target.select()} />
                     <img
                         className="News-search-img"
                         src="/icon.png"
@@ -195,17 +195,17 @@ function News() {
                                 )}
                             </div>
                         </a>
-                            <div className="News-news">
-                                <div className="News-news-title">
-                                    <p>{newsData.title}</p>
-                                </div>
-                                <div className="News-news-detail">
-                                    <p>{newsData.content}</p>
-                                </div>
-                                <div className="News-news-date">
-                                    <p>{newsData.time}</p>
-                                </div>
+                        <div className="News-news">
+                            <div className="News-news-title">
+                                <p>{newsData.title}</p>
                             </div>
+                            <div className="News-news-detail">
+                                <p>{newsData.content}</p>
+                            </div>
+                            <div className="News-news-date">
+                                <p>{newsData.time}</p>
+                            </div>
+                        </div>
 
 
                     </div>
@@ -229,11 +229,11 @@ function News() {
                         </div>
                     </div>
                 </div>
-                {isLogin &&(
-                    <div>
-                        <p>로그인 했으면 보임 여기에 이제 로그인 했을 때 추가 기능 넣으면 됨 ㅇㅇ</p>
-                    </div>
-                )}
+                {/*{isLogin &&(*/}
+                {/*    <div>*/}
+                {/*        <p>로그인 했으면 보임 여기에 이제 로그인 했을 때 추가 기능 넣으면 됨 ㅇㅇ</p>*/}
+                {/*    </div>*/}
+                {/*)}*/}
 
             </header>
         </div>

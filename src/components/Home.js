@@ -12,6 +12,10 @@ function Home() {
     const [id, setId] = useState("");
     const [posts,setPosts] = useState([]);
 
+    const postsPerPage = 5;
+    const [totalPages, setTotalPages] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
+
     const profileToggleBox = () => {
         setProfileBox(!profileBox);
     };
@@ -70,10 +74,13 @@ function Home() {
     const getPostList = () => {
         axios.get("http://localhost:8080/api/posts", {
             params: {
+                page: currentPage - 1,
+                size: postsPerPage,
                 username: id
             }
         }).then(res => {
-            setPosts(res.data);
+            setPosts(res.data.content);
+            setTotalPages(res.data.totalPages);
         }).catch(err => {
             console.error("유저 정보 불러오기 실패:", err);
         })
@@ -83,70 +90,33 @@ function Home() {
             // id가 빈 값이 아닐 때 실행할 로직
             getPostList();
         }
-    }, [id]);
+    }, [id,currentPage]);
+    const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
 
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
 
     const isLogin = !!userInfo?.username;
 
-    // 여기부터 추가함
-    const [newsList, setNewsList] = useState([
-        {
-            title: '첫 번째 뉴스입니다',
-            summary: '요약 내용입니다',
-            image: 'news.png',
-        },
-        {
-            title: '두 번째 뉴스입니다',
-            summary: '다른 요약입니다',
-            image: 'news.png',
-        },
-        {
-            title: '세 번째 뉴스입니다',
-            summary: '요약 내용입니다',
-            image: 'news.png',
-        },
-        {
-            title: '네 번째 뉴스입니다',
-            summary: '다른 요약입니다',
-            image: 'news.png',
-        },
-        {
-            title: '다섯 번째 뉴스입니다',
-            summary: '요약 내용입니다',
-            image: 'news.png',
-        },
-        {
-            title: '여섯 번째 뉴스입니다',
-            summary: '다른 요약입니다',
-            image: 'news.png',
-        },
-    ]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const newsPerPage = 5;
-    const indexOfLastNews = currentPage * newsPerPage;
-    const indexOfFirstNews = indexOfLastNews - newsPerPage;
-    const currentNews = newsList.slice(indexOfFirstNews, indexOfLastNews);
-    const totalPages = Math.ceil(newsList.length / newsPerPage);
-
-    useEffect(() => {
-        const background = document.querySelector('.Home-img');
-        if (background) {
-            if (!isLogin) {
-                background.style.height = '900px';
-            } else {
-                const baseHeight = 900;
-                const extraPerNews = 220;
-
-                const visibleNewsCount = currentNews.length;
-                const height = visibleNewsCount === 0
-                    ? baseHeight
-                    : baseHeight + (visibleNewsCount - 1) * extraPerNews;
-
-                background.style.height = `${height}px`;
-            }
-        }
-    }, [currentNews.length, isLogin]);
-    // 여기까지가 넣은거 아래에도 추가 코드 있음
+    // useEffect(() => {
+    //     const background = document.querySelector('.Home-img');
+    //     if (background) {
+    //         if (!isLogin) {
+    //             background.style.height = '900px';
+    //         } else {
+    //             const baseHeight = 900;
+    //             const extraPerNews = 220;
+    //
+    //             const visibleNewsCount = currentNews.length;
+    //             const height = visibleNewsCount === 0
+    //                 ? baseHeight
+    //                 : baseHeight + (visibleNewsCount - 1) * extraPerNews;
+    //
+    //             background.style.height = `${height}px`;
+    //         }
+    //     }
+    // }, [currentNews.length, isLogin]);
 
     return (
         <div className="Home">
@@ -186,7 +156,7 @@ function Home() {
                 <p className="Home-body">정보를 원하는 기사의 URL을<br />입력해 보세요.</p>
 
                 <div className="Home-Search">
-                    <input id="Home-search-input" placeholder="뉴스 URL을 입력하세요." value={urlInput} onChange={(e) => setUrlInput(e.target.value)} />
+                    <input id="Home-search-input" placeholder="뉴스 URL을 입력하세요." value={urlInput} onChange={(e) => setUrlInput(e.target.value)} onClick={(e) => e.target.select()}/>
                     <img
                         className="Home-search-img"
                         src="/icon.png"
@@ -202,30 +172,36 @@ function Home() {
                 ) : (
                     <>
                         <div className="Home-news-list">
-                            {currentNews.map((news, idx) => (
-                                <div className="Home-news-container" key={idx}>
+                            {posts.map(post => (
+                                <div key={post.id} className="Home-news-container">
                                     <div className="Home-news-img-container">
-                                        <div className="Home-news-img">
-                                            <img src={news.image} alt="news" />
-                                        </div>
+                                        {post.thumbnailUrl ? (
+                                            <img className="Home-news-img" src={post.thumbnailUrl} alt="썸네일"/>
+                                        ) : (
+                                            <img className="Home-news-img" src="/default-thumbnail.png" alt="기본 썸네일"/>
+                                        )}
                                     </div>
                                     <div className="Home-news-detail-container">
-                                        <div className="Home-news-title">{news.title}</div>
-                                        <div className="Home-news-summary">{news.summary}</div>
+                                        <h2 className="Home-news-title">
+                                            <Link to="/news" state={{ url: post.url, id: post.user.username }}>{post.title}</Link>
+                                        </h2>
+                                        <p className="Home-news-summary">
+                                            <Link to="/news" state={{ url: post.url, id: post.user.username }}>{post.content}</Link>
+                                        </p>
                                     </div>
                                 </div>
                             ))}
                         </div>
                         <div className="pagination">
-                            {[...Array(totalPages)].map((_, index) => (
-                            <button
-                                key={index}
-                                onClick={() => setCurrentPage(index + 1)}
-                                className={currentPage === index + 1 ? "active" : ""}
-                            >
-                                {index + 1}
-                            </button>
-                        ))}
+                            {pageNumbers.map((number) => (
+                                <button
+                                    key={number}
+                                    className={`page-btn ${number === currentPage ? 'active' : ''}`}
+                                    onClick={() => handlePageChange(number)}
+                                >
+                                    {number}
+                                </button>
+                            ))}
                         </div>
                     </>
                 )}
