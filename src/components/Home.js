@@ -11,7 +11,7 @@ function Home() {
     const [urlInput, setUrlInput] = useState("");
     const [id, setId] = useState("");
     const [posts,setPosts] = useState([]);
-
+    const [msg,getmsg] = useState("");
     const postsPerPage = 5;
     const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
@@ -49,10 +49,12 @@ function Home() {
         axios.post("http://localhost:8080/api/logout", {}, { withCredentials: true })
             .finally(() => {
                 setUserInfo(null);
+                setId("");
                 setProfileBox(false);
                 navigate("/");
             });
     };
+
     const handleSearch = () => {
         const trimmedUrl = urlInput.trim();
 
@@ -82,7 +84,11 @@ function Home() {
             setPosts(res.data.content);
             setTotalPages(res.data.totalPages);
         }).catch(err => {
-            console.error("유저 정보 불러오기 실패:", err);
+            if (err.response) {
+                getmsg(err.response.data.message);
+            } else {
+                console.error("요청 실패:", err);
+            }
         })
     }
     useEffect(() => {
@@ -99,24 +105,26 @@ function Home() {
 
     const isLogin = !!userInfo?.username;
 
-    // useEffect(() => {
-    //     const background = document.querySelector('.Home-img');
-    //     if (background) {
-    //         if (!isLogin) {
-    //             background.style.height = '900px';
-    //         } else {
-    //             const baseHeight = 900;
-    //             const extraPerNews = 220;
-    //
-    //             const visibleNewsCount = currentNews.length;
-    //             const height = visibleNewsCount === 0
-    //                 ? baseHeight
-    //                 : baseHeight + (visibleNewsCount - 1) * extraPerNews;
-    //
-    //             background.style.height = `${height}px`;
-    //         }
-    //     }
-    // }, [currentNews.length, isLogin]);
+    useEffect(() => {
+        const background = document.querySelector('.Home-img');
+        if (background) {
+            if (!isLogin) {
+                background.style.height = '900px';
+            } else {
+                const baseHeight = 850;
+                const extraPerNews = 200;
+
+                const currentNews = posts.slice(0, 5); // ✅ 최대 5개로 제한
+                const visibleNewsCount = currentNews.length;
+
+                const height = visibleNewsCount === 0
+                    ? baseHeight
+                    : baseHeight + (visibleNewsCount - 1) * extraPerNews;
+
+                background.style.height = `${height}px`;
+            }
+        }
+    }, [posts, isLogin]); // ✅ 의존성 배열도 수정 (currentNews → posts)
 
     return (
         <div className="Home">
@@ -156,7 +164,7 @@ function Home() {
                 <p className="Home-body">정보를 원하는 기사의 URL을<br />입력해 보세요.</p>
 
                 <div className="Home-Search">
-                    <input id="Home-search-input" placeholder="뉴스 URL을 입력하세요." value={urlInput} onChange={(e) => setUrlInput(e.target.value)} onClick={(e) => e.target.select()}/>
+                    <input id="Home-search-input" placeholder="뉴스 URL을 입력하세요." value={urlInput} onChange={(e) => setUrlInput(e.target.value)} />
                     <img
                         className="Home-search-img"
                         src="/icon.png"
@@ -171,38 +179,46 @@ function Home() {
                     </p>
                 ) : (
                     <>
-                        <div className="Home-news-list">
-                            {posts.map(post => (
-                                <div key={post.id} className="Home-news-container">
-                                    <div className="Home-news-img-container">
-                                        {post.thumbnailUrl ? (
-                                            <img className="Home-news-img" src={post.thumbnailUrl} alt="썸네일"/>
-                                        ) : (
-                                            <img className="Home-news-img" src="/default-thumbnail.png" alt="기본 썸네일"/>
-                                        )}
-                                    </div>
-                                    <div className="Home-news-detail-container">
-                                        <h2 className="Home-news-title">
-                                            <Link to="/news" state={{ url: post.url, id: post.user.username }}>{post.title}</Link>
-                                        </h2>
-                                        <p className="Home-news-summary">
-                                            <Link to="/news" state={{ url: post.url, id: post.user.username }}>{post.content}</Link>
-                                        </p>
-                                    </div>
+                        {msg && (
+                            <p className="Home-tail">{msg}</p>
+                        )}
+
+                        {!msg && (
+                            <>
+                                <div className="Home-news-list">
+                                    {posts.map(post => (
+                                        <div key={post.id} className="Home-news-container">
+                                            <div className="Home-news-img-container">
+                                                {post.thumbnailUrl ? (
+                                                    <img className="Home-news-img" src={post.thumbnailUrl} alt="썸네일"/>
+                                                ) : (
+                                                    <img className="Home-news-img" src="/default-thumbnail.png" alt="기본 썸네일"/>
+                                                )}
+                                            </div>
+                                            <div className="Home-news-detail-container">
+                                                <h2 className="Home-news-title">
+                                                    <Link to="/news" state={{ url: post.url, id: post.user.username }}>{post.title}</Link>
+                                                </h2>
+                                                <p className="Home-news-summary">
+                                                    <Link to="/news" state={{ url: post.url, id: post.user.username }}>{post.content}</Link>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
-                            ))}
-                        </div>
-                        <div className="pagination">
-                            {pageNumbers.map((number) => (
-                                <button
-                                    key={number}
-                                    className={`page-btn ${number === currentPage ? 'active' : ''}`}
-                                    onClick={() => handlePageChange(number)}
-                                >
-                                    {number}
-                                </button>
-                            ))}
-                        </div>
+                                <div className="pagination">
+                                    {pageNumbers.map((number) => (
+                                        <button
+                                            key={number}
+                                            className={`page-btn ${number === currentPage ? 'active' : ''}`}
+                                            onClick={() => handlePageChange(number)}
+                                        >
+                                            {number}
+                                        </button>
+                                    ))}
+                                </div>
+                            </>
+                        )}
                     </>
                 )}
             </header>

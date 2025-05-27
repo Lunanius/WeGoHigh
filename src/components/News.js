@@ -14,7 +14,22 @@ function News() {
 
 
     const url = location.state?.url;
-    const id = location.state?.id;
+    let id = location.state?.id;
+
+    useEffect(() => {
+        const background = document.querySelector('.News-img');
+        const summaries = document.querySelectorAll('.summary-paragraph');
+
+        if (background && summaries.length > 0) {
+            let totalHeight = 0;
+            summaries.forEach((el) => {
+                totalHeight += el.offsetHeight;
+            });
+
+            const newHeight = 1500 + totalHeight + 200;
+            background.style.height = `${newHeight}px`;
+        }
+    }, [newsData]); // 뉴스 데이터가 바뀔 때마다 재계산
 
     useEffect(() => {
         axios.get("http://localhost:8080/api/session-user", { withCredentials: true })
@@ -58,9 +73,13 @@ function News() {
     };
 
     const handleLogout = () => {
-        sessionStorage.clear();
-        setProfileBox(false);
-        navigate("/");
+        axios.post("http://localhost:8080/api/logout", {}, { withCredentials: true })
+            .finally(() => {
+                setUserInfo(null);
+                id = "";
+                setProfileBox(false);
+                navigate("/");
+            });
     };
 
     const handleSearch = () => {
@@ -79,7 +98,7 @@ function News() {
             return;
         }
 
-        navigate("/news", { state: { url: urlInput } });
+        navigate("/news", { state: { url: urlInput, id: id } });
     };
 
     const isLogin = !!userInfo?.username;
@@ -175,7 +194,7 @@ function News() {
                     </div>
                 )}
                 <div className="News-Search">
-                    <input id="News-search-input" placeholder="뉴스 URL을 입력하세요." value={urlInput} onChange={(e) => setUrlInput(e.target.value)} onClick={(e) => e.target.select()} />
+                    <input id="News-search-input" placeholder="뉴스 URL을 입력하세요." value={urlInput} onChange={(e) => setUrlInput(e.target.value)} />
                     <img
                         className="News-search-img"
                         src="/icon.png"
