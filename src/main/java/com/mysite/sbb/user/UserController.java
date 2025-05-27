@@ -85,6 +85,7 @@ public class UserController {
         session.invalidate(); // 세션 무효화
         return ResponseEntity.ok("로그아웃 성공");
     }
+
     @GetMapping("/session-user")
     public ResponseEntity<?> getSessionUser(HttpSession session) {
         SiteUser user = (SiteUser) session.getAttribute("loginUser");
