@@ -99,11 +99,40 @@ function Home() {
 
     const isLogin = !!userInfo?.username;
 
+    // useEffect(() => {
+    //     const background = document.querySelector('.Home-img');
+    //     if (background) {
+    //         if (!isLogin) {
+    //             background.style.height = '900px';
+    //         } else {
+    //             const baseHeight = 900;
+    //             const extraPerNews = 220;
+    //
+    //             const visibleNewsCount = currentNews.length;
+    //             const height = visibleNewsCount === 0
+    //                 ? baseHeight
+    //                 : baseHeight + (visibleNewsCount - 1) * extraPerNews;
+    //
+    //             background.style.height = `${height}px`;
+    //         }
+    //     }
+    // }, [currentNews.length, isLogin]);
+
     return (
         <div className="Home">
+            <div className="Home-img"></div>
             <header className="Home-header">
                 <div className="Home-home-container">
-                    <button className="Home-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
+                    <div className="Home-title-container">
+                        <button className="Home-home-button" type="button" onClick={() => navigate("/")}>
+                            <img
+                                className="Home-home-button-img"
+                                src="/snake.png"
+                                alt="타이틀 이미지"
+                            />
+                        </button>
+                    </div>
+
                     <div className="Home-button-container">
                         {isLogin ? (
                             <img className="Home-profile-img" src="/profile.png" alt="프로필" onClick={profileToggleBox}/>
@@ -141,22 +170,22 @@ function Home() {
                         로그인해서 전에 검색했던 내용을<br />다시 확인하세요!
                     </p>
                 ) : (
-                    <div className="News-container">
-                        <div className="News-container-news">
+                    <>
+                        <div className="Home-news-list">
                             {posts.map(post => (
-                                <div key={post.id} className="post-card">
-                                    <div className="News-news-img">
+                                <div key={post.id} className="Home-news-container">
+                                    <div className="Home-news-img-container">
                                         {post.thumbnailUrl ? (
-                                            <img className="News-newsimg" src={post.thumbnailUrl} alt="썸네일"/>
+                                            <img className="Home-news-img" src={post.thumbnailUrl} alt="썸네일"/>
                                         ) : (
-                                            <img src="/default-thumbnail.png" alt="기본 썸네일"/>
+                                            <img className="Home-news-img" src="/default-thumbnail.png" alt="기본 썸네일"/>
                                         )}
                                     </div>
-                                    <div className="News-news">
-                                    <h2 className="News-news-title">
+                                    <div className="Home-news-detail-container">
+                                    <h2 className="Home-news-title">
                                         <Link to="/news" state={{ url: post.url, id: post.user.username }}>{post.title}</Link>
                                     </h2>
-                                    <p className="News-news-detail">
+                                    <p className="Home-news-summary">
                                         <Link to="/news" state={{ url: post.url, id: post.user.username }}>{post.content}</Link>
                                     </p>
                                     </div>
@@ -174,10 +203,7 @@ function Home() {
                                 </button>
                             ))}
                         </div>
-
-                    </div>
-
-
+                    </>
                 )}
             </header>
         </div>
