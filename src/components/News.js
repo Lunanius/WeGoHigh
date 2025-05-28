@@ -127,14 +127,18 @@ function News() {
         <li>키워드 없음</li>
     );
 
-    const sentimentList = newsData?.sentiment && typeof newsData.sentiment === 'object' ? (
-        Object.entries(newsData.sentiment).map(([company, sentiment]) => (
-            <li className="keyword-paragraph" key={company}>
-                {company} - {sentiment}
-            </li>
-        ))
+    const sentimentList = newsData?.sentiment ? (
+        <li className="keyword-paragraph">{newsData.sentiment}</li>
     ) : (
         <li>감성 정보 없음</li>
+    );
+
+    const sentiment_value = newsData?.sentiment_value ? (
+        <li className="keyword-paragraph">
+            긍정: {newsData.sentiment_value.positive}, 부정: {newsData.sentiment_value.negative}
+        </li>
+    ) : (
+        <li>긍부정 수치 정보 없음</li>
     );
 
     const splitSummary = (summary) => {
@@ -255,8 +259,11 @@ function News() {
                                 <small style={{ color: '#888' }}>유사도 상 (0.9% ~ 0.7%) 중 (0.7% ~ 0.5%) 하 (0.5% ~)</small></p>
                             <il>{keywordList}</il>
                             <p className="summary-title">해당 뉴스의 관련된 회사</p>
-                            <p className="keyword-paragraph">{newsData.company}<il>{sentimentList}</il></p>
-
+                            <p className="keyword-paragraph">{newsData.company}</p>
+                            
+                            <p className="summary-title">해당 뉴스의 감성분석<br /></p>
+                            <il>{sentimentList}</il>
+                            <il>{sentiment_value}</il>
 
                         </div>
                         <div className="News-summation-chart">
