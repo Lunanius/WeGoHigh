@@ -1,22 +1,23 @@
 package com.mysite.sbb.fastapi;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mysite.sbb.user.SiteUser;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import com.mysite.sbb.Dto.CompanyRankDto;
+import com.mysite.sbb.Dto.FastApiDTO;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
 public class NewsController {
 
+    private final FastApiService fastApiService;
+
+    public NewsController(FastApiService fastApiService) {
+        this.fastApiService = fastApiService;
+    }
 
     @PostMapping("/parse-news")
     public FastApiResponse fetchNewsFromFastAPI(@RequestBody FastApiDTO body) {
@@ -38,5 +39,25 @@ public class NewsController {
 
         return response.getBody();
     }
+
+    @GetMapping("/ranking")
+    public ResponseEntity<List<CompanyRankDto>> getCompanyRanking(@RequestParam("period") String period) {
+        List<CompanyRankDto> result;
+        switch (period) {
+            case "daily":
+                result = fastApiService.getDailyRanking();
+                break;
+            case "weekly":
+                result = fastApiService.getWeeklyRanking();
+                break;
+            case "monthly":
+                result = fastApiService.getMonthlyRanking();
+                break;
+            default:
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid period");
+        }
+        return ResponseEntity.ok(result);
+    }
+
 
 }

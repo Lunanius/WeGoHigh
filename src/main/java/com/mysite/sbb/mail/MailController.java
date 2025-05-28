@@ -1,5 +1,6 @@
 package com.mysite.sbb.mail;
 
+import com.mysite.sbb.Dto.MailDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

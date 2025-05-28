@@ -1,4 +1,4 @@
-package com.mysite.sbb.fastapi;
+package com.mysite.sbb.Dto;
 
 import lombok.Data;
 
