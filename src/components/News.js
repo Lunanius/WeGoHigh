@@ -16,20 +16,20 @@ function News() {
     const url = location.state?.url;
     let id = location.state?.id;
 
-    useEffect(() => {
-        const background = document.querySelector('.News-img');
-        const summaries = document.querySelectorAll('.summary-paragraph');
-
-        if (background && summaries.length > 0) {
-            let totalHeight = 0;
-            summaries.forEach((el) => {
-                totalHeight += el.offsetHeight;
-            });
-
-            const newHeight = 1500 + totalHeight + 200;
-            background.style.height = `${newHeight}px`;
-        }
-    }, [newsData]); // 뉴스 데이터가 바뀔 때마다 재계산
+    // useEffect(() => {
+    //     const background = document.querySelector('.News-img');
+    //     const summaries = document.querySelectorAll('.summary-paragraph');
+    //
+    //     if (background && summaries.length > 0) {
+    //         let totalHeight = 0;
+    //         summaries.forEach((el) => {
+    //             totalHeight += el.offsetHeight;
+    //         });
+    //
+    //         const newHeight = 1500 + totalHeight + 200;
+    //         background.style.height = `${newHeight}px`;
+    //     }
+    // }, [newsData]); // 뉴스 데이터가 바뀔 때마다 재계산
 
     useEffect(() => {
         axios.get("http://localhost:8080/api/session-user", { withCredentials: true })
@@ -65,7 +65,12 @@ function News() {
             .finally(() => setLoading(false));
     }, [url, id]);
 
-    if (loading) return <p>로딩 중...</p>;
+    if (loading) return (
+        <div className="News-loading-img">
+            <img src="/loading.gif" alt="로딩 이미지" />
+        </div>
+    );
+
     if (!newsData) return <p>뉴스 정보를 가져오지 못했습니다.</p>;
 
     const profileToggleBox = () => {
@@ -121,6 +126,17 @@ function News() {
     ) : (
         <li>키워드 없음</li>
     );
+
+    const sentimentList = newsData?.sentiment && typeof newsData.sentiment === 'object' ? (
+        Object.entries(newsData.sentiment).map(([company, sentiment]) => (
+            <li className="keyword-paragraph" key={company}>
+                {company} - {sentiment}
+            </li>
+        ))
+    ) : (
+        <li>감성 정보 없음</li>
+    );
+
     const splitSummary = (summary) => {
         if (!summary) return [];
         return summary
@@ -239,7 +255,7 @@ function News() {
                                 <small style={{ color: '#888' }}>유사도 상 (0.9% ~ 0.7%) 중 (0.7% ~ 0.5%) 하 (0.5% ~)</small></p>
                             <il>{keywordList}</il>
                             <p className="summary-title">해당 뉴스의 관련된 회사</p>
-                            <p className="keyword-paragraph">{newsData.company}</p>
+                            <p className="keyword-paragraph">{newsData.company}<il>{sentimentList}</il></p>
 
 
                         </div>

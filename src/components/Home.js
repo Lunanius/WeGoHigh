@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {Link, useNavigate} from "react-router-dom";
 import '../css/Home.css';
 import axios from "axios";
@@ -54,7 +54,6 @@ function Home() {
                 navigate("/");
             });
     };
-
     const handleSearch = () => {
         const trimmedUrl = urlInput.trim();
 
@@ -73,7 +72,7 @@ function Home() {
 
         navigate("/news", { state: { url: urlInput, id: id } });
     };
-    const getPostList = () => {
+    const getPostList = useCallback(() => {
         axios.get("http://localhost:8080/api/posts", {
             params: {
                 page: currentPage - 1,
@@ -81,7 +80,8 @@ function Home() {
                 username: id
             }
         }).then(res => {
-            setPosts(res.data.content);
+            const sortedPosts = res.data.content.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            setPosts(sortedPosts);
             setTotalPages(res.data.totalPages);
         }).catch(err => {
             if (err.response) {
@@ -89,14 +89,15 @@ function Home() {
             } else {
                 console.error("요청 실패:", err);
             }
-        })
-    }
+        });
+    }, [id, currentPage]);
+
     useEffect(() => {
         if (id) {
             // id가 빈 값이 아닐 때 실행할 로직
             getPostList();
         }
-    }, [id,currentPage]);
+    }, [id,currentPage, getPostList]);
     const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
 
     const handlePageChange = (pageNumber) => {
@@ -112,7 +113,7 @@ function Home() {
                 background.style.height = '900px';
             } else {
                 const baseHeight = 850;
-                const extraPerNews = 200;
+                const extraPerNews = 220;
 
                 const currentNews = posts.slice(0, 5); // ✅ 최대 5개로 제한
                 const visibleNewsCount = currentNews.length;
