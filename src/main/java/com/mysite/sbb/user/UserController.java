@@ -13,6 +13,8 @@ import jakarta.servlet.http.Cookie;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -184,11 +186,11 @@ public class UserController {
         userRepository.save(user);
         return ResponseEntity.ok().build();
     }
+
     @GetMapping("/posts")
-    public ResponseEntity<Page<FastApiEntity>> getPosts(@RequestParam("username") String username,
-                                                        @RequestParam(name = "page",defaultValue = "0") int page,
-                                                        @RequestParam(name = "size", defaultValue = "5") int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public ResponseEntity<Page<FastApiEntity>> getPosts(
+            @RequestParam("username") String username,
+            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<FastApiEntity> posts = fastApiService.getUserById(username, pageable);
         return ResponseEntity.ok(posts);
     }

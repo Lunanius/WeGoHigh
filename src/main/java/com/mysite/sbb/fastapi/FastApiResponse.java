@@ -18,4 +18,6 @@ public class FastApiResponse {
     private String summary;
     private String company;
     private List<Map<String, Object>> keyword;
+    private String sentiment;
+    private Map<String, Double> sentiment_value;
 }
