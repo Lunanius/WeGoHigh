@@ -77,11 +77,12 @@ function Home() {
             params: {
                 page: currentPage - 1,
                 size: postsPerPage,
-                username: id
+                username: id,
+                sort: 'id,DESC'
             }
         }).then(res => {
-            const sortedPosts = res.data.content.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            setPosts(sortedPosts);
+            // const sortedPosts = res.data.content.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            setPosts(res.data.content);
             setTotalPages(res.data.totalPages);
         }).catch(err => {
             if (err.response) {

@@ -1,5 +1,25 @@
 .News {
-    text-align: center;
+
+}
+
+.News-loading-img{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.News-img {
+    width: 100%;
+    height: 2000px;
+    position: absolute;
+    z-index: -1;
+    background: url('../../public/background.jpg') no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center center;
+
 }
 
 .News-header {
@@ -14,7 +34,7 @@
     height: 100px;
     display: flex;
     flex-direction: row;
-    align-content: center;
+    align-items: center;
     justify-content: center;
 }
 
@@ -23,6 +43,16 @@
     font-weight: bold;
     border: none;
     background-color: transparent;
+    cursor: pointer;
+}
+
+.News-home-button-img {
+    width: 500px;
+    height: 100%;
+    margin-top: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
 }
 
@@ -66,8 +96,9 @@
     width: 950px;
     padding: 20px;
     padding-right: 50px;
+    margin-top: 10px;
     font-size: 20px;
-    background-color: transparent;
+    background-color: white;
     border: 5px solid;
     border-radius: 10px;
 }
@@ -104,6 +135,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    background-color: white;
 }
 
 .News-news-img {
@@ -193,6 +225,9 @@
     justify-content: center;
     border: 3px solid black;
     border-radius: 10px;
+    background-color: white;
+}
+.News-summation-container-chart{
 
 }
 
@@ -206,6 +241,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 10px;
+    background-color: white;
 }
 .summary-title {
     font-family: 'IBM Plex Sans KR', sans-serif;  /* 원하는 글꼴로 변경 */
@@ -213,6 +249,9 @@
     font-weight: bold;
     color: #333;
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .summary-paragraph {
     text-align: left; /* 텍스트 왼쪽 정렬 */
@@ -233,8 +272,10 @@
     margin-bottom: 8px; /* 필요한 경우 아래쪽 마진 조절 */
     border: 1px solid #f0f0f0; /* (선택 사항) 각 문단 경계 확인을 위한 임시 테두리 */
     border-radius: 5px; /* (선택 사항) 약간의 둥근 테두리 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-
 .News-chart-img {
     width: 800px;
     height: 300px;
