@@ -16,20 +16,20 @@ function News() {
     const url = location.state?.url;
     let id = location.state?.id;
 
-    // useEffect(() => {
-    //     const background = document.querySelector('.News-img');
-    //     const summaries = document.querySelectorAll('.summary-paragraph');
-    //
-    //     if (background && summaries.length > 0) {
-    //         let totalHeight = 0;
-    //         summaries.forEach((el) => {
-    //             totalHeight += el.offsetHeight;
-    //         });
-    //
-    //         const newHeight = 1500 + totalHeight + 200;
-    //         background.style.height = `${newHeight}px`;
-    //     }
-    // }, [newsData]); // 뉴스 데이터가 바뀔 때마다 재계산
+    useEffect(() => {
+        const background = document.querySelector('.News-img');
+        const summaries = document.querySelectorAll('.summary-paragraph');
+
+        if (background && summaries.length > 0) {
+            let totalHeight = 0;
+            summaries.forEach((el) => {
+                totalHeight += el.offsetHeight;
+            });
+
+            const newHeight = 1700 + totalHeight + 200;
+            background.style.height = `${newHeight}px`;
+        }
+    }, [newsData]); // 뉴스 데이터가 바뀔 때마다 재계산
 
     useEffect(() => {
         axios.get("http://localhost:8080/api/session-user", { withCredentials: true })

@@ -15,6 +15,9 @@ function Home() {
     const postsPerPage = 5;
     const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
+    const [rankings, setRankings] = useState([]);
+    const [showList, setShowList] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const profileToggleBox = () => {
         setProfileBox(!profileBox);
@@ -77,11 +80,12 @@ function Home() {
             params: {
                 page: currentPage - 1,
                 size: postsPerPage,
-                username: id
+                username: id,
+                sort: 'id,DESC'
             }
         }).then(res => {
-            const sortedPosts = res.data.content.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-            setPosts(sortedPosts);
+            // const sortedPosts = res.data.content.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            setPosts(res.data.content);
             setTotalPages(res.data.totalPages);
         }).catch(err => {
             if (err.response) {
@@ -127,6 +131,25 @@ function Home() {
         }
     }, [posts, isLogin]); // ✅ 의존성 배열도 수정 (currentNews → posts)
 
+    /* gpt 실시간 검색어 */
+    useEffect(() => {
+        const fetchRanking = async () => {
+            try {
+                const res = await axios.get("/api/rankings/top10");
+                setRankings(res.data);
+            } catch (err) {
+                console.error("랭킹 불러오기 실패", err);
+            } finally {
+                setLoading(false); // 데이터 로딩 완료
+            }
+        };
+
+        fetchRanking();
+        const interval = setInterval(fetchRanking, 5000);
+        return () => clearInterval(interval);
+    }, []);
+    /* gpt 실시간 검색어 */
+
     return (
         <div className="Home">
             <div className="Home-img"></div>
@@ -163,15 +186,34 @@ function Home() {
                 )}
 
                 <p className="Home-body">정보를 원하는 기사의 URL을<br />입력해 보세요.</p>
-
-                <div className="Home-Search">
-                    <input id="Home-search-input" placeholder="뉴스 URL을 입력하세요." value={urlInput} onChange={(e) => setUrlInput(e.target.value)} />
-                    <img
-                        className="Home-search-img"
-                        src="/icon.png"
-                        alt="돋보기"
-                        onClick={handleSearch}
-                    />
+                <div className="Home-search-container">
+                    <div className="Home-Search">
+                        <input id="Home-search-input" placeholder="뉴스 URL을 입력하세요." value={urlInput} onChange={(e) => setUrlInput(e.target.value)} />
+                        <img
+                            className="Home-search-img"
+                            src="/icon.png"
+                            alt="돋보기"
+                            onClick={handleSearch}
+                        />
+                    </div>
+                    {/*실시간 검색*/}
+                    <div className="Home-real-time-search">
+                        <div
+                            className="top-company"
+                            onClick={() => setShowList((prev) => !prev)}
+                        >
+                            🔥 실시간 1위: {rankings[0]?.company ?? "불러오는 중..."}
+                        </div>
+                        {showList && (
+                            <ul className="ranking-list">
+                                {rankings.map((item, index) => (
+                                    <li key={index}>
+                                        {index + 1}위: {item.company} ({item.count}회)
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
                 </div>
 
                 {!isLogin ? (
