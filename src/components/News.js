@@ -51,6 +51,7 @@ function News() {
     }, []);
     useEffect(() => {
         if (!url) return;
+        setLoading(true);
 
         axios.post("http://localhost:8080/api/parse-news", {
             url,
@@ -64,7 +65,7 @@ function News() {
                 setNewsData(null);
             })
             .finally(() => setLoading(false));
-    }, [url, id]);
+    }, [location]);
 
     if (loading) return (
         <div className="News-loading-img">
