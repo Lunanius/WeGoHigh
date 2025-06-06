@@ -201,7 +201,7 @@ function Home() {
                 <p className="Home-body">정보를 원하는 기사의 URL을<br />입력해 보세요.</p>
                 <div className="Home-search-container">
                     <div className="Home-Search">
-                        <input id="Home-search-input" placeholder="뉴스 URL을 입력하세요." value={urlInput} onChange={(e) => setUrlInput(e.target.value)} />
+                        <input id="Home-search-input" placeholder="뉴스 URL을 입력하세요." value={urlInput} onChange={(e) => setUrlInput(e.target.value)} onFocus={(e) => e.target.select()} />
                         <img
                             className="Home-search-img"
                             src="/icon.png"

@@ -206,7 +206,7 @@ function News() {
                     </div>
                 )}
                 <div className="News-Search">
-                    <input id="News-search-input" placeholder="뉴스 URL을 입력하세요." value={urlInput} onChange={(e) => setUrlInput(e.target.value)} />
+                    <input id="News-search-input" placeholder="뉴스 URL을 입력하세요." value={urlInput} onChange={(e) => setUrlInput(e.target.value)} onFocus={(e) => e.target.select()} />
                     <img
                         className="News-search-img"
                         src="/icon.png"
