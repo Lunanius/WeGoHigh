@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import '../css/News.css';
 import axios from "axios";
+import StockChart from "../components/StockChart";
 
 function News() {
     const navigate = useNavigate();
@@ -26,7 +27,7 @@ function News() {
                 totalHeight += el.offsetHeight;
             });
 
-            const newHeight = 1700 + totalHeight + 200;
+            const newHeight = 2100 + totalHeight + 200;
             background.style.height = `${newHeight}px`;
         }
     }, [newsData]); // 뉴스 데이터가 바뀔 때마다 재계산
@@ -133,14 +134,6 @@ function News() {
         <li>감성 정보 없음</li>
     );
 
-    const sentiment_value = newsData?.sentiment_value ? (
-        <li className="keyword-paragraph">
-            긍정: {newsData.sentiment_value.positive}, 부정: {newsData.sentiment_value.negative}
-        </li>
-    ) : (
-        <li>긍부정 수치 정보 없음</li>
-    );
-
     const splitSummary = (summary) => {
         if (!summary) return [];
         return summary
@@ -172,8 +165,6 @@ function News() {
             .map(sentence => sentence.replace(/__DOT__/g, '.'))
             .filter(sentence => sentence.length > 0);
     };
-
-
 
     return (
         <div className="News">
@@ -260,14 +251,16 @@ function News() {
                             <il>{keywordList}</il>
                             <p className="summary-title">해당 뉴스의 관련된 회사</p>
                             <p className="keyword-paragraph">{newsData.company}</p>
-                            
+
                             <p className="summary-title">해당 뉴스의 감성분석<br /></p>
                             <il>{sentimentList}</il>
-                            <il>{sentiment_value}</il>
+
+                            <p className="summary-title">해당 뉴스의 주가 예측<br /></p>
+                            <p className="keyword-paragraph">해당 뉴스의 주가 예측으로 {newsData.prediction} (정확도 {newsData.prob.toFixed(4) * 100}%) 할 것 같습니다</p>
 
                         </div>
                         <div className="News-summation-chart">
-                            <img src="/chart.png" alt="chart" />
+                            <StockChart ticker={newsData.company} />
                         </div>
                     </div>
                 </div>

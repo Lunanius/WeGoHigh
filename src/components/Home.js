@@ -18,6 +18,9 @@ function Home() {
     const [rankings, setRankings] = useState([]);
     const [showList, setShowList] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [period, setPeriod] = useState("daily");
 
     const profileToggleBox = () => {
         setProfileBox(!profileBox);
@@ -131,24 +134,34 @@ function Home() {
         }
     }, [posts, isLogin]); // ✅ 의존성 배열도 수정 (currentNews → posts)
 
-    /* gpt 실시간 검색어 */
-    useEffect(() => {
-        const fetchRanking = async () => {
-            try {
-                const res = await axios.get("/api/rankings/top10");
-                setRankings(res.data);
-            } catch (err) {
-                console.error("랭킹 불러오기 실패", err);
-            } finally {
-                setLoading(false); // 데이터 로딩 완료
-            }
-        };
+    const fetchRanking = async (period = "daily") => {
+        try {
+            setLoading(true);
+            const response = await axios.get(`http://localhost:8080/api/ranking?period=${period}`);
+            setRankings(response.data);
+            setError(null);
+        } catch (err) {
+            console.error("Error fetching ranking:", err);
+            setError("랭킹 데이터를 불러오는 데 실패했습니다.");
+            setRankings([]);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-        fetchRanking();
-        const interval = setInterval(fetchRanking, 5000);
-        return () => clearInterval(interval);
-    }, []);
-    /* gpt 실시간 검색어 */
+    useEffect(() => {
+        fetchRanking(period);
+    }, [period]);
+
+    useEffect(() => {
+        if (rankings.length === 0) return; // 랭킹이 없으면 인터벌 실행하지 않음
+
+        const intervalId = setInterval(() => {
+            setCurrentIndex(prev => (prev + 1) % Math.min(rankings.length, 10));
+        }, 5000);
+
+        return () => clearInterval(intervalId);
+    }, [rankings]);
 
     return (
         <div className="Home">
@@ -196,24 +209,52 @@ function Home() {
                             onClick={handleSearch}
                         />
                     </div>
-                    {/*실시간 검색*/}
-                    <div className="Home-real-time-search">
-                        <div
-                            className="top-company"
-                            onClick={() => setShowList((prev) => !prev)}
-                        >
-                            🔥 실시간 1위: {rankings[0]?.company ?? "불러오는 중..."}
+                    <div className="Home-period">
+                        <div className="ranking-period-select">
+                            <button
+                                className={period === "daily" ? "active" : ""}
+                                onClick={() => setPeriod("daily")}
+                            >
+                                일간
+                            </button>
+                            <button
+                                className={period === "weekly" ? "active" : ""}
+                                onClick={() => setPeriod("weekly")}
+                            >
+                                주간
+                            </button>
+                            <button
+                                className={period === "monthly" ? "active" : ""}
+                                onClick={() => setPeriod("monthly")}
+                            >
+                                월간
+                            </button>
                         </div>
-                        {showList && (
-                            <ul className="ranking-list">
-                                {rankings.map((item, index) => (
-                                    <li key={index}>
-                                        {index + 1}위: {item.company} ({item.count}회)
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
+                        {/*실시간 검색*/}
+                        <div className="Home-real-time-search">
+                            <div className="top-company" onClick={() => setShowList(prev => !prev)}>
+                                실시간 {currentIndex + 1}위:{" "}
+                                {loading
+                                    ? "불러오는 중..."
+                                    : rankings[currentIndex]?.company || "데이터 없음"}
+                            </div>
+
+                            {showList && (
+                                <ul className="ranking-list">
+                                    {error ? (
+                                        <li>{error}</li>
+                                    ) : (
+                                        rankings.slice(0, 10).map((item, index) => (
+                                            <li key={index}>
+                                                {index + 1}위: {item.company} ({item.companyCount}회)
+                                            </li>
+                                        ))
+                                    )}
+                                </ul>
+                            )}
+                        </div>
                     </div>
+
                 </div>
 
                 {!isLogin ? (
