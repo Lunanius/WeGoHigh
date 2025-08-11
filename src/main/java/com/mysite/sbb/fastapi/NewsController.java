@@ -23,7 +23,7 @@ public class NewsController {
     public FastApiResponse fetchNewsFromFastAPI(@RequestBody FastApiDTO body) {
         String newsUrl = body.getUrl();
         String id = body.getId();
-        String fastapiUrl = "http://localhost:8000/parse-news"; // FastAPI 서버 주소
+        String fastapiUrl = "http://localhost:8000/ai/parse-news"; // FastAPI 서버 주소
 
         // 요청 바디 구성
         HttpHeaders headers = new HttpHeaders();

@@ -40,7 +40,7 @@ public class UserService {
     }
 
     public SiteUser findByUsername(String username) {
-        return userRepository.findByUsername(username).orElse(null);
+        return userRepository.findByUsername(username);
     }
     public SiteUser findByNameAndBirthDateAndEmail(String name, Date birthDate,String email) {
         return userRepository.findByNameAndBirthDateAndEmail(name,birthDate,email);

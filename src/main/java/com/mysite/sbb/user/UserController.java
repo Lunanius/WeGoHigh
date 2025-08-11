@@ -21,8 +21,10 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -82,9 +84,21 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 틀렸습니다");
         }
    }
+    @GetMapping("/test/oauth/login")
+    public @ResponseBody String loginTest(Authentication authentication, @AuthenticationPrincipal OAuth2User oAuth) { // DI(의존성 주입)
+        System.out.println("/test/logining====================");
+        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+        System.out.println("authentication: " + oAuth2User.getAttributes());
+        System.out.println("oAuth2User.getAttributes(): " + oAuth.getAttributes());
+        return "세션 정보 확인하기";
+    }
+
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(HttpSession session) {
-        session.invalidate(); // 세션 무효화
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if(session != null) {
+            session.invalidate();  // 세션 무효화
+        } // 세션 무효화
         return ResponseEntity.ok("로그아웃 성공");
     }
 
@@ -99,6 +113,20 @@ public class UserController {
         return ResponseEntity.ok(Map.of(
                 "username", user.getUsername()
         ));
+    }
+    @GetMapping("/oauth2/session-user")
+    public ResponseEntity<?> getOAuth2SessionUser(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 안 되어 있음");
+        }
+
+        Object principal = authentication.getPrincipal();
+
+        if (principal instanceof OAuth2User oauthUser) {
+            return ResponseEntity.ok(oauthUser.getAttributes()); // 필요한 정보만 추려서 줄 수도 있음
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("OAuth2 로그인 사용자 아님");
+        }
     }
 
    @PostMapping("/IdFind")
