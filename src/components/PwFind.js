@@ -42,7 +42,7 @@ function PwFind() {
                 username: id
             };
 
-            const url = `http://localhost:8080/api/pwFind`;
+            const url = `${process.env.REACT_APP_SPRING_API_URL}/api/pwFind`;
 
             axios
                 .post(url, userData)
@@ -72,7 +72,13 @@ function PwFind() {
         <div className="Find">
             <header className="Find-header">
                 <div className="Find-home-container">
-                    <button className="Find-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
+                    <button className="Find-home-button" type="button" onClick={() => navigate("/")}>
+                        <img
+                            className="Find-home-button-img"
+                            src="/snake.png"
+                            alt="타이틀 이미지"
+                        />
+                    </button>
                 </div>
                 <div className="Find-location-container">
                     <div className="Login-location-element">

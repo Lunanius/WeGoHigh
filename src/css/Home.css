@@ -6,7 +6,7 @@
   width: 100%;
   position: absolute;
   z-index: -1;
-  background: url('/public/background.jpg') no-repeat;
+  background: url('../../public/background.jpg') no-repeat;
   background-attachment: fixed;
   background-size: cover;
   background-position: center center;
@@ -100,10 +100,22 @@
   font-weight: bold;
 }
 
+.Home-tail-login {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.Home-search-container{
+  display: flex;
+  flex-direction: row;
+}
+
 .Home-Search {
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: end;
 }
 
 #Home-search-input {
@@ -112,7 +124,7 @@
   padding-right: 72px;
   font-size: 20px;
   background-color: white;
-  border: 5px solid;
+  border: 3px solid;
   border-radius: 10px;
 }
 
@@ -123,6 +135,8 @@
   height: 72px;
   cursor: pointer;
 }
+
+
 
 .Home-profile-img {
   position: absolute;
@@ -161,7 +175,7 @@
 
 /*검색기록 기능 추가 버전*/
 .Home-news-list{
-  margin-top: 30px;
+  margin-top: 20px;
   background: white;
   border-radius: 5px;
   border: black solid 2px;
@@ -290,4 +304,82 @@
     padding: 8px 12px; /* 작은 화면에서 패딩 조정 */
     font-size: 13px; /* 작은 화면에서 폰트 사이즈 조정 */
   }
+}
+
+/* 실시간 검색어*/
+.Home-real-time-search {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 20px;
+}
+
+.top-company {
+  width: 300px;
+  height: 50px;
+  background-color: white;
+  padding: 8px;
+  font-weight: bold;
+  border-radius: 10px;
+  border: black solid 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ranking-list {
+  width: 310px;
+  height: 250px;
+  margin-top: 5px;
+  padding-left: 0;
+  list-style: none;
+  background: #ffffff;
+  border: 5px solid black;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-size: 18px;
+  color: black;
+  overflow-y: auto;
+  z-index: 100;
+  position: absolute;
+  top: 65px;
+  text-shadow: none;
+}
+
+.ranking-list li {
+  padding: 10px 15px;
+  border-bottom: 1px solid #ccc;
+}
+
+.Home-period{
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.ranking-period-select{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.ranking-period-select button {
+  width: 105px;
+  height: 30px;
+  justify-content: center;
+  background: white;
+  border-radius: 4px;
+  border: 1px solid black;
+  cursor: pointer;
+
+}
+
+.ranking-period-select button:hover {
+  background-color: darkgreen;
+}
+.ranking-period-select button.active {
+  background: green;
+  font-weight: bold;
 }

@@ -64,7 +64,7 @@ function SignUp() {
                 email: email
             };
 
-            const url = `http://localhost:8080/api/signup`;
+            const url = `${process.env.REACT_APP_SPRING_API_URL}/api/signup`;
 
             axios
                 .post(url, userData)
@@ -86,7 +86,7 @@ function SignUp() {
         };
 
         console.log("보내는 ID:", userData.username);
-        axios.get(`http://localhost:8080/api/signup/IdCheck/${userData.username}`)
+        axios.get(`${process.env.REACT_APP_SPRING_API_URL}/api/signup/IdCheck/${userData.username}`)
             .then((response) =>{
                 if(response.data === true){
                     alert('사용 가능한 아이디입니다')
@@ -118,7 +118,7 @@ function SignUp() {
         const userData = {
             mail: email,
         };
-        const url = `http://localhost:8080/api/mailSend`;
+        const url = `${process.env.REACT_APP_SPRING_API_URL}/api/mailSend`;
 
         axios
             .post(url, userData)
@@ -147,7 +147,7 @@ function SignUp() {
             alert("인증 시간이 만료되었습니다. 다시 요청해주세요.");
             return;
         }
-        axios.get(`http://localhost:8080/api/mailCheck?authNum=${authNum}`)
+        axios.get(`${process.env.REACT_APP_SPRING_API_URL}/api/mailCheck?authNum=${authNum}`)
             .then((response) => {
                 alert(response.data); // "인증이 완료되었습니다."
                 setAuthCheck(true);
@@ -187,7 +187,13 @@ function SignUp() {
         <div className="SignUp">
             <header className="SignUp-header">
                 <div className="SignUp-home-container">
-                    <button className="SignUp-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
+                    <button className="SignUp-home-button" type="button" onClick={() => navigate("/")}>
+                        <img
+                            className="SignUp-home-button-img"
+                            src="/snake.png"
+                            alt="타이틀 이미지"
+                        />
+                    </button>
                 </div>
                 <div className="SignUp-location-container">
                     <div className="SignUp-location-element">

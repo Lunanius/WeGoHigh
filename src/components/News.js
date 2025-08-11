@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import '../css/News.css';
 import axios from "axios";
+import StockChart from "../components/StockChart";
 
 function News() {
     const navigate = useNavigate();
@@ -16,23 +17,23 @@ function News() {
     const url = location.state?.url;
     let id = location.state?.id;
 
-    // useEffect(() => {
-    //     const background = document.querySelector('.News-img');
-    //     const summaries = document.querySelectorAll('.summary-paragraph');
-    //
-    //     if (background && summaries.length > 0) {
-    //         let totalHeight = 0;
-    //         summaries.forEach((el) => {
-    //             totalHeight += el.offsetHeight;
-    //         });
-    //
-    //         const newHeight = 1500 + totalHeight + 200;
-    //         background.style.height = `${newHeight}px`;
-    //     }
-    // }, [newsData]); // 뉴스 데이터가 바뀔 때마다 재계산
+    useEffect(() => {
+        const background = document.querySelector('.News-img');
+        const summaries = document.querySelectorAll('.summary-paragraph');
+
+        if (background && summaries.length > 0) {
+            let totalHeight = 0;
+            summaries.forEach((el) => {
+                totalHeight += el.offsetHeight;
+            });
+
+            const newHeight = 2100 + totalHeight + 200;
+            background.style.height = `${newHeight}px`;
+        }
+    }, [newsData]); // 뉴스 데이터가 바뀔 때마다 재계산
 
     useEffect(() => {
-        axios.get("http://localhost:8080/api/session-user", { withCredentials: true })
+        axios.get(`${process.env.REACT_APP_SPRING_API_URL}/api/session-user`, { withCredentials: true })
             .then(res => {
                 const user = res.data;
                 if (!user || !user.username) {
@@ -50,8 +51,9 @@ function News() {
     }, []);
     useEffect(() => {
         if (!url) return;
+        setLoading(true);
 
-        axios.post("http://localhost:8080/api/parse-news", {
+        axios.post(`${process.env.REACT_APP_SPRING_API_URL}/api/parse-news`, {
             url,
             id: id || ""
         })
@@ -63,7 +65,7 @@ function News() {
                 setNewsData(null);
             })
             .finally(() => setLoading(false));
-    }, [url, id]);
+    }, [location]);
 
     if (loading) return (
         <div className="News-loading-img">
@@ -78,7 +80,7 @@ function News() {
     };
 
     const handleLogout = () => {
-        axios.post("http://localhost:8080/api/logout", {}, { withCredentials: true })
+        axios.post(`${process.env.REACT_APP_SPRING_API_URL}/api/logout`, {}, { withCredentials: true })
             .finally(() => {
                 setUserInfo(null);
                 id = "";
@@ -133,14 +135,6 @@ function News() {
         <li>감성 정보 없음</li>
     );
 
-    const sentiment_value = newsData?.sentiment_value ? (
-        <li className="keyword-paragraph">
-            긍정: {newsData.sentiment_value.positive}, 부정: {newsData.sentiment_value.negative}
-        </li>
-    ) : (
-        <li>긍부정 수치 정보 없음</li>
-    );
-
     const splitSummary = (summary) => {
         if (!summary) return [];
         return summary
@@ -172,8 +166,6 @@ function News() {
             .map(sentence => sentence.replace(/__DOT__/g, '.'))
             .filter(sentence => sentence.length > 0);
     };
-
-
 
     return (
         <div className="News">
@@ -214,7 +206,7 @@ function News() {
                     </div>
                 )}
                 <div className="News-Search">
-                    <input id="News-search-input" placeholder="뉴스 URL을 입력하세요." value={urlInput} onChange={(e) => setUrlInput(e.target.value)} />
+                    <input id="News-search-input" placeholder="뉴스 URL을 입력하세요." value={urlInput} onChange={(e) => setUrlInput(e.target.value)} onFocus={(e) => e.target.select()} />
                     <img
                         className="News-search-img"
                         src="/icon.png"
@@ -263,11 +255,13 @@ function News() {
 
                             <p className="summary-title">해당 뉴스의 감성분석<br /></p>
                             <il>{sentimentList}</il>
-                            <il>{sentiment_value}</il>
+
+                            <p className="summary-title">해당 뉴스의 주가 예측<br /></p>
+                            <p className="keyword-paragraph">해당 뉴스의 주가 예측으로 {newsData.prediction} (정확도 {newsData.prob.toFixed(4) * 100}%) 할 것 같습니다</p>
 
                         </div>
                         <div className="News-summation-chart">
-                            <img src="/chart.png" alt="chart" />
+                            <StockChart ticker={newsData.company} />
                         </div>
                     </div>
                 </div>

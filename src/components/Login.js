@@ -1,44 +1,26 @@
-import { useState} from "react";
-import { useNavigate } from "react-router-dom";
+import {useEffect, useState} from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import "../css/Login.css";
 import axios from "axios";
-
 
 axios.defaults.withCredentials = true;
 
 function Login() {
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
+    const location = useLocation();
 
-    // const handleLogin = () => {
-    //     console.log("ID:", id);
-    //     console.log("Password:", password);
-    //     console.log("==========================");
-    //     if (id === "") {
-    //         alert("아이디를 입력하세요.")
-    //     }
-    //     else if (password === "") {
-    //         alert("비밀번호를 입력하세요.")
-    //     }
-    //     else if (password.length < 8 || password.length > 16) {
-    //         alert("비밀번호 길이는 최소 8글자 최대 16글자입니다.")
-    //     }
-    //     else {
-    //         if (id === {id} && password === {password}) {
-    //             alert("로그인 성공!")
-    //             setIsLogin(true);
-    //             sessionStorage.setItem("isLogin", "true");
-    //             sessionStorage.setItem("userName", name);
-    //             sessionStorage.setItem("userBirthDate", birthDate);
-    //             sessionStorage.setItem("userId", id);
-    //             navigate("/");
-    //         }
-    //         else {
-    //             alert("존재하지 않는 아이디 또는 비밀번호입니다.")
-    //         }
-    //     }
-    // };
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const error = params.get("error");
+
+        if (error === "email_exists") {
+            setErrorMessage("이미 등록된 이메일입니다.");
+            navigate("/login", { replace: true });
+        }
+    }, [location.search, navigate]);
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -47,9 +29,8 @@ function Login() {
             password: password
         };
 
-        const url = `http://localhost:8080/api/login`;
+        const url = `${process.env.REACT_APP_SPRING_API_URL}/api/login`;
 
-        axios.defaults.withCredentials = true;
         axios
             .post(url, userData)
             .then((response) => {
@@ -57,36 +38,30 @@ function Login() {
                 navigate('/');
             })
             .catch((error) => {
-                const msg = error.response?.data || "로그인 실패"
+                const msg = error.response?.data || "로그인 실패";
                 alert(msg);
             });
-    }
+    };
+
+    // OAuth2 로그인 버튼 클릭 시 브라우저 리다이렉트
+    const handleOAuthLogin = (provider) => {
+        window.location.href = `http://localhost:8080/oauth2/authorization/${provider}`;
 
 
+    };
 
     return (
         <div className="Login">
             <header className="Login-header">
-                <div className="Login-home-container">
-                    <button className="Login-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
-                </div>
-                <div className="Login-location-container">
-                    <div className="Login-location-element">
-                        <div className="Login-location">
-                            <button className="Login-location-button" type="button"
-                                    onClick={() => navigate("/")}>홈
-                            </button>
-                        </div>
-                        <div className="Login-location-down"></div>
-                        <div className="Login-location">
-                            <button className="Login-location-button" type="button"
-                                    onClick={() => navigate("/login")}>로그인
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                {/* 기존 로그인 폼 */}
                 <div className="Login-container">
                     <div className="Login-container-element">
+                        {errorMessage && (
+                            <div style={{ color: "red", textAlign: "center", marginBottom: "10px" }}>
+                                {errorMessage}
+                            </div>
+                        )}
+                        {/* 아이디 입력 */}
                         <div className="Login-element-container">
                             <p className="Login-id-box">ID</p>
                             <input
@@ -94,34 +69,70 @@ function Login() {
                                 type="text"
                                 value={id}
                                 onChange={(e) => setId(e.target.value)}
-                                placeholder="아이디 입력"/>
+                                placeholder="아이디 입력"
+                            />
                         </div>
 
+                        {/* 비밀번호 입력 */}
                         <div className="Login-element-container">
                             <p className="Login-pw-box">PW</p>
-                            <input className="Login-pw-textbox"
-                                   type="password"
-                                   value={password}
-                                   onChange={(e) => setPassword(e.target.value)}
-                                   placeholder="비밀번호 입력"/>
+                            <input
+                                className="Login-pw-textbox"
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                placeholder="비밀번호 입력"
+                            />
                         </div>
 
+                        {/* 로그인 버튼 */}
                         <div className="Login-login-container">
                             <button className="Login-login-button" onClick={handleLogin}>
                                 로그인
                             </button>
                         </div>
 
+                        {/* 메뉴 버튼들 */}
                         <div className="Login-menu-container">
-                            <button className="Login-menu-button" type="button" onClick={() => navigate("/idfind")}>
+                            <button
+                                className="Login-menu-button"
+                                type="button"
+                                onClick={() => navigate("/idfind")}
+                            >
                                 ID 찾기
                             </button>
-                            <button className="Login-menu-button" type="button" onClick={() => navigate("/pwfind")}>
+                            <button
+                                className="Login-menu-button"
+                                type="button"
+                                onClick={() => navigate("/pwfind")}
+                            >
                                 PW 찾기
                             </button>
-                            <button className="Login-menu-button" type="button" onClick={() => navigate("/signup")}>
+                            <button
+                                className="Login-menu-button"
+                                type="button"
+                                onClick={() => navigate("/signup")}
+                            >
                                 회원가입
                             </button>
+                        </div>
+
+                        {/* --- 여기부터 OAuth2 로그인 버튼 추가 --- */}
+                        <div style={{ marginTop: "30px", textAlign: "center" }}>
+                            <p>간편 로그인</p>
+                            <button
+                                onClick={() => handleOAuthLogin("google")}
+                                style={{ marginRight: "10px" }}
+                            >
+                                구글 로그인
+                            </button>
+                            <button onClick={() => handleOAuthLogin("naver")}>
+                                네이버 로그인
+                            </button>
+                            <button onClick={() => handleOAuthLogin("kakao")}>
+                                카카오 로그인
+                            </button>
+
                         </div>
                     </div>
                 </div>

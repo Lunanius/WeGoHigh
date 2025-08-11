@@ -7,7 +7,7 @@
     height: 100%;
     position: absolute;
     z-index: -1;
-    background: url('/public/background.jpg') no-repeat;
+    background: url('../../public/background.jpg') no-repeat;
     background-attachment: fixed;
     background-size: cover;
     background-position: center center;
@@ -170,6 +170,17 @@
     border: 2px solid black;
     cursor: pointer;
 }
+
+.SignUp-auth-button {
+    width: 135px;
+    height: 50px;
+    background-color: transparent;
+    font-size: 20px;
+    color: black;
+    border: 2px solid black;
+    cursor: pointer;
+}
+
 .Sign-up-button {
     width: 180px;
     height: 50px;

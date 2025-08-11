@@ -3,6 +3,7 @@ import {Link, useNavigate} from "react-router-dom";
 import '../css/Home.css';
 import axios from "axios";
 
+axios.defaults.withCredentials = true;
 
 function Home() {
     const navigate = useNavigate();
@@ -15,13 +16,19 @@ function Home() {
     const postsPerPage = 5;
     const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
+    const [rankings, setRankings] = useState([]);
+    const [showList, setShowList] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [period, setPeriod] = useState("daily");
 
     const profileToggleBox = () => {
         setProfileBox(!profileBox);
     };
 
     useEffect(() => {
-        axios.get("http://localhost:8080/api/session-user", { withCredentials: true })
+        axios.get(`${process.env.REACT_APP_SPRING_API_URL}/api/session-user`, { withCredentials: true })
             .then(res => {
                 const user = res.data;
                 if (!user || !user.username) {
@@ -31,7 +38,7 @@ function Home() {
                 }
 
                 setUserInfo(user);
-                return axios.get(`http://localhost:8080/api/userData/${user.username}`);
+                return axios.get(`${process.env.REACT_APP_SPRING_API_URL}/api/userData/${user.username}`);
             })
             .then(response => {
                 if (response) {
@@ -46,7 +53,7 @@ function Home() {
     }, []);
 
     const handleLogout = () => {
-        axios.post("http://localhost:8080/api/logout", {}, { withCredentials: true })
+        axios.post(`${process.env.REACT_APP_SPRING_API_URL}/api/logout`, {}, { withCredentials: true })
             .finally(() => {
                 setUserInfo(null);
                 setId("");
@@ -73,7 +80,7 @@ function Home() {
         navigate("/news", { state: { url: urlInput, id: id } });
     };
     const getPostList = useCallback(() => {
-        axios.get("http://localhost:8080/api/posts", {
+        axios.get(`${process.env.REACT_APP_SPRING_API_URL}/api/posts`, {
             params: {
                 page: currentPage - 1,
                 size: postsPerPage,
@@ -107,24 +114,55 @@ function Home() {
 
     const isLogin = !!userInfo?.username;
 
-    // useEffect(() => {
-    //     const background = document.querySelector('.Home-img');
-    //     if (background) {
-    //         if (!isLogin) {
-    //             background.style.height = '900px';
-    //         } else {
-    //             const baseHeight = 900;
-    //             const extraPerNews = 220;
-    //
-    //             const visibleNewsCount = currentNews.length;
-    //             const height = visibleNewsCount === 0
-    //                 ? baseHeight
-    //                 : baseHeight + (visibleNewsCount - 1) * extraPerNews;
-    //
-    //             background.style.height = `${height}px`;
-    //         }
-    //     }
-    // }, [currentNews.length, isLogin]);
+    useEffect(() => {
+        const background = document.querySelector('.Home-img');
+        if (background) {
+            if (!isLogin) {
+                background.style.height = '900px';
+            } else {
+                const baseHeight = 900;
+                const extraPerNews = 220;
+
+                const currentNews = posts.slice(0, 5); // ✅ 최대 5개로 제한
+                const visibleNewsCount = currentNews.length;
+
+                const height = visibleNewsCount === 0
+                    ? baseHeight
+                    : baseHeight + (visibleNewsCount - 1) * extraPerNews;
+
+                background.style.height = `${height}px`;
+            }
+        }
+    }, [posts, isLogin]); // ✅ 의존성 배열도 수정 (currentNews → posts)
+
+    const fetchRanking = async (period = "daily") => {
+        try {
+            setLoading(true);
+            const response = await axios.get(`${process.env.REACT_APP_SPRING_API_URL}/api/ranking?period=${period}`);
+            setRankings(response.data);
+            setError(null);
+        } catch (err) {
+            console.error("Error fetching ranking:", err);
+            setError("랭킹 데이터를 불러오는 데 실패했습니다.");
+            setRankings([]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchRanking(period);
+    }, [period]);
+
+    useEffect(() => {
+        if (rankings.length === 0) return; // 랭킹이 없으면 인터벌 실행하지 않음
+
+        const intervalId = setInterval(() => {
+            setCurrentIndex(prev => (prev + 1) % Math.min(rankings.length, 10));
+        }, 5000);
+
+        return () => clearInterval(intervalId);
+    }, [rankings]);
 
     return (
         <div className="Home">
@@ -162,15 +200,62 @@ function Home() {
                 )}
 
                 <p className="Home-body">정보를 원하는 기사의 URL을<br />입력해 보세요.</p>
+                <div className="Home-search-container">
+                    <div className="Home-Search">
+                        <input id="Home-search-input" placeholder="뉴스 URL을 입력하세요." value={urlInput} onChange={(e) => setUrlInput(e.target.value)} />
+                        <img
+                            className="Home-search-img"
+                            src="/icon.png"
+                            alt="돋보기"
+                            onClick={handleSearch}
+                        />
+                    </div>
+                    <div className="Home-period">
+                        <div className="ranking-period-select">
+                            <button
+                                className={period === "daily" ? "active" : ""}
+                                onClick={() => setPeriod("daily")}
+                            >
+                                일간
+                            </button>
+                            <button
+                                className={period === "weekly" ? "active" : ""}
+                                onClick={() => setPeriod("weekly")}
+                            >
+                                주간
+                            </button>
+                            <button
+                                className={period === "monthly" ? "active" : ""}
+                                onClick={() => setPeriod("monthly")}
+                            >
+                                월간
+                            </button>
+                        </div>
+                        {/*실시간 검색*/}
+                        <div className="Home-real-time-search">
+                            <div className="top-company" onClick={() => setShowList(prev => !prev)}>
+                                실시간 {currentIndex + 1}위:{" "}
+                                {loading
+                                    ? "불러오는 중..."
+                                    : rankings[currentIndex]?.company || "데이터 없음"}
+                            </div>
 
-                <div className="Home-Search">
-                    <input id="Home-search-input" placeholder="뉴스 URL을 입력하세요." value={urlInput} onChange={(e) => setUrlInput(e.target.value)} />
-                    <img
-                        className="Home-search-img"
-                        src="/icon.png"
-                        alt="돋보기"
-                        onClick={handleSearch}
-                    />
+                            {showList && (
+                                <ul className="ranking-list">
+                                    {error ? (
+                                        <li>{error}</li>
+                                    ) : (
+                                        rankings.slice(0, 10).map((item, index) => (
+                                            <li key={index}>
+                                                {index + 1}위: {item.company} ({item.companyCount}회)
+                                            </li>
+                                        ))
+                                    )}
+                                </ul>
+                            )}
+                        </div>
+                    </div>
+
                 </div>
 
                 {!isLogin ? (
@@ -185,6 +270,7 @@ function Home() {
 
                         {!msg && (
                             <>
+                                <p className="Home-tail-login">최대 30개까지 5페이지로 나누어 표시됩니다.</p>
                                 <div className="Home-news-list">
                                     {posts.map(post => (
                                         <div key={post.id} className="Home-news-container">

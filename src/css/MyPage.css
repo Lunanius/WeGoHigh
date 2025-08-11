@@ -2,11 +2,22 @@
     text-align: center;
 }
 
+.MyPage-img{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -1;
+    background: url('../../public/background.jpg') no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center center;
+}
+
 .MyPage-header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: black;
+    color: white;
 }
 
 .MyPage-home-container{
@@ -14,7 +25,7 @@
     height: 100px;
     display: flex;
     flex-direction: row;
-    align-content: center;
+    align-items: center;
     justify-content: center;
 }
 
@@ -26,6 +37,16 @@
     cursor: pointer;
 }
 
+.MyPage-home-button-img {
+    width: 500px;
+    height: 100%;
+    margin-top: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
 .MyPage-profile-container {
     display: flex;
     align-items: center;
@@ -33,11 +54,11 @@
 }
 
 .MyPage-container{
-    width: 1050px;
+    width: 1200px;
     height: 600px;
-    border-top: 2px solid black;
-    border-bottom: 2px solid black;
-    margin-top: 20px;
+    border-top: 3px solid white;
+    border-bottom: 3px solid white;
+    margin-top: 60px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -52,7 +73,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: start;
-    border-bottom: 1px solid black;
+    border-bottom: 2px solid white;
 }
 
 .MyPage-element {
@@ -64,6 +85,11 @@
     justify-content: start;
     font-weight: bold;
     font-size: 30px;
+    text-shadow:
+            -1px -1px 0 black,
+            1px -1px 0 black,
+            -1px  1px 0 black,
+            1px  1px 0 black;
 }
 .MyPage-element-value{
     width: 500px;
@@ -72,7 +98,13 @@
     display: flex;
     align-items: center;
     justify-content: end;
-    font-size: 24px;
+    font-size: 30px;
+    font-weight: bold;
+    text-shadow:
+            -1px -1px 0 black,
+            1px -1px 0 black,
+            -1px  1px 0 black,
+            1px  1px 0 black;
 }
 
 .MyPage-element-button{
@@ -81,10 +113,16 @@
     display: flex;
     align-items: center;
     justify-content: end;
-    font-size: 24px;
+    font-size: 30px;
     border: none;
     background-color: transparent;
     cursor: pointer;
+    color: white;
+    text-shadow:
+            -1px -1px 0 black,
+            1px -1px 0 black,
+            -1px  1px 0 black,
+            1px  1px 0 black;
 }
 
 .ResetPasswordBox {
@@ -127,6 +165,7 @@
 
 .MyPage-profile-img {
     position: absolute;
+    top: 45px;
     right: 50px;
     width: 64px;
     height: 64px;

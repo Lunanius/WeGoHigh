@@ -38,7 +38,7 @@ function IdFind() {
                 email: email
             };
 
-            const url = `http://localhost:8080/api/IdFind`;
+            const url = `${process.env.REACT_APP_SPRING_API_URL}/api/IdFind`;
 
             axios
                 .post(url, userData)
@@ -58,7 +58,13 @@ function IdFind() {
         <div className="Find">
             <header className="Find-header">
                 <div className="Find-home-container">
-                    <button className="Find-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
+                    <button className="Find-home-button" type="button" onClick={() => navigate("/")}>
+                        <img
+                            className="Find-home-button-img"
+                            src="/snake.png"
+                            alt="타이틀 이미지"
+                        />
+                    </button>
                 </div>
                 <div className="Find-location-container">
                     <div className="Find-location-element">

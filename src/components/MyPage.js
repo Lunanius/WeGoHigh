@@ -15,9 +15,9 @@ function MyPage() {
 
     useEffect(() => {
 
-        axios.get("http://localhost:8080/api/session-user", { withCredentials: true })
+        axios.get(`${process.env.REACT_APP_SPRING_API_URL}/api/session-user`, { withCredentials: true })
             .then(res => {
-                axios.get(`http://localhost:8080/api/userData/${res.data.username}`)
+                axios.get(`${process.env.REACT_APP_SPRING_API_URL}/api/userData/${res.data.username}`)
                     .then((response) => {
                         setName(response.data.name)
                         setBirthDate(response.data.birthDate)
@@ -39,7 +39,7 @@ function MyPage() {
     }, [navigate]);
 
     const handleLogout = () => {
-        axios.post("http://localhost:8080/api/logout", {}, { withCredentials: true })
+        axios.post(`${process.env.REACT_APP_SPRING_API_URL}/api/logout`, {}, { withCredentials: true })
             .finally(() => {
                 setName(null);
                 setBirthDate(null);
@@ -61,7 +61,7 @@ function MyPage() {
                 password: newPassword
             };
 
-            const url = `http://localhost:8080/api/newPw`;
+            const url = `${process.env.REACT_APP_SPRING_API_URL}/api/newPw`;
 
             axios
                 .post(url,userData)
@@ -89,9 +89,16 @@ function MyPage() {
 
     return (
         <div className="MyPage">
+            <div className="MyPage-img"></div>
             <header className="MyPage-header">
                 <div className="MyPage-home-container">
-                    <button className="MyPage-home-button" type="button" onClick={() => navigate("/")}>We go high</button>
+                    <button className="MyPage-home-button" type="button" onClick={() => navigate("/")}>
+                        <img
+                            className="MyPage-home-button-img"
+                            src="/snake.png"
+                            alt="타이틀 이미지"
+                        />
+                    </button>
                     <div className="MyPage-profile-container">
                         <img className="MyPage-profile-img" src="/profile.png" alt="프로필" onClick={profileToggleBox} />
                         {profileBox && (
