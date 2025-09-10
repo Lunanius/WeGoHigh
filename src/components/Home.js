@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import '../css/Home.css';
 import axios from "axios";
 
@@ -11,8 +11,8 @@ function Home() {
     const [userInfo, setUserInfo] = useState(null);
     const [urlInput, setUrlInput] = useState("");
     const [id, setId] = useState("");
-    const [posts,setPosts] = useState([]);
-    const [msg,getmsg] = useState("");
+    const [posts, setPosts] = useState([]);
+    const [msg, setMsg] = useState("");
     const postsPerPage = 5;
     const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
@@ -22,51 +22,64 @@ function Home() {
     const [error, setError] = useState(null);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [period, setPeriod] = useState("daily");
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    // JWT 토큰 가져오기 & axios 기본 헤더 설정
+    useEffect(() => {
+        const token = localStorage.getItem("jwtToken");
+        setIsLoggedIn(!!token);
+        if (token) {
+            // console.log(`Bearer ${token}`);
+            axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+            // 토큰 있으면 로그인 상태 판단 및 유저 정보 가져오기
+            axios.get(`${process.env.REACT_APP_SPRING_API_URL}/api/session-user`)
+                .then(res => {
+                    const user = res.data;
+                    if (!user || !user.username) {
+                        setUserInfo(null);
+                        localStorage.removeItem("jwtToken");
+                        delete axios.defaults.headers.common.Authorization;
+                        return;
+                    }
+                    setUserInfo(user);
+                    setId(user.username);
+                })
+                .catch(err => {
+                    console.error("유저 정보 불러오기 실패:", err);
+                    setUserInfo(null);
+                    setId("");
+                    localStorage.removeItem("jwtToken");
+                    delete axios.defaults.headers.common.Authorization;
+                });
+        } else {
+            setUserInfo(null);
+            setId("");
+            delete axios.defaults.headers.common.Authorization;
+        }
+    }, [isLoggedIn]);
 
     const profileToggleBox = () => {
         setProfileBox(!profileBox);
     };
 
-    useEffect(() => {
-        axios.get(`${process.env.REACT_APP_SPRING_API_URL}/api/session-user`, { withCredentials: true })
-            .then(res => {
-                const user = res.data;
-                if (!user || !user.username) {
-                    // 로그인 상태 아님
-                    setUserInfo(null);
-                    return;
-                }
-
-                setUserInfo(user);
-                return axios.get(`${process.env.REACT_APP_SPRING_API_URL}/api/userData/${user.username}`);
-            })
-            .then(response => {
-                if (response) {
-                    setId(response.data.username);
-                }
-            })
-            .catch(err => {
-                console.error("초기 유저 정보 불러오기 실패:", err);
-                setUserInfo(null);
-                // navigate("/") 는 로그인 실패 시만 이동하게끔 조절
-            });
-    }, []);
-
     const handleLogout = () => {
+        // 로그아웃 API 호출 후 토큰 제거 및 상태 초기화
         axios.post(`${process.env.REACT_APP_SPRING_API_URL}/api/logout`, {}, { withCredentials: true })
             .finally(() => {
+                localStorage.removeItem("jwtToken");
+                delete axios.defaults.headers.common.Authorization;
                 setUserInfo(null);
                 setId("");
                 setProfileBox(false);
                 navigate("/");
             });
     };
+
     const handleSearch = () => {
         const trimmedUrl = urlInput.trim();
 
         if (!trimmedUrl) return alert("URL을 입력해주세요!");
 
-        // 간단한 URL 패턴 검사 (http/https로 시작하고 .으로 끝나는 도메인 포함 여부)
         const urlPattern = /^(https?:\/\/)?([\w.-]+\.[a-z]{2,})(\/\S*)?$/i;
         if (!urlPattern.test(trimmedUrl)) {
             alert("올바른 URL 형식이 아닙니다!");
@@ -79,7 +92,9 @@ function Home() {
 
         navigate("/news", { state: { url: urlInput, id: id } });
     };
+
     const getPostList = useCallback(() => {
+        if (!id) return;
         axios.get(`${process.env.REACT_APP_SPRING_API_URL}/api/posts`, {
             params: {
                 page: currentPage - 1,
@@ -88,12 +103,11 @@ function Home() {
                 sort: 'id,DESC'
             }
         }).then(res => {
-            // const sortedPosts = res.data.content.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             setPosts(res.data.content);
             setTotalPages(res.data.totalPages);
         }).catch(err => {
             if (err.response) {
-                getmsg(err.response.data.message);
+                setMsg(err.response.data.message);
             } else {
                 console.error("요청 실패:", err);
             }
@@ -102,10 +116,10 @@ function Home() {
 
     useEffect(() => {
         if (id) {
-            // id가 빈 값이 아닐 때 실행할 로직
             getPostList();
         }
-    }, [id,currentPage, getPostList]);
+    }, [id, currentPage, getPostList]);
+
     const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
 
     const handlePageChange = (pageNumber) => {
@@ -122,14 +136,11 @@ function Home() {
             } else {
                 const baseHeight = 900;
                 const extraPerNews = 220;
-
-                const currentNews = posts.slice(0, 5); // ✅ 최대 5개로 제한
+                const currentNews = posts.slice(0, 5);
                 const visibleNewsCount = currentNews.length;
-
                 const height = visibleNewsCount === 0
                     ? baseHeight
                     : baseHeight + (visibleNewsCount - 1) * extraPerNews;
-
                 background.style.height = `${height}px`;
             }
         }

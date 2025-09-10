@@ -6,6 +6,7 @@ import SignUp from "./SignUp";
 import News from "./News";
 import MyPage from "./MyPage";
 import Home from "./Home";
+import OAuth2RedirectHandler from './OAuth2RedirectHandler';
 
 function App() {
     return (
@@ -18,6 +19,7 @@ function App() {
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/news" element={<News />} />
                 <Route path="/mypage" element={<MyPage />} />
+                <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
             </Routes>
         </Router>
     );

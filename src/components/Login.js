@@ -24,21 +24,47 @@ function Login() {
 
     const handleLogin = (e) => {
         e.preventDefault();
+
         const userData = {
             username: id,
-            password: password
+            password: password,
         };
+
+        console.log("Login 시도, 요청 바디:", userData);
 
         const url = `${process.env.REACT_APP_SPRING_API_URL}/api/login`;
 
         axios
-            .post(url, userData)
+            .post(url, userData, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
             .then((response) => {
-                alert(`${id}님 환영합니다!`);
-                navigate('/');
+                // 토큰은 보통 response.data.token 또는 response.headers['authorization']에 올 수 있음
+                let token = null;
+                if (response.data?.token) {
+                    token = response.data.token;
+                } else if (response.headers?.authorization) {
+                    token = response.headers.authorization;
+                } else if (response.headers?.Authorization) {
+                    token = response.headers.Authorization;
+                }
+
+                if (token) {
+                    // Bearer 토큰 형태라면 앞에 "Bearer " 제거
+                    if (token.startsWith("Bearer ")) {
+                        token = token.substring(7);
+                    }
+                    localStorage.setItem("jwtToken", token);
+                    alert(`${id}님 환영합니다!`);
+                    navigate("/");
+                } else {
+                    alert("로그인에 실패했습니다. 토큰이 없습니다.");
+                }
             })
             .catch((error) => {
-                const msg = error.response?.data || "로그인 실패";
+                const msg = error.response?.data?.message || "로그인 실패";
                 alert(msg);
             });
     };

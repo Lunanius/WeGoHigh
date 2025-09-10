@@ -197,3 +197,19 @@
     border: none;
     cursor: pointer;
 }
+.DeletePasswordBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    margin-top: 200px;
+    margin-right: 219px;
+    right: 50px;
+    width: 200px;
+    height: 100px;
+    background-color: deepskyblue;
+    border: 2px solid blue;
+    border-radius: 10px;
+    padding: 5px;
+    z-index: 1;
+}
