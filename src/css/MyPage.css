@@ -7,7 +7,7 @@
     height: 100%;
     position: absolute;
     z-index: -1;
-    background: url('/public/background.jpg') no-repeat;
+    background: url('/public/kanginlee.avif') no-repeat;
     background-attachment: fixed;
     background-size: cover;
     background-position: center center;
@@ -98,7 +98,13 @@
     display: flex;
     align-items: center;
     justify-content: end;
-    font-size: 24px;
+    font-size: 30px;
+    font-weight: bold;
+    text-shadow:
+            -1px -1px 0 black,
+            1px -1px 0 black,
+            -1px  1px 0 black,
+            1px  1px 0 black;
 }
 
 .MyPage-element-button{

@@ -63,7 +63,7 @@ function SignUp() {
                 email: email
             };
 
-            const url = `http://localhost:8080/api/signup`;
+            const url = `/api/signup`;
 
             axios
                 .post(url, userData)
@@ -85,7 +85,7 @@ function SignUp() {
         };
 
         console.log("보내는 ID:", userData.username);
-        axios.get(`http://localhost:8080/api/signup/IdCheck/${userData.username}`)
+        axios.get(`/api/signup/IdCheck/${userData.username}`)
             .then((response) =>{
                 if(response.data === true){
                     alert('사용 가능한 아이디입니다')
@@ -117,7 +117,7 @@ function SignUp() {
         const userData = {
             mail: email,
         };
-        const url = `http://localhost:8080/api/mailSend`;
+        const url = `/api/mailSend`;
 
         axios
             .post(url, userData)
@@ -146,7 +146,7 @@ function SignUp() {
             alert("인증 시간이 만료되었습니다. 다시 요청해주세요.");
             return;
         }
-        axios.get(`http://localhost:8080/api/mailCheck?authNum=${authNum}`)
+        axios.get(`/api/mailCheck?authNum=${authNum}`)
             .then((response) => {
                 alert(response.data); // "인증이 완료되었습니다."
                 setAuthCheck(true);
@@ -181,7 +181,7 @@ function SignUp() {
 
     return (
         <div className="SignUp">
-            <div className="SignUp-img"></div>
+            {/*<div className="SignUp-img"></div>*/}
             <header className="SignUp-header">
                 <div className="SignUp-home-container">
                     <button className="SignUp-home-button" type="button" onClick={() => navigate("/")}>

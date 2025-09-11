@@ -7,7 +7,7 @@
     height: 100%;
     position: absolute;
     z-index: -1;
-    background: url('/public/background.jpg') no-repeat;
+    background: url('/public/11.jpg') no-repeat;
     background-attachment: fixed;
     background-size: cover;
     background-position: center center;
@@ -187,7 +187,6 @@
     margin-top: 15px;
     font-size: 14px;
     cursor: pointer;
-    background-color: white;
-    border-radius: 2px;
-    border: black solid 1px;
+    background-color: transparent;
+    border: transparent;
 }

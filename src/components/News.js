@@ -33,7 +33,7 @@ function News() {
     }, [newsData]); // 뉴스 데이터가 바뀔 때마다 재계산
 
     useEffect(() => {
-        axios.get("http://localhost:8080/api/session-user", { withCredentials: true })
+        axios.get("/api/session-user", { withCredentials: true })
             .then(res => {
                 const user = res.data;
                 if (!user || !user.username) {
@@ -53,7 +53,7 @@ function News() {
         if (!url) return;
         setLoading(true);
 
-        axios.post("http://localhost:8080/api/parse-news", {
+        axios.post("/api/parse-news", {
             url,
             id: id || ""
         })
@@ -80,7 +80,7 @@ function News() {
     };
 
     const handleLogout = () => {
-        axios.post("http://localhost:8080/api/logout", {}, { withCredentials: true })
+        axios.post("/api/logout", {}, { withCredentials: true })
             .finally(() => {
                 setUserInfo(null);
                 id = "";

@@ -6,7 +6,7 @@
   width: 100%;
   position: absolute;
   z-index: -1;
-  background: url('/public/background.jpg') no-repeat;
+  background: url('/public/kanginlee.avif') no-repeat;
   background-attachment: fixed;
   background-size: cover;
   background-position: center center;
@@ -100,6 +100,13 @@
   font-weight: bold;
 }
 
+.Home-tail-login {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
 .Home-search-container{
   display: flex;
   flex-direction: row;
@@ -168,7 +175,7 @@
 
 /*검색기록 기능 추가 버전*/
 .Home-news-list{
-  margin-top: 30px;
+  margin-top: 20px;
   background: white;
   border-radius: 5px;
   border: black solid 2px;

@@ -38,7 +38,7 @@ function IdFind() {
                 email: email
             };
 
-            const url = `http://localhost:8080/api/IdFind`;
+            const url = `/api/IdFind`;
 
             axios
                 .post(url, userData)
@@ -56,7 +56,7 @@ function IdFind() {
 
     return (
         <div className="Find">
-            <div className="Find-img"></div>
+            {/*<div className="Find-img"></div>*/}
             <header className="Find-header">
                 <div className="Find-home-container">
                     <button className="Find-home-button" type="button" onClick={() => navigate("/")}>

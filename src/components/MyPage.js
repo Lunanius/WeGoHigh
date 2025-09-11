@@ -15,9 +15,9 @@ function MyPage() {
 
     useEffect(() => {
 
-        axios.get("http://localhost:8080/api/session-user", { withCredentials: true })
+        axios.get("/api/session-user", { withCredentials: true })
             .then(res => {
-                axios.get(`http://localhost:8080/api/userData/${res.data.username}`)
+                axios.get(`/api/userData/${res.data.username}`)
                     .then((response) => {
                         setName(response.data.name)
                         setBirthDate(response.data.birthDate)
@@ -39,7 +39,7 @@ function MyPage() {
     }, [navigate]);
 
     const handleLogout = () => {
-        axios.post("http://localhost:8080/api/logout", {}, { withCredentials: true })
+        axios.post("/api/logout", {}, { withCredentials: true })
             .finally(() => {
                 setName(null);
                 setBirthDate(null);
@@ -61,7 +61,7 @@ function MyPage() {
                 password: newPassword
             };
 
-            const url = `http://localhost:8080/api/newPw`;
+            const url = `/api/newPw`;
 
             axios
                 .post(url,userData)

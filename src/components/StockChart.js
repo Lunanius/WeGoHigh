@@ -32,7 +32,7 @@ const StockChart = ({ ticker }) => {
             return;
         }
 
-        fetch(`http://localhost:8000/stock-data/by-name?company_name=${ticker}`)
+        fetch(`/stock-data/by-name?company_name=${ticker}`)
             .then((res) => {
                 if (!res.ok) throw new Error("응답 오류");
                 return res.json();
@@ -80,7 +80,7 @@ const StockChart = ({ ticker }) => {
     };
 
     return (
-        <div style={{ width: "950px", height: "100%" }}>
+        <div style={{ width: "100%", height: "100%" }}>
             <Line data={chartData} options={options} />
         </div>
     );

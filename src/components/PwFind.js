@@ -44,7 +44,7 @@ function PwFind() {
                 username: id
             };
 
-            const url = `http://localhost:8080/api/pwFind`;
+            const url = `/api/pwFind`;
 
             axios
                 .post(url, userData)
@@ -72,7 +72,7 @@ function PwFind() {
 
     return (
         <div className="Find">
-            <div className="Find-img"></div>
+            {/*<div className="Find-img"></div>*/}
             <header className="Find-header">
                 <div className="Find-home-container">
                     <button className="Find-home-button" type="button" onClick={() => navigate("/")}>

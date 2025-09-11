@@ -47,7 +47,7 @@ function Login() {
             password: password
         };
 
-        const url = `http://localhost:8080/api/login`;
+        const url = `/api/login`;
 
         axios.defaults.withCredentials = true;
         axios
@@ -67,7 +67,7 @@ function Login() {
 
     return (
         <div className="Login">
-            <div className="Login-img"></div>
+            {/*<div className="Login-img"></div>*/}
             <header className="Login-header">
                 <div className="Login-home-container">
                     <button className="Login-home-button" type="button" onClick={() => navigate("/")}>

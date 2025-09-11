@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import '../css/Home.css';
 import axios from "axios";
 
+axios.defaults.withCredentials = true;
 
 function Home() {
     const navigate = useNavigate();
@@ -10,8 +11,8 @@ function Home() {
     const [userInfo, setUserInfo] = useState(null);
     const [urlInput, setUrlInput] = useState("");
     const [id, setId] = useState("");
-    const [posts,setPosts] = useState([]);
-    const [msg,getmsg] = useState("");
+    const [posts, setPosts] = useState([]);
+    const [msg, setMsg] = useState("");
     const postsPerPage = 5;
     const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
@@ -21,13 +22,14 @@ function Home() {
     const [error, setError] = useState(null);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [period, setPeriod] = useState("daily");
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const profileToggleBox = () => {
         setProfileBox(!profileBox);
     };
 
     useEffect(() => {
-        axios.get("http://localhost:8080/api/session-user", { withCredentials: true })
+        axios.get("/api/session-user", { withCredentials: true })
             .then(res => {
                 const user = res.data;
                 if (!user || !user.username) {
@@ -37,7 +39,7 @@ function Home() {
                 }
 
                 setUserInfo(user);
-                return axios.get(`http://localhost:8080/api/userData/${user.username}`);
+                return axios.get(`/api/userData/${user.username}`);
             })
             .then(response => {
                 if (response) {
@@ -52,7 +54,7 @@ function Home() {
     }, []);
 
     const handleLogout = () => {
-        axios.post("http://localhost:8080/api/logout", {}, { withCredentials: true })
+        axios.post("/api/logout", {}, { withCredentials: true })
             .finally(() => {
                 setUserInfo(null);
                 setId("");
@@ -79,7 +81,7 @@ function Home() {
         navigate("/news", { state: { url: urlInput, id: id } });
     };
     const getPostList = useCallback(() => {
-        axios.get("http://localhost:8080/api/posts", {
+        axios.get("/api/posts", {
             params: {
                 page: currentPage - 1,
                 size: postsPerPage,
@@ -119,7 +121,7 @@ function Home() {
             if (!isLogin) {
                 background.style.height = '900px';
             } else {
-                const baseHeight = 850;
+                const baseHeight = 900;
                 const extraPerNews = 220;
 
                 const currentNews = posts.slice(0, 5); // ✅ 최대 5개로 제한
@@ -137,7 +139,7 @@ function Home() {
     const fetchRanking = async (period = "daily") => {
         try {
             setLoading(true);
-            const response = await axios.get(`http://localhost:8080/api/ranking?period=${period}`);
+            const response = await axios.get(`/api/ranking?period=${period}`);
             setRankings(response.data);
             setError(null);
         } catch (err) {
@@ -269,7 +271,11 @@ function Home() {
 
                         {!msg && (
                             <>
+                                <p className="Home-tail-login">
+                                    최대 30개까지 5페이지로 나누어 표시됩니다.
+                                </p>
                                 <div className="Home-news-list">
+
                                     {posts.map(post => (
                                         <div key={post.id} className="Home-news-container">
                                             <div className="Home-news-img-container">

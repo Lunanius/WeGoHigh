@@ -2,22 +2,22 @@
     text-align: center;
 }
 
-.Find-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: black;
-}
-
 .Find-img{
     width: 100%;
     height: 100%;
     position: absolute;
     z-index: -1;
-    background: url('/public/background.jpg') no-repeat;
+    background: url('/public/11.jpg') no-repeat;
     background-attachment: fixed;
     background-size: cover;
     background-position: center center;
+}
+
+.Find-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: black;
 }
 
 .Find-home-container{
