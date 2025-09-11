@@ -7,6 +7,7 @@ function MyPage() {
     const navigate = useNavigate();
     const [newPassword, setNewPassword] = useState("");
     const [resetPasswordBox, setResetPasswordBox] = useState(false);
+    const [DeletePasswordBox, setDeletePasswordBox] = useState(false);
     const [profileBox, setProfileBox] = useState(false);
     const [name, setName] = useState(null);
     const [birthDate, setBirthDate] = useState(null);
@@ -41,12 +42,35 @@ function MyPage() {
     const handleLogout = () => {
         axios.post("/api/logout", {}, { withCredentials: true })
             .finally(() => {
+                localStorage.removeItem("jwtToken");
+                delete axios.defaults.headers.common.Authorization;
+
                 setName(null);
                 setBirthDate(null);
                 setId(null);
-
                 setProfileBox(false);
                 navigate("/");
+            });
+    };
+    const handleDeleteUser = () => {
+
+        const userData = {
+            username: id,
+            password: newPassword
+        };
+        console.log(userData);
+
+        const url = `${process.env.REACT_APP_SPRING_API_URL}/api/deleteUser`;
+        axios
+            .delete(url,{ data: userData })
+            .then((response) => {
+
+                alert("삭제되었습니다. 저희에겐 정말 뜻깊은 시간이였습니다\n 감사합니다.")
+                handleLogout()
+            })
+            .catch((error) => {
+                const msg = error.response?.data || '입니다';
+                alert(msg);
             });
     };
 
@@ -61,7 +85,7 @@ function MyPage() {
                 password: newPassword
             };
 
-            const url = `/api/newPw`;
+            const url = `${process.env.REACT_APP_SPRING_API_URL}/api/newPw`;
 
             axios
                 .post(url,userData)
@@ -69,7 +93,6 @@ function MyPage() {
 
                     alert("갱신되었습니다\n 다시 로그인해주세요")
                     handleLogout()
-                    navigate('/')
                 })
                 .catch((error) => {
                     const msg = error.response?.data || '입니다';
@@ -77,6 +100,7 @@ function MyPage() {
                 });
         }
     }
+
 
     const profileToggleBox = () => {
         setProfileBox(!profileBox);
@@ -86,6 +110,11 @@ function MyPage() {
         setResetPasswordBox(!resetPasswordBox)
         setNewPassword("");
     };
+    const DeletePasswordToggleBox = () => {
+        setDeletePasswordBox(!DeletePasswordBox)
+        setNewPassword("");
+    };
+
 
     return (
         <div className="MyPage">
@@ -169,6 +198,26 @@ function MyPage() {
                         <div className="MyPage-element-value">
                             <p>{email}</p>
                         </div>
+                    </div>
+                    <div className="MyPage-container-element">
+                        <div className="MyPage-element">
+                            <p>회원 탈퇴</p>
+                        </div>
+                        <div className="MyPage-element-value">
+                            <button className="MyPage-element-button" onClick={DeletePasswordToggleBox}>변경</button>
+                        </div>
+                        {DeletePasswordBox && (
+                            <div className="DeletePasswordBox" id="myBox">
+                                <input
+                                    className="Reset-password-textbox"
+                                    type="password"
+                                    value={newPassword}
+                                    onChange={(e) => setNewPassword(e.target.value)}
+                                    placeholder="비밀번호 입력"/>
+                                <button className="PasswordBox-button" onClick={handleDeleteUser}>비밀번호 입력</button>
+                            </div>
+                        )}
+
                     </div>
 
                 </div>
