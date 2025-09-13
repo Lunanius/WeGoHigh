@@ -32,7 +32,7 @@ const StockChart = ({ ticker }) => {
             return;
         }
 
-        fetch(`/stock-data/by-name?company_name=${ticker}`)
+        fetch(`${process.env.REACT_APP_FASTAPI_URL}/stock-data/by-name?company_name=${ticker}`)
             .then((res) => {
                 if (!res.ok) throw new Error("응답 오류");
                 return res.json();

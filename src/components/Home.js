@@ -32,7 +32,7 @@ function Home() {
             // console.log(`Bearer ${token}`);
             axios.defaults.headers.common.Authorization = `Bearer ${token}`;
             // 토큰 있으면 로그인 상태 판단 및 유저 정보 가져오기
-            axios.get("/api/session-user", { withCredentials: true })
+            axios.get(`${process.env.REACT_APP_SPRING_API_URL}/api/session-user`)
                 .then(res => {
                     const user = res.data;
                     if (!user || !user.username) {
@@ -63,7 +63,8 @@ function Home() {
     };
 
     const handleLogout = () => {
-        axios.post("/api/logout", {}, { withCredentials: true })
+        // 로그아웃 API 호출 후 토큰 제거 및 상태 초기화
+        axios.post(`${process.env.REACT_APP_SPRING_API_URL}/api/logout`, {}, { withCredentials: true })
             .finally(() => {
                 localStorage.removeItem("jwtToken");
                 delete axios.defaults.headers.common.Authorization;
@@ -94,7 +95,7 @@ function Home() {
 
     const getPostList = useCallback(() => {
         if (!id) return;
-        axios.get("/api/posts", {
+        axios.get(`${process.env.REACT_APP_SPRING_API_URL}/api/posts`, {
             params: {
                 page: currentPage - 1,
                 size: postsPerPage,
@@ -148,7 +149,7 @@ function Home() {
     const fetchRanking = async (period = "daily") => {
         try {
             setLoading(true);
-            const response = await axios.get(`/api/ranking?period=${period}`);
+            const response = await axios.get(`${process.env.REACT_APP_SPRING_API_URL}/api/ranking?period=${period}`);
             setRankings(response.data);
             setError(null);
         } catch (err) {

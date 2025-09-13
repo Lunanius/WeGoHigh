@@ -33,7 +33,7 @@ function News() {
     }, [newsData]); // 뉴스 데이터가 바뀔 때마다 재계산
 
     useEffect(() => {
-        axios.get("/api/session-user", { withCredentials: true })
+        axios.get("${process.env.REACT_APP_SPRING_API_URL}/api/session-user", { withCredentials: true })
             .then(res => {
                 const user = res.data;
                 if (!user || !user.username) {
@@ -53,7 +53,7 @@ function News() {
         if (!url) return;
         setLoading(true);
 
-        axios.post("/api/parse-news", {
+        axios.post("${process.env.REACT_APP_SPRING_API_URL}/api/parse-news", {
             url,
             id: id || ""
         })
@@ -80,7 +80,7 @@ function News() {
     };
 
     const handleLogout = () => {
-        axios.post("/api/logout", {}, { withCredentials: true })
+        axios.post("${process.env.REACT_APP_SPRING_API_URL}/api/logout", {}, { withCredentials: true })
             .finally(() => {
                 setUserInfo(null);
                 id = "";

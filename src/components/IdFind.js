@@ -38,7 +38,7 @@ function IdFind() {
                 email: email
             };
 
-            const url = `/api/IdFind`;
+            const url = `${process.env.REACT_APP_SPRING_API_URL}/api/IdFind`;
 
             axios
                 .post(url, userData)

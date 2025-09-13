@@ -63,7 +63,7 @@ function SignUp() {
                 email: email
             };
 
-            const url = `/api/signup`;
+            const url = `${process.env.REACT_APP_SPRING_API_URL}/api/signup`;
 
             axios
                 .post(url, userData)
@@ -85,7 +85,7 @@ function SignUp() {
         };
 
         console.log("보내는 ID:", userData.username);
-        axios.get(`/api/signup/IdCheck/${userData.username}`)
+        axios.get(`${process.env.REACT_APP_SPRING_API_URL}/api/signup/IdCheck/${userData.username}`)
             .then((response) =>{
                 if(response.data === true){
                     alert('사용 가능한 아이디입니다')
@@ -117,7 +117,7 @@ function SignUp() {
         const userData = {
             mail: email,
         };
-        const url = `/api/mailSend`;
+        const url = `${process.env.REACT_APP_SPRING_API_URL}/api/mailSend`;
 
         axios
             .post(url, userData)
@@ -146,7 +146,7 @@ function SignUp() {
             alert("인증 시간이 만료되었습니다. 다시 요청해주세요.");
             return;
         }
-        axios.get(`/api/mailCheck?authNum=${authNum}`)
+        axios.get(`${process.env.REACT_APP_SPRING_API_URL}/api/mailCheck?authNum=${authNum}`)
             .then((response) => {
                 alert(response.data); // "인증이 완료되었습니다."
                 setAuthCheck(true);

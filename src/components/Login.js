@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import "../css/Login.css";
 import axios from "axios";
 
-
 axios.defaults.withCredentials = true;
 
 function Login() {
@@ -33,7 +32,7 @@ function Login() {
 
         console.log("Login 시도, 요청 바디:", userData);
 
-        const url = `/api/login`;
+        const url = `${process.env.REACT_APP_SPRING_API_URL}/api/login`;
 
         axios
             .post(url, userData, {
@@ -72,7 +71,7 @@ function Login() {
 
     // OAuth2 로그인 버튼 클릭 시 브라우저 리다이렉트
     const handleOAuthLogin = (provider) => {
-        window.location.href = `http://localhost:8080/oauth2/authorization/${provider}`;
+        window.location.href = `${process.env.REACT_APP_SPRING_API_URL}/oauth2/authorization/${provider}`;
 
 
     };

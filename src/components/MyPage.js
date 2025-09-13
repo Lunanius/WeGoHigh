@@ -16,9 +16,9 @@ function MyPage() {
 
     useEffect(() => {
 
-        axios.get("/api/session-user", { withCredentials: true })
+        axios.get(`${process.env.REACT_APP_SPRING_API_URL}/api/session-user`, { withCredentials: true })
             .then(res => {
-                axios.get(`/api/userData/${res.data.username}`)
+                axios.get(`${process.env.REACT_APP_SPRING_API_URL}/api/userData/${res.data.username}`)
                     .then((response) => {
                         setName(response.data.name)
                         setBirthDate(response.data.birthDate)
@@ -40,7 +40,7 @@ function MyPage() {
     }, [navigate]);
 
     const handleLogout = () => {
-        axios.post("/api/logout", {}, { withCredentials: true })
+        axios.post(`${process.env.REACT_APP_SPRING_API_URL}/api/logout`, {}, { withCredentials: true })
             .finally(() => {
                 localStorage.removeItem("jwtToken");
                 delete axios.defaults.headers.common.Authorization;

@@ -44,7 +44,7 @@ function PwFind() {
                 username: id
             };
 
-            const url = `/api/pwFind`;
+            const url = `${process.env.REACT_APP_SPRING_API_URL}/api/pwFind`;
 
             axios
                 .post(url, userData)
