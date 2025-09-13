@@ -1,0 +1,55 @@
+package com.mysite.sbb.user;
+
+
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.Date;
+
+@Service
+@RequiredArgsConstructor
+public class UserService {
+
+
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public void joinUser(SiteUser user) {
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new IllegalArgumentException("이미 등록된 이메일입니다.");
+        }
+        String rawPassword = user.getPassword();
+        String encPassword = passwordEncoder.encode(rawPassword);
+        System.out.println("비밀번호 인코딩:" + encPassword);
+        user.setPassword(encPassword);
+        userRepository.save(user);
+    }
+
+    public SiteUser getUserInfo(String name, Date birthDate) {
+        return userRepository.findByNameAndBirthDate(name,birthDate);
+    }
+
+    public boolean checkUsernameDuplicate(String loginId) {
+        return userRepository.existsByUsername(loginId);
+    }
+
+    public SiteUser findByUsername(String username) {
+        return userRepository.findByUsername(username).orElse(null);
+    }
+    public SiteUser findByNameAndBirthDateAndEmail(String name, Date birthDate,String email) {
+        return userRepository.findByNameAndBirthDateAndEmail(name,birthDate,email);
+    }
+    public SiteUser findByNameAndBirthDateAndUsername(String name, Date birthDate, String username) {
+        return userRepository.findByNameAndBirthDateAndUsername(name,birthDate,username);
+    }
+
+
+
+
+}
