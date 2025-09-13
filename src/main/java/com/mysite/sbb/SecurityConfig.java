@@ -3,6 +3,11 @@ package com.mysite.sbb;
 
 import com.mysite.sbb.user.Oauth.OAuth2LoginSuccessHandler;
 import com.mysite.sbb.user.Oauth.PrincipalOauth2UserService;
+import com.mysite.sbb.user.UserRepository;
+import com.mysite.sbb.user.jwt.JwtAuthenticationFilter;
+import com.mysite.sbb.user.jwt.JwtAuthorizationFilter;
+import com.mysite.sbb.user.jwt.JwtTokenProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,31 +15,66 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
+
 public class SecurityConfig {
     private final PrincipalOauth2UserService principalOauth2UserService;
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+//    private final UserRepository userRepository;
+    private final AuthenticationConfiguration authenticationConfiguration;
+    private final UserDetailsService userDetailsService;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    public SecurityConfig(PrincipalOauth2UserService principalOauth2UserService, OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler) {
+    public SecurityConfig(UserDetailsService userDetailsService, /*UserRepository  userRepository,*/ PrincipalOauth2UserService principalOauth2UserService,
+                          OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler, AuthenticationConfiguration authenticationConfiguration,
+                          JwtTokenProvider jwtTokenProvider) {
         this.principalOauth2UserService = principalOauth2UserService;
         this.oAuth2LoginSuccessHandler = oAuth2LoginSuccessHandler;
+        this.jwtTokenProvider = jwtTokenProvider;
+        /*this.userRepository = userRepository;*/
+        this.userDetailsService = userDetailsService;
+        this.authenticationConfiguration = authenticationConfiguration;
     }
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public AuthenticationManager authenticationManager() throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
+
+    @Bean
+    SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager, CorsConfigurationSource corsConfigurationSource) throws Exception {
+
         http
-                .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
                 .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .authorizeHttpRequests(auth -> auth.requestMatchers(
+//                        new AntPathRequestMatcher("/api/signup"),
+//                        new AntPathRequestMatcher("/api/oauth2/**"),
+//                        new AntPathRequestMatcher("/api/login")
+//                ).permitAll().anyRequest().authenticated())
+                .cors(cors -> cors.configurationSource((CorsConfigurationSource) corsConfigurationSource()))
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest().permitAll()  // 모든 요청 인증 없이 허용
+                )
+                .addFilterAt(new JwtAuthenticationFilter(authenticationManager, jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthorizationFilter(authenticationManager, userDetailsService), UsernamePasswordAuthenticationFilter.class)
                 .oauth2Login(oauth2 -> oauth2
                         .failureHandler((request, response, exception) -> {
                             String errorMessage = exception.getMessage();
@@ -60,7 +100,7 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
     @Bean
-    public CorsFilter corsFilter() {
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.addAllowedOrigin("http://localhost:3000");  // 로컬 React
@@ -68,9 +108,12 @@ public class SecurityConfig {
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
 
+        // Authorization 헤더를 클라이언트가 접근할 수 있도록 노출
+        config.setExposedHeaders(List.of("Authorization"));
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
 
-        return new CorsFilter(source);
+        return source;
     }
 }

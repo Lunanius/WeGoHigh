@@ -30,6 +30,10 @@ public class UserService {
         user.setPassword(encPassword);
         userRepository.save(user);
     }
+    public void deleteUser(String username) {
+        SiteUser deleteId = userRepository.findByUsername(username);
+        userRepository.delete(deleteId);
+    }
 
     public SiteUser getUserInfo(String name, Date birthDate) {
         return userRepository.findByNameAndBirthDate(name,birthDate);

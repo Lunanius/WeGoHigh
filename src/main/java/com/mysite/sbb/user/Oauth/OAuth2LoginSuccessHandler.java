@@ -1,6 +1,9 @@
 package com.mysite.sbb.user.Oauth;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.mysite.sbb.user.SiteUser;
+import com.mysite.sbb.user.jwt.JwtTokenProvider;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -10,26 +13,33 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Date;
 
 @Component
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
+    private final JwtTokenProvider jwtTokenProvider;
+
+    public OAuth2LoginSuccessHandler(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        // 인증된 Principal 객체를 가져옵니다.
-        // PrincipalOauth2UserService에서 반환한 PrincipalDetails 객체
-        Object principal = authentication.getPrincipal();
-        PrincipalDetails principalDetails = (PrincipalDetails) principal;
-        SiteUser siteUser = principalDetails.getSiteUser();
-        // HttpSession에 "loginUser"라는 이름으로 SiteUser 객체를 저장합니다.
-        // 이렇게 하면 일반 로그인과 동일하게 React의 /api/session-user에서 접근 가능.
-        HttpSession session = request.getSession();
-        session.setAttribute("loginUser", siteUser);
-        System.out.println("OAuth2 로그인 성공: " + siteUser.getUsername());
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+//        SiteUser siteUser = principalDetails.getSiteUser();
 
-        // 로그인 성공 후 React 앱의 홈 페이지로 리다이렉션합니다.
-        // 이 리다이렉션을 통해 React 앱이 세션 쿠키를 받고 로그인 상태를 확인하게 됩니다.
-        response.sendRedirect("http://localhost:3000/");
+        // JWT 토큰 생성 (예: 사용자 ID 기준)
+        String token = jwtTokenProvider.createToken(principalDetails.getUsername());
+
+
+        // 필요하면 세션에 저장도 가능 (기존 코드 유지)
+//        HttpSession session = request.getSession();
+//        session.setAttribute("loginUser", siteUser);
+
+        System.out.println("OAuth2 로그인 성공: " + principalDetails.getUsername());
+
+        String redirectUrl = "http://localhost:3000/oauth2/redirect?token=" + token;
+        response.sendRedirect(redirectUrl);
     }
 
 }

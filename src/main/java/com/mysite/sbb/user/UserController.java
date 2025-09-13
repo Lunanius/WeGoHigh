@@ -2,6 +2,7 @@ package com.mysite.sbb.user;
 
 import com.mysite.sbb.fastapi.FastApiEntity;
 import com.mysite.sbb.fastapi.FastApiService;
+import com.mysite.sbb.user.Oauth.PrincipalDetails;
 import com.mysite.sbb.util.ConversionUtil;
 import com.mysite.sbb.util.PasswordRandom;
 import jakarta.servlet.ServletResponse;
@@ -55,67 +56,76 @@ public class UserController {
                     .body(e.getMessage()); // "이미 등록된 이메일입니다."
         }
     }
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, Object> map, HttpSession session) {
-        // 1. 사용자 정보 조회
+//    @PostMapping("/login")
+//    public ResponseEntity<?> login(@RequestBody Map<String, Object> map, HttpSession session) {
+//        // 1. 사용자 정보 조회
+//
+//        String username = map.get("username").toString();
+//        String password = map.get("password").toString();
+//
+//
+//        SiteUser user = userService.findByUsername(username);
+//
+//
+//        if (user == null) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("존재하지 않는 사용자");
+//        }
+//
+//        // 2. 비밀번호 비교
+//        if (passwordEncoder.matches(password, user.getPassword())) {
+//            // 로그인 성공
+//            session.setAttribute("loginUser", user);
+//
+//
+//
+//
+//            return ResponseEntity.ok("로그인 성공");
+//        } else {
+//            // 비밀번호 틀림
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 틀렸습니다");
+//        }
+//   }
 
-        String username = map.get("username").toString();
-        String password = map.get("password").toString();
-
-
-        SiteUser user = userService.findByUsername(username);
-
-
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("존재하지 않는 사용자");
-        }
-
-        // 2. 비밀번호 비교
-        if (passwordEncoder.matches(password, user.getPassword())) {
-            // 로그인 성공
-            session.setAttribute("loginUser", user);
-
-
-
-
-            return ResponseEntity.ok("로그인 성공");
-        } else {
-            // 비밀번호 틀림
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 틀렸습니다");
-        }
-   }
-    @GetMapping("/test/oauth/login")
-    public @ResponseBody String loginTest(Authentication authentication, @AuthenticationPrincipal OAuth2User oAuth) { // DI(의존성 주입)
-        System.out.println("/test/logining====================");
-        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
-        System.out.println("authentication: " + oAuth2User.getAttributes());
-        System.out.println("oAuth2User.getAttributes(): " + oAuth.getAttributes());
-        return "세션 정보 확인하기";
-    }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if(session != null) {
-            session.invalidate();  // 세션 무효화
-        } // 세션 무효화
-        return ResponseEntity.ok("로그아웃 성공");
+    public ResponseEntity<?> logout(HttpServletResponse response) {
+        // 쿠키에 JWT 넣었다면 쿠키 만료 처리 예시
+        Cookie cookie = new Cookie("Authorization", null);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0); // 즉시 만료
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok("로그아웃 완료");
+    }
+
+    @DeleteMapping("/deleteUser")
+    public ResponseEntity<?> deleteUser(@RequestBody Map<String, Object> map) {
+        String username = map.get("username").toString();
+        String password = map.get("password").toString();
+        SiteUser user = userRepository.findByUsername(username);
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호 불일치");
+        }
+        userService.deleteUser(username);
+        return ResponseEntity.ok("삭제 완료");
     }
 
     @GetMapping("/session-user")
-    public ResponseEntity<?> getSessionUser(HttpSession session) {
-        SiteUser user = (SiteUser) session.getAttribute("loginUser");
-
-        if (user == null) {
+    public ResponseEntity<?> getSessionUser(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        System.out.println("실행 중" + principalDetails);
+        if (principalDetails == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 안 되어 있음");
         }
 
         return ResponseEntity.ok(Map.of(
-                "username", user.getUsername()
+                "username", principalDetails.getUsername()
         ));
     }
     @GetMapping("/oauth2/session-user")
     public ResponseEntity<?> getOAuth2SessionUser(Authentication authentication) {
+        System.out.println("실행 중");
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 안 되어 있음");
         }
@@ -124,7 +134,8 @@ public class UserController {
 
         if (principal instanceof OAuth2User oauthUser) {
             return ResponseEntity.ok(oauthUser.getAttributes()); // 필요한 정보만 추려서 줄 수도 있음
-        } else {
+        }
+        else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("OAuth2 로그인 사용자 아님");
         }
     }
@@ -222,6 +233,8 @@ public class UserController {
         Page<FastApiEntity> posts = fastApiService.getUserById(username, pageable);
         return ResponseEntity.ok(posts);
     }
+
+
 
 
 }

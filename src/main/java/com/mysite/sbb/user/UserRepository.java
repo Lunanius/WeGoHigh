@@ -24,4 +24,5 @@ public interface UserRepository extends JpaRepository<SiteUser, Long> {
     SiteUser findByNameAndBirthDate(String name, java.sql.Date birthDate);
 
     SiteUser findByEmail(String email);
+
 }
