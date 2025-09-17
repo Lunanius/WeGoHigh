@@ -63,7 +63,21 @@ public class SecurityConfig {
 //                        new AntPathRequestMatcher("/api/oauth2/**"),
 //                        new AntPathRequestMatcher("/api/login")
 //                ).permitAll().anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth
+                         .requestMatchers( "/api/signup/**",
+                                 "/api/IdFind",
+                                 "/api/pwFind",
+                                 "/api/login",
+                                 "/api/oauth2/**",
+                                 "/api/parse-news",
+                                 "/api/ranking",
+                                 "/api/mailCheck",
+                                 "/api/mailSend",
+                                 "/api/session-user",
+                                 "/api/oauth2/session-user")
+                        .permitAll().anyRequest().hasRole("USER") )
                 .cors(cors -> cors.configurationSource((CorsConfigurationSource) corsConfigurationSource()))
+
 
                 .addFilterAt(new JwtAuthenticationFilter(authenticationManager, jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JwtAuthorizationFilter(authenticationManager, userDetailsService), UsernamePasswordAuthenticationFilter.class)
