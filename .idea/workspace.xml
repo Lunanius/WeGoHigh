@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a91da593-e2d7-4cd8-bec6-8081f1428a4d" name="변경" comment="로그인&#10;비밀번호 랜덤하게 줘서 sql에 삽입 구현완료&#10;추가로 확인을 누르면 비번 복사되게 구현하였음&#10;아이디 찾기 구현완료">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/mysite/sbb/Ad/AdController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/components/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/src/components/Home.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/components/MyPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/src/components/MyPage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/components/News.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/src/components/News.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/frontend/src/components/setupTests.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/src/components/setupTests.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mysite/sbb/jwt/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mysite/sbb/jwt/JwtAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mysite/sbb/jwt/JwtTokenProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mysite/sbb/jwt/JwtTokenProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mysite/sbb/jwt/Oauth/PrincipalDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mysite/sbb/jwt/Oauth/PrincipalDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mysite/sbb/jwt/Oauth/PrincipalDetailsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mysite/sbb/jwt/Oauth/PrincipalDetailsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mysite/sbb/jwt/Oauth/PrincipalOauth2UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mysite/sbb/jwt/Oauth/PrincipalOauth2UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mysite/sbb/user/Role/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mysite/sbb/user/Role/Role.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/mysite/sbb/user/Role/RoleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/mysite/sbb/user/Role/RoleRepository.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" show_ignored="true">
+    <option name="groupingKeys">
+      <option value="module" />
+      <option value="repository" />
+    </option>
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="sbb" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="sbb" type="f1a62948:ProjectNode" />
+                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+        <option value="Spring Repository" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/src/main/frontend" />
+    <option name="ROOT_SYNC" value="SYNC" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Leesn465&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Leesn465/sbb.git&quot;,
+    &quot;accountId&quot;: &quot;cf259431-cba4-4053-98b4-1abbc34bda73&quot;
+  }
+}</component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2vDoOp6lkFg5IQJPsVG2ec1EHFv" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Downloaded.Files.Path.Enabled": "false",
+    "Gradle.SbbApplicationTests.executor": "Run",
+    "Gradle.SbbApplicationTests.testJpa.executor": "Debug",
+    "Gradle.sbb [dependencies].executor": "Run",
+    "Gradle.sbb 빌드.executor": "Run",
+    "Gradle.소스 다운로드.executor": "Run",
+    "JUnit.SbbApplicationTests.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.SbbApplication.executor": "Run",
+    "git-widget-placeholder": "Lees__frontend",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Lee/Desktop/캡스톤 자료/sbb",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "모듈",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "settings.sync",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2025.1.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\ysw97\OneDrive\바탕 화면\study\sbb\src\main\frontend\public" />
+      <recent name="C:\Users\ysw97\OneDrive\바탕 화면\study\sbb\src\main\frontend\src\css" />
+      <recent name="C:\Users\ysw97\OneDrive\바탕 화면\study\sbb\src\main\java\com\mysite\sbb" />
+      <recent name="C:\Users\ysw97\OneDrive\바탕 화면\study\sbb\src\main\frontend" />
+      <recent name="C:\Users\ysw97\OneDrive\바탕 화면\study\sbb\src\main\frontend\src" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Lee\Desktop\캡스톤 자료\sbb\src\main\frontend\public" />
+      <recent name="C:\Users\ysw97\OneDrive\바탕 화면\study\sbb\src\main\frontend\public" />
+      <recent name="C:\Users\ysw97\OneDrive\바탕 화면\study\sbb\src\main\frontend\src\components" />
+      <recent name="C:\Users\ysw97\OneDrive\바탕 화면\study\sbb\src\main\frontend\src" />
+      <recent name="C:\Users\ysw97\OneDrive\바탕 화면\study\sbb\src\main\frontend" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.mysite.sbb.user.Oauth.OAuth2UserInfo" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.SbbApplication">
+    <configuration name="SbbApplicationTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;com.mysite.sbb.SbbApplicationTests&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="SbbApplicationTests.testJpa" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;com.mysite.sbb.SbbApplicationTests.testJpa&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="sbb [dependencies]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="dependencies" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="SbbApplicationTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="sbb.test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.mysite.sbb.config.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.mysite.sbb" />
+      <option name="MAIN_CLASS_NAME" value="com.mysite.sbb.SbbApplicationTests" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SbbApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="sbb.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.mysite.sbb.SbbApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Gradle.sbb [dependencies]" />
+        <item itemvalue="JUnit.SbbApplicationTests" />
+        <item itemvalue="Gradle.SbbApplicationTests" />
+        <item itemvalue="Gradle.SbbApplicationTests.testJpa" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.26927.53" />
+        <option value="bundled-js-predefined-d6986cc7102b-09060db00ec0-JavaScript-IU-251.26927.53" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="애플리케이션 수준" UseSingleDictionary="true" transferred="true" />
+  <component name="StructureViewState">
+    <option name="selectedTab" value="논리" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="디폴트 작업">
+      <changelist id="a91da593-e2d7-4cd8-bec6-8081f1428a4d" name="변경" comment="" />
+      <created>1743688977411</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1743688977411</updated>
+      <workItem from="1743688978400" duration="2774000" />
+      <workItem from="1743691789624" duration="3228000" />
+      <workItem from="1743778395722" duration="668000" />
+      <workItem from="1743782683703" duration="11000" />
+      <workItem from="1743852234661" duration="15685000" />
+      <workItem from="1743915808886" duration="14651000" />
+      <workItem from="1744036168543" duration="1540000" />
+      <workItem from="1744121821743" duration="72000" />
+      <workItem from="1744122251564" duration="883000" />
+      <workItem from="1744123179817" duration="6668000" />
+      <workItem from="1744204302033" duration="3075000" />
+      <workItem from="1744208067750" duration="979000" />
+      <workItem from="1744251839385" duration="3393000" />
+      <workItem from="1744304569419" duration="5171000" />
+      <workItem from="1744366426552" duration="13775000" />
+      <workItem from="1744462577282" duration="5757000" />
+      <workItem from="1744471549789" duration="798000" />
+      <workItem from="1744534387960" duration="8802000" />
+      <workItem from="1745242054099" duration="692000" />
+      <workItem from="1745243171793" duration="1590000" />
+      <workItem from="1745293814673" duration="6244000" />
+      <workItem from="1745900648861" duration="9010000" />
+      <workItem from="1745927661481" duration="809000" />
+      <workItem from="1747054000447" duration="4504000" />
+      <workItem from="1747137733090" duration="6818000" />
+      <workItem from="1747195992899" duration="3472000" />
+      <workItem from="1747273821266" duration="2106000" />
+      <workItem from="1747742573131" duration="9105000" />
+      <workItem from="1748009446274" duration="10288000" />
+      <workItem from="1748080027015" duration="2776000" />
+      <workItem from="1748087792014" duration="3596000" />
+      <workItem from="1748098535615" duration="2131000" />
+      <workItem from="1748101650972" duration="740000" />
+      <workItem from="1748351013613" duration="12235000" />
+      <workItem from="1748428779057" duration="5135000" />
+      <workItem from="1748483761188" duration="5212000" />
+      <workItem from="1748777259632" duration="445000" />
+      <workItem from="1748777867819" duration="3478000" />
+      <workItem from="1748871538479" duration="2494000" />
+      <workItem from="1748874332394" duration="1225000" />
+      <workItem from="1748878173792" duration="1793000" />
+      <workItem from="1748930027356" duration="2404000" />
+      <workItem from="1748952418128" duration="6792000" />
+      <workItem from="1748959957291" duration="510000" />
+      <workItem from="1749186841506" duration="8118000" />
+      <workItem from="1749212120688" duration="2223000" />
+      <workItem from="1749222181554" duration="3830000" />
+      <workItem from="1749533184831" duration="6402000" />
+      <workItem from="1751904090641" duration="881000" />
+      <workItem from="1751968624867" duration="1827000" />
+      <workItem from="1754659104617" duration="11219000" />
+      <workItem from="1754746682959" duration="7320000" />
+      <workItem from="1754755498012" duration="1677000" />
+      <workItem from="1754831374759" duration="5662000" />
+      <workItem from="1754840522324" duration="54000" />
+      <workItem from="1754918106170" duration="5938000" />
+      <workItem from="1754924570123" duration="4007000" />
+      <workItem from="1755433189484" duration="3000" />
+      <workItem from="1756047272868" duration="5935000" />
+      <workItem from="1756130660068" duration="10730000" />
+      <workItem from="1756215733848" duration="1634000" />
+      <workItem from="1756737227943" duration="622000" />
+      <workItem from="1756906651034" duration="640000" />
+      <workItem from="1757093775428" duration="14000" />
+      <workItem from="1757258308186" duration="318000" />
+      <workItem from="1757340938677" duration="1502000" />
+      <workItem from="1757346156525" duration="1770000" />
+      <workItem from="1757515151739" duration="1068000" />
+      <workItem from="1757771583040" duration="735000" />
+      <workItem from="1757772334405" duration="9417000" />
+      <workItem from="1757783604510" duration="1793000" />
+      <workItem from="1757855653039" duration="117000" />
+      <workItem from="1757942366931" duration="1371000" />
+      <workItem from="1758033808405" duration="3111000" />
+      <workItem from="1758110526763" duration="13299000" />
+      <workItem from="1758124398235" duration="971000" />
+      <workItem from="1758126142223" duration="670000" />
+      <workItem from="1758127175179" duration="616000" />
+      <workItem from="1758200942177" duration="7033000" />
+      <workItem from="1758208994941" duration="722000" />
+      <workItem from="1758373587145" duration="4984000" />
+    </task>
+    <task id="LOCAL-00001" summary="zjalt">
+      <option name="closed" value="true" />
+      <created>1743867085736</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1743867085736</updated>
+    </task>
+    <task id="LOCAL-00002" summary="zjalt">
+      <option name="closed" value="true" />
+      <created>1743867537712</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1743867537712</updated>
+    </task>
+    <task id="LOCAL-00003" summary="zjalt">
+      <option name="closed" value="true" />
+      <created>1743867674266</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1743867674266</updated>
+    </task>
+    <task id="LOCAL-00004" summary="로그인&#10;비밀번호 랜덤하게 줘서 sql에 삽입 구현완료&#10;추가로 확인을 누르면 비번 복사되게 구현하였음&#10;아이디 찾기 구현완료">
+      <option name="closed" value="true" />
+      <created>1744129982137</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1744129982137</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="zjalt" />
+    <MESSAGE value="로그인&#10;비밀번호 랜덤하게 줘서 sql에 삽입 구현완료&#10;추가로 확인을 누르면 비번 복사되게 구현하였음&#10;아이디 찾기 구현완료" />
+    <option name="LAST_COMMIT_MESSAGE" value="로그인&#10;비밀번호 랜덤하게 줘서 sql에 삽입 구현완료&#10;추가로 확인을 누르면 비번 복사되게 구현하였음&#10;아이디 찾기 구현완료" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/main/frontend/src/index.js</url>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/mysite/sbb/jwt/Oauth/OAuth2LoginSuccessHandler.java</url>
+          <line>25</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/mysite/sbb/Ad/AdService.java</url>
+          <line>18</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/sbb$SbbApplicationTests.ic" NAME="SbbApplicationTests 커버리지 결과" MODIFIED="1743691652863" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true" />
+  </component>
+</project>
