@@ -1,14 +1,21 @@
-// StockChart.js
 import React, { useEffect, useState } from "react";
 import { Chart } from "react-chartjs-2";
 import 'chartjs-adapter-date-fns';
-import { Chart as ChartJS, CategoryScale, LinearScale, Title, Tooltip, Legend } from "chart.js";
+import {
+    Chart as ChartJS,
+    LinearScale,
+    TimeScale,
+    CategoryScale,      // ✅ 추가
+    Title,
+    Tooltip,
+    Legend
+} from "chart.js";
 import { CandlestickController, CandlestickElement } from "chartjs-chart-financial";
 
-// Chart.js 등록
 ChartJS.register(
-    CategoryScale,
+    CategoryScale,      // ✅ CategoryScale 등록
     LinearScale,
+    TimeScale,
     Title,
     Tooltip,
     Legend,
@@ -40,6 +47,7 @@ function StockChart({ companyName }) {
         fetch(`http://localhost:8000/ai/stock-data/by-name?company_name=${encodeURIComponent(companyName)}`)
             .then(res => res.json())
             .then(data => {
+                console.log("✅ 서버 원본 데이터:", data);
                 if (Array.isArray(data)) setChartData(data);
                 else if (data.data && Array.isArray(data.data)) setChartData(data.data);
                 else setChartData([]);
@@ -47,7 +55,7 @@ function StockChart({ companyName }) {
             .catch(err => console.error("데이터 로딩 실패:", err));
     }, [companyName]);
 
-    // Candlestick 데이터 변환 + NaN 체크
+    // Candlestick 데이터 변환
     const candlestickData = chartData.map(d => {
         const o = parseFloat(d.Open);
         const h = parseFloat(d.High);
@@ -57,17 +65,14 @@ function StockChart({ companyName }) {
         if ([o, h, l, c].some(v => isNaN(v))) return null;
 
         return {
-            x: d.Date, // 문자열 날짜 사용 가능
-            o,
-            h,
-            l,
-            c,
-            borderColor: c >= o ? "#FF0000" : "#0000FF",
-            backgroundColor: c >= o ? "#FFAAAA" : "#AAAAFF"
+            x: new Date(d.Date),
+            o: o.toFixed(2),
+            h: h.toFixed(2),
+            l: l.toFixed(2),
+            c: c.toFixed(2)
         };
     }).filter(Boolean);
 
-    // 데이터 없으면 로딩 메시지
     if (candlestickData.length === 0) {
         return <div>데이터 로딩 중...</div>;
     }
@@ -76,13 +81,18 @@ function StockChart({ companyName }) {
         datasets: [
             {
                 label: `${companyName} 주가`,
-                data: candlestickData
+                data: candlestickData,
+                borderColor: candlestickData.map(d => d.c >= d.o ? "#FF0000" : "#0000FF"),
+                backgroundColor: candlestickData.map(d => d.c >= d.o ? "#FFAAAA" : "#AAAAFF"),
+                barPercentage: 0.005,
+                categoryPercentage: 0.2
             }
         ]
     };
 
     const options = {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             legend: { display: true },
             title: { display: true, text: `${companyName} 캔들스틱 차트` }
@@ -90,27 +100,28 @@ function StockChart({ companyName }) {
         scales: {
             x: {
                 type: 'time',
-                time: { unit: 'day' }
+                time: { unit: 'day', tooltipFormat: 'yyyy-MM-dd', stepSize: 1 },
+                ticks: { maxRotation: 0, autoSkip: false }
             },
-            y: {
-                beginAtZero: false
-            }
+            y: { beginAtZero: false }
         }
     };
 
+    // ✅ key를 사용해 차트 재생성
     return (
-        <div style={{ width: "1000px", height: "500px", marginTop: "30px" }}>
-            <Chart
-                key={candlestickData.length} // Canvas 재사용 방지
-                type="candlestick"
-                data={data}
-                options={options}
-            />
+        <div style={{ width: "100%", overflowX: "auto" }}>
+            <div style={{ width: "950px", height: "500px" }}>
+                <Chart
+                    key={candlestickData.length} // 데이터 길이 바뀌면 차트 새로 렌더링
+                    type="candlestick"
+                    data={data}
+                    options={options}
+                />
+            </div>
         </div>
     );
 }
 
-// Error Boundary 적용 후 내보내기
 export default function StockChartWithBoundary(props) {
     return (
         <ChartErrorBoundary>
