@@ -33,7 +33,7 @@ function News() {
     }, [newsData]); // 뉴스 데이터가 바뀔 때마다 재계산
 
     useEffect(() => {
-        axios.get("${process.env.REACT_APP_SPRING_API_URL}/api/session-user", { withCredentials: true })
+        axios.get(`${process.env.REACT_APP_SPRING_API_URL}/api/session-user`, { withCredentials: true })
             .then(res => {
                 const user = res.data;
                 if (!user || !user.username) {
@@ -53,7 +53,7 @@ function News() {
         if (!url) return;
         setLoading(true);
 
-        axios.post("${process.env.REACT_APP_SPRING_API_URL}/api/parse-news", {
+        axios.post(`${process.env.REACT_APP_SPRING_API_URL}/api/parse-news`, {
             url,
             id: id || ""
         })
@@ -80,10 +80,11 @@ function News() {
     };
 
     const handleLogout = () => {
-        axios.post("${process.env.REACT_APP_SPRING_API_URL}/api/logout", {}, { withCredentials: true })
+        axios.post(`${process.env.REACT_APP_SPRING_API_URL}/api/logout`, {}, { withCredentials: true })
             .finally(() => {
-                setUserInfo(null);
-                id = "";
+                localStorage.removeItem("jwtToken");
+                delete axios.defaults.headers.common.Authorization;
+
                 setProfileBox(false);
                 navigate("/");
             });
@@ -257,11 +258,11 @@ function News() {
                             <il>{sentimentList}</il>
 
                             <p className="summary-title">해당 뉴스의 주가 예측<br /></p>
-                            <p className="keyword-paragraph">해당 뉴스의 주가 예측으로 {newsData.prediction} (정확도 {newsData.prob.toFixed(4) * 100}%) 할 것 같습니다</p>
+                            <p className="keyword-paragraph">해당 뉴스의 주가 예측으로 {newsData.prediction} (정확도 {(newsData.prob * 100).toFixed(2)}%) 할 것 같습니다</p>
 
                         </div>
                         <div className="News-summation-chart">
-                            <StockChart ticker={newsData.company} />
+                            <StockChart companyName={newsData.company} />
                         </div>
                     </div>
                 </div>

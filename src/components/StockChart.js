@@ -1,89 +1,120 @@
-// src/components/StockChart.js
+// StockChart.js
 import React, { useEffect, useState } from "react";
-import { Line } from "react-chartjs-2";
-import {
-    Chart as ChartJS,
-    LineElement,
-    PointElement,
+import { Chart } from "react-chartjs-2";
+import 'chartjs-adapter-date-fns';
+import { Chart as ChartJS, CategoryScale, LinearScale, Title, Tooltip, Legend } from "chart.js";
+import { CandlestickController, CandlestickElement } from "chartjs-chart-financial";
+
+// Chart.js 등록
+ChartJS.register(
+    CategoryScale,
     LinearScale,
     Title,
-    CategoryScale,
     Tooltip,
     Legend,
-} from "chart.js";
-
-ChartJS.register(
-    LineElement,
-    PointElement,
-    LinearScale,
-    Title,
-    CategoryScale,
-    Tooltip,
-    Legend
+    CandlestickController,
+    CandlestickElement
 );
 
-const StockChart = ({ ticker }) => {
-    const [stockData, setStockData] = useState([]);
-    const [error, setError] = useState(false);
+// Error Boundary
+class ChartErrorBoundary extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { hasError: false };
+    }
+    static getDerivedStateFromError(error) {
+        return { hasError: true };
+    }
+    render() {
+        if (this.state.hasError) {
+            return <div>차트 렌더링 중 오류가 발생했습니다.</div>;
+        }
+        return this.props.children;
+    }
+}
+
+function StockChart({ companyName }) {
+    const [chartData, setChartData] = useState([]);
 
     useEffect(() => {
-        if (!ticker) {
-            setError(true);
-            return;
-        }
-
-        fetch(`${process.env.REACT_APP_FASTAPI_URL}/stock-data/by-name?company_name=${ticker}`)
-            .then((res) => {
-                if (!res.ok) throw new Error("응답 오류");
-                return res.json();
+        fetch(`http://localhost:8000/ai/stock-data/by-name?company_name=${encodeURIComponent(companyName)}`)
+            .then(res => res.json())
+            .then(data => {
+                if (Array.isArray(data)) setChartData(data);
+                else if (data.data && Array.isArray(data.data)) setChartData(data.data);
+                else setChartData([]);
             })
-            .then((data) => {
-                if (!Array.isArray(data) || data.length === 0) {
-                    throw new Error("데이터 없음");
-                }
-                setStockData(data);
-                setError(false);
-            })
-            .catch((err) => {
-                console.error("차트 데이터 불러오기 실패:", err);
-                setError(true);
-            });
-    }, [ticker]);
+            .catch(err => console.error("데이터 로딩 실패:", err));
+    }, [companyName]);
 
-    if (error) {
-        return <p className="keyword-paragraph">차트를 불러올 수 없습니다.</p>;
+    // Candlestick 데이터 변환 + NaN 체크
+    const candlestickData = chartData.map(d => {
+        const o = parseFloat(d.Open);
+        const h = parseFloat(d.High);
+        const l = parseFloat(d.Low);
+        const c = parseFloat(d.Close);
+
+        if ([o, h, l, c].some(v => isNaN(v))) return null;
+
+        return {
+            x: d.Date, // 문자열 날짜 사용 가능
+            o,
+            h,
+            l,
+            c,
+            borderColor: c >= o ? "#FF0000" : "#0000FF",
+            backgroundColor: c >= o ? "#FFAAAA" : "#AAAAFF"
+        };
+    }).filter(Boolean);
+
+    // 데이터 없으면 로딩 메시지
+    if (candlestickData.length === 0) {
+        return <div>데이터 로딩 중...</div>;
     }
 
-    const sortedData = [...stockData].sort((a, b) => new Date(a.date) - new Date(b.date));
-
-    const chartData = {
-        labels: sortedData.map((item) => item.date),
+    const data = {
         datasets: [
             {
-                label: "종가",
-                data: sortedData.map((item) => item.close),
-                fill: false,
-                borderColor: "#4bc0c0",
-                tension: 0.3,
-                pointRadius: 3,
-                pointBackgroundColor: "#4bc0c0",
-            },
-        ],
+                label: `${companyName} 주가`,
+                data: candlestickData
+            }
+        ]
     };
 
     const options = {
         responsive: true,
         plugins: {
-            legend: { display: true, position: "top" },
-            title: { display: true, text: "최근 주가 흐름" },
+            legend: { display: true },
+            title: { display: true, text: `${companyName} 캔들스틱 차트` }
         },
+        scales: {
+            x: {
+                type: 'time',
+                time: { unit: 'day' }
+            },
+            y: {
+                beginAtZero: false
+            }
+        }
     };
 
     return (
-        <div style={{ width: "100%", height: "100%" }}>
-            <Line data={chartData} options={options} />
+        <div style={{ width: "1000px", height: "500px", marginTop: "30px" }}>
+            <Chart
+                key={candlestickData.length} // Canvas 재사용 방지
+                type="candlestick"
+                data={data}
+                options={options}
+            />
         </div>
     );
-};
+}
 
-export default StockChart;
+// Error Boundary 적용 후 내보내기
+export default function StockChartWithBoundary(props) {
+    return (
+        <ChartErrorBoundary>
+            <StockChart {...props} />
+        </ChartErrorBoundary>
+    );
+}

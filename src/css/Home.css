@@ -2,14 +2,15 @@
 
 }
 
-.Home-img{
-  width: 100%;
-  position: absolute;
+.Home-img {
+  position: fixed; /* 스크롤 시 항상 배경 유지 */
+  top: 0;
+  left: 0;
+  width: 100vw;  /* 화면 전체 너비 */
+  height: 100vh; /* 화면 전체 높이 */
   z-index: -1;
-  background: url('/public/kanginlee.avif') no-repeat;
-  background-attachment: fixed;
+  background: url('/public/kanginlee.avif') no-repeat center center;
   background-size: cover;
-  background-position: center center;
 }
 
 .Home-header {
@@ -65,7 +66,7 @@
 .Home-login-button {
   position: absolute;
   top: 50px;
-  right: 50px;
+  right: 0px;
   padding: 8px 16px;
   font-size: 14px;
   background-color: #007bff;
@@ -382,4 +383,61 @@
 .ranking-period-select button.active {
   background: green;
   font-weight: bold;
+}
+
+.Home-container {
+  display: flex;
+  justify-content: center;
+  align-items: stretch; /* flex-start → stretch */
+  gap: 20px;
+  width: 100vw;
+}
+
+.Home-main {
+  flex: 1;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative; /* Home-img 기준 */
+}
+
+.AdLeft-container,
+.AdRight-container {
+  width: 250px;
+  height: 600px; /* 원하는 고정 높이 */
+  max-height: 50vh;
+  flex-shrink: 0;
+}
+
+/*.AdLeft-container, .AdRight-container {*/
+/*  width: 250px;*/
+/*  height: 600px; !* 원하는 고정 높이 *!*/
+/*  max-height: 50vh;*/
+/*  flex-shrink: 0;*/
+/*  display: flex;*/
+/*  align-items: center;*/
+/*  justify-content: center;*/
+/*  background-color: lightgray;*/
+/*  border: 2px dashed black;*/
+/*}*/
+
+.AdLeft-container > *,
+.AdRight-container > * {
+  height: 100%; /* 내부 컴포넌트가 부모 높이를 채우도록 */
+  width: 100%;
+}
+
+.AdLeft-container {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+.AdRight-container {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
 }

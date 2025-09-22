@@ -3,6 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import '../css/Home.css';
 import axios from "axios";
 
+import AdLeft from './AdLeft';
+import AdRight from './AdRight';
+
 axios.defaults.withCredentials = true;
 
 function Home() {
@@ -24,14 +27,11 @@ function Home() {
     const [period, setPeriod] = useState("daily");
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    // JWT 토큰 가져오기 & axios 기본 헤더 설정
     useEffect(() => {
         const token = localStorage.getItem("jwtToken");
         setIsLoggedIn(!!token);
         if (token) {
-            // console.log(`Bearer ${token}`);
             axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-            // 토큰 있으면 로그인 상태 판단 및 유저 정보 가져오기
             axios.get(`${process.env.REACT_APP_SPRING_API_URL}/api/session-user`)
                 .then(res => {
                     const user = res.data;
@@ -58,18 +58,15 @@ function Home() {
         }
     }, [isLoggedIn]);
 
-    const profileToggleBox = () => {
-        setProfileBox(!profileBox);
-    };
+    const profileToggleBox = () => setProfileBox(!profileBox);
 
     const handleLogout = () => {
-        // 로그아웃 API 호출 후 토큰 제거 및 상태 초기화
         axios.post(`${process.env.REACT_APP_SPRING_API_URL}/api/logout`, {}, { withCredentials: true })
             .finally(() => {
                 localStorage.removeItem("jwtToken");
                 delete axios.defaults.headers.common.Authorization;
-                setUserInfo(null);
-                setId("");
+
+                setId(null);
                 setProfileBox(false);
                 navigate("/");
             });
@@ -77,9 +74,7 @@ function Home() {
 
     const handleSearch = () => {
         const trimmedUrl = urlInput.trim();
-
         if (!trimmedUrl) return alert("URL을 입력해주세요!");
-
         const urlPattern = /^(https?:\/\/)?([\w.-]+\.[a-z]{2,})(\/\S*)?$/i;
         if (!urlPattern.test(trimmedUrl)) {
             alert("올바른 URL 형식이 아닙니다!");
@@ -89,7 +84,6 @@ function Home() {
             alert("현재는 네이버와 다음 뉴스만 지원합니다!");
             return;
         }
-
         navigate("/news", { state: { url: urlInput, id: id } });
     };
 
@@ -106,45 +100,33 @@ function Home() {
             setPosts(res.data.content);
             setTotalPages(res.data.totalPages);
         }).catch(err => {
-            if (err.response) {
-                setMsg(err.response.data.message);
-            } else {
-                console.error("요청 실패:", err);
-            }
+            if (err.response) setMsg(err.response.data.message);
+            else console.error("요청 실패:", err);
         });
     }, [id, currentPage]);
 
     useEffect(() => {
-        if (id) {
-            getPostList();
-        }
+        if (id) getPostList();
     }, [id, currentPage, getPostList]);
 
     const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
-
-    const handlePageChange = (pageNumber) => {
-        setCurrentPage(pageNumber);
-    };
-
+    const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
     const isLogin = !!userInfo?.username;
 
     useEffect(() => {
         const background = document.querySelector('.Home-img');
         if (background) {
-            if (!isLogin) {
-                background.style.height = '900px';
-            } else {
+            if (!isLogin) background.style.height = '900px';
+            else {
                 const baseHeight = 900;
                 const extraPerNews = 220;
                 const currentNews = posts.slice(0, 5);
                 const visibleNewsCount = currentNews.length;
-                const height = visibleNewsCount === 0
-                    ? baseHeight
-                    : baseHeight + (visibleNewsCount - 1) * extraPerNews;
+                const height = visibleNewsCount === 0 ? baseHeight : baseHeight + (visibleNewsCount - 1) * extraPerNews;
                 background.style.height = `${height}px`;
             }
         }
-    }, [posts, isLogin]); // ✅ 의존성 배열도 수정 (currentNews → posts)
+    }, [posts, isLogin]);
 
     const fetchRanking = async (period = "daily") => {
         try {
@@ -166,159 +148,136 @@ function Home() {
     }, [period]);
 
     useEffect(() => {
-        if (rankings.length === 0) return; // 랭킹이 없으면 인터벌 실행하지 않음
-
+        if (rankings.length === 0) return;
         const intervalId = setInterval(() => {
             setCurrentIndex(prev => (prev + 1) % Math.min(rankings.length, 10));
         }, 5000);
-
         return () => clearInterval(intervalId);
     }, [rankings]);
 
     return (
-        <div className="Home">
-            <div className="Home-img"></div>
-            <header className="Home-header">
-                <div className="Home-home-container">
-                    <div className="Home-title-container">
-                        <button className="Home-home-button" type="button" onClick={() => navigate("/")}>
-                            <img
-                                className="Home-home-button-img"
-                                src="/snake.png"
-                                alt="타이틀 이미지"
-                            />
-                        </button>
-                    </div>
+        <div className="Home-container">
+            {/* 좌측 광고 */}
+            <div className="AdLeft-container">
+                <AdLeft />
+            </div>
 
-                    <div className="Home-button-container">
-                        {isLogin ? (
-                            <img className="Home-profile-img" src="/profile.png" alt="프로필" onClick={profileToggleBox}/>
-                        ) : (
-                            <>
+            {/* 메인 컨텐츠 */}
+            <div className="Home-main">
+                <div className="Home-img"></div>
+                <header className="Home-header">
+                    <div className="Home-home-container">
+                        <div className="Home-title-container">
+                            <button className="Home-home-button" type="button" onClick={() => navigate("/")}>
+                                <img className="Home-home-button-img" src="/snake.png" alt="타이틀 이미지" />
+                            </button>
+                        </div>
+
+                        <div className="Home-button-container">
+                            {isLogin ? (
+                                <img className="Home-profile-img" src="/profile.png" alt="프로필" onClick={profileToggleBox} />
+                            ) : (
                                 <button className="Home-login-button" type="button" onClick={() => navigate("/login")}>
                                     로그인
                                 </button>
-                            </>
-                        )}
-                    </div>
-                </div>
-
-                {isLogin && profileBox && (
-                    <div className="Home-profileBox" id="myBox">
-                        <button className="Home-profileBox-element" onClick={() => navigate("/mypage")}>내 정보</button>
-                        <button className="Home-profileBox-element" onClick={() =>handleLogout()}>로그아웃</button>
-                    </div>
-                )}
-
-                <p className="Home-body">정보를 원하는 기사의 URL을<br />입력해 보세요.</p>
-                <div className="Home-search-container">
-                    <div className="Home-Search">
-                        <input id="Home-search-input" placeholder="뉴스 URL을 입력하세요." value={urlInput} onChange={(e) => setUrlInput(e.target.value)} />
-                        <img
-                            className="Home-search-img"
-                            src="/icon.png"
-                            alt="돋보기"
-                            onClick={handleSearch}
-                        />
-                    </div>
-                    <div className="Home-period">
-                        <div className="ranking-period-select">
-                            <button
-                                className={period === "daily" ? "active" : ""}
-                                onClick={() => setPeriod("daily")}
-                            >
-                                일간
-                            </button>
-                            <button
-                                className={period === "weekly" ? "active" : ""}
-                                onClick={() => setPeriod("weekly")}
-                            >
-                                주간
-                            </button>
-                            <button
-                                className={period === "monthly" ? "active" : ""}
-                                onClick={() => setPeriod("monthly")}
-                            >
-                                월간
-                            </button>
-                        </div>
-                        {/*실시간 검색*/}
-                        <div className="Home-real-time-search">
-                            <div className="top-company" onClick={() => setShowList(prev => !prev)}>
-                                실시간 {currentIndex + 1}위:{" "}
-                                {loading
-                                    ? "불러오는 중..."
-                                    : rankings[currentIndex]?.company || "데이터 없음"}
-                            </div>
-
-                            {showList && (
-                                <ul className="ranking-list">
-                                    {error ? (
-                                        <li>{error}</li>
-                                    ) : (
-                                        rankings.slice(0, 10).map((item, index) => (
-                                            <li key={index}>
-                                                {index + 1}위: {item.company} ({item.companyCount}회)
-                                            </li>
-                                        ))
-                                    )}
-                                </ul>
                             )}
                         </div>
                     </div>
 
-                </div>
+                    {isLogin && profileBox && (
+                        <div className="Home-profileBox" id="myBox">
+                            <button className="Home-profileBox-element" onClick={() => navigate("/mypage")}>내 정보</button>
+                            <button className="Home-profileBox-element" onClick={handleLogout}>로그아웃</button>
+                        </div>
+                    )}
 
-                {!isLogin ? (
-                    <p className="Home-tail">
-                        로그인해서 전에 검색했던 내용을<br />다시 확인하세요!
-                    </p>
-                ) : (
-                    <>
-                        {msg && (
-                            <p className="Home-tail">{msg}</p>
-                        )}
+                    <p className="Home-body">정보를 원하는 기사의 URL을<br />입력해 보세요.</p>
+                    <div className="Home-search-container">
+                        <div className="Home-Search">
+                            <input id="Home-search-input" placeholder="뉴스 URL을 입력하세요." value={urlInput} onChange={(e) => setUrlInput(e.target.value)} />
+                            <img className="Home-search-img" src="/icon.png" alt="돋보기" onClick={handleSearch} />
+                        </div>
+                        <div className="Home-period">
+                            <div className="ranking-period-select">
+                                <button className={period === "daily" ? "active" : ""} onClick={() => setPeriod("daily")}>일간</button>
+                                <button className={period === "weekly" ? "active" : ""} onClick={() => setPeriod("weekly")}>주간</button>
+                                <button className={period === "monthly" ? "active" : ""} onClick={() => setPeriod("monthly")}>월간</button>
+                            </div>
 
-                        {!msg && (
-                            <>
-                                <p className="Home-tail-login">최대 30개까지 5페이지로 나누어 표시됩니다.</p>
-                                <div className="Home-news-list">
-                                    {posts.map(post => (
-                                        <div key={post.id} className="Home-news-container">
-                                            <div className="Home-news-img-container">
-                                                {post.thumbnailUrl ? (
-                                                    <img className="Home-news-img" src={post.thumbnailUrl} alt="썸네일"/>
-                                                ) : (
-                                                    <img className="Home-news-img" src="/default-thumbnail.png" alt="기본 썸네일"/>
-                                                )}
-                                            </div>
-                                            <div className="Home-news-detail-container">
-                                                <h2 className="Home-news-title">
-                                                    <Link to="/news" state={{ url: post.url, id: post.user.username }}>{post.title}</Link>
-                                                </h2>
-                                                <p className="Home-news-summary">
-                                                    <Link to="/news" state={{ url: post.url, id: post.user.username }}>{post.content}</Link>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    ))}
+                            <div className="Home-real-time-search">
+                                <div className="top-company" onClick={() => setShowList(prev => !prev)}>
+                                    실시간 {currentIndex + 1}위:{" "}
+                                    {loading ? "불러오는 중..." : rankings[currentIndex]?.company || "데이터 없음"}
                                 </div>
-                                <div className="pagination">
-                                    {pageNumbers.map((number) => (
-                                        <button
-                                            key={number}
-                                            className={`page-btn ${number === currentPage ? 'active' : ''}`}
-                                            onClick={() => handlePageChange(number)}
-                                        >
-                                            {number}
-                                        </button>
-                                    ))}
-                                </div>
-                            </>
-                        )}
-                    </>
-                )}
-            </header>
+
+                                {showList && (
+                                    <ul className="ranking-list">
+                                        {error ? (
+                                            <li>{error}</li>
+                                        ) : (
+                                            rankings.slice(0, 10).map((item, index) => (
+                                                <li key={index}>
+                                                    {index + 1}위: {item.company} ({item.companyCount}회)
+                                                </li>
+                                            ))
+                                        )}
+                                    </ul>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    {!isLogin ? (
+                        <p className="Home-tail">
+                            로그인해서 전에 검색했던 내용을<br />다시 확인하세요!
+                        </p>
+
+                    ) : (
+                        <>
+                            {msg && <p className="Home-tail">{msg}</p>}
+
+                            {!msg && (
+                                <>
+                                    <p className="Home-tail-login">최대 30개까지 5페이지로 나누어 표시됩니다.</p>
+                                    <div className="Home-news-list">
+                                        {posts.map(post => (
+                                            <div key={post.id} className="Home-news-container">
+                                                <div className="Home-news-img-container">
+                                                    {post.thumbnailUrl ? (
+                                                        <img className="Home-news-img" src={post.thumbnailUrl} alt="썸네일"/>
+                                                    ) : (
+                                                        <img className="Home-news-img" src="/default-thumbnail.png" alt="기본 썸네일"/>
+                                                    )}
+                                                </div>
+                                                <div className="Home-news-detail-container">
+                                                    <h2 className="Home-news-title">
+                                                        <Link to="/news" state={{ url: post.url, id: post.user.username }}>{post.title}</Link>
+                                                    </h2>
+                                                    <p className="Home-news-summary">
+                                                        <Link to="/news" state={{ url: post.url, id: post.user.username }}>{post.content}</Link>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <div className="pagination">
+                                        {pageNumbers.map((number) => (
+                                            <button key={number} className={`page-btn ${number === currentPage ? 'active' : ''}`} onClick={() => handlePageChange(number)}>
+                                                {number}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </>
+                            )}
+                        </>
+                    )}
+                </header>
+            </div>
+
+            {/* 우측 광고 */}
+            <div className="AdRight-container">
+                <AdRight />
+            </div>
         </div>
     );
 }
