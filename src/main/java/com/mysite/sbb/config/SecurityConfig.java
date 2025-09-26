@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -122,5 +123,23 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", config);
 
         return source;
+    }
+
+
+     /// RestTemplate 빈을 생성 -> 기존 방식은
+     /// RestTemplate을 로컬에서 바로 생성해서 쓰는 방식
+     /// 이렇게 하면 빈 등록 없이도 사용 가능
+     ///
+     /// 다만 장점은 제한적임:
+     ///
+     /// 설정 공유 어려움 – 예: 타임아웃, 인터셉터, 메시지 컨버터
+     ///
+     /// 테스트, Mocking 어려움 – DI로 주입된 빈을 사용하면 단위 테스트에서 쉽게 Mock 가능
+     ///
+     /// 재사용성 낮음 – 여러 서비스에서 매번 new RestTemplate() 생성해야 함
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
     }
 }
