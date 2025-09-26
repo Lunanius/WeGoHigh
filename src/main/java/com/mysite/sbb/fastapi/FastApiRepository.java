@@ -37,4 +37,22 @@ public interface FastApiRepository extends JpaRepository<FastApiEntity, Long> {
             "GROUP BY f.company " +
             "ORDER BY COUNT(f) DESC")
     List<Object[]> getMonthlyCompanyRanking(@Param("startDate") LocalDateTime startDate);
+
+    // 추가 user랑 url을 비교해서 있으면
+    boolean existsByUserAndUrl(SiteUser user, String url);
+
+    ///  추가 로직
+    /// countByUser → 해당 사용자 뉴스 개수 확인
+    ///
+    /// findByUserOrderByCreatedAtAsc → 오래된 뉴스 조회
+    ///
+    /// deleteByIdIn → ID 리스트로 삭제
+    ///
+    long countByUser(SiteUser user);
+
+    List<FastApiEntity> findByUserOrderByCreatedAtAsc(SiteUser user, Pageable pageable);
+
+    void deleteByIdIn(List<Long> ids);
+
+    FastApiEntity findFirstByUrl(String url);
 }

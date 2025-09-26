@@ -1,5 +1,11 @@
 package com.mysite.sbb.fastapi;
 
+import com.mysite.sbb.user.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -9,33 +15,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class NewsController {
+
 
     private final FastApiService fastApiService;
 
-    public NewsController(FastApiService fastApiService) {
-        this.fastApiService = fastApiService;
-    }
-
     @PostMapping("/parse-news")
     public FastApiResponse fetchNewsFromFastAPI(@RequestBody FastApiDTO body) {
-        String newsUrl = body.getUrl();
-        String id = body.getId();
-        String fastapiUrl = "http://localhost:8000/ai/parse-news"; // FastAPI 서버 주소
-
-        // 요청 바디 구성
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        String jsonBody = String.format("{\"url\": \"%s\", \"id\": %s}",
-                newsUrl,
-                id == null ? "null" : "\"" + id + "\"");
-        HttpEntity<String> request = new HttpEntity<>(jsonBody, headers);
-
-        // FastAPI에 POST 요청 보내기
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<FastApiResponse> response = restTemplate.postForEntity(fastapiUrl, request, FastApiResponse.class);
-
-        return response.getBody();
+        return fastApiService.fetchAndSaveNews(body);
     }
 
     @GetMapping("/ranking")
@@ -56,6 +44,15 @@ public class NewsController {
         }
         return ResponseEntity.ok(result);
     }
+
+    @GetMapping("/posts")
+    public ResponseEntity<Page<FastApiEntity>> getPosts(
+            @RequestParam("username") String username,
+            @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<FastApiEntity> posts = fastApiService.getUserById(username, pageable);
+        return ResponseEntity.ok(posts);
+    }
+
 
 
 }
