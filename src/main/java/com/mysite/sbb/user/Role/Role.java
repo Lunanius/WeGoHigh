@@ -13,9 +13,12 @@ public class Role {
     @Column(unique = true)
     private String roleName;
 
-    public Role() {
+    public Role(String roleName) {
         this.roleName = roleName;
     }
 
 
+    public Role() {
+
+    }
 }

@@ -87,7 +87,12 @@ public class FastApiService {
 
     @Transactional(noRollbackFor = DataIntegrityViolationException.class)
     public FastApiResponse fetchAndSaveNews(FastApiDTO body) {
-        SiteUser user = userService.findByUsername(body.getId());
+
+        SiteUser user = new SiteUser();
+        if(body.getId() != null){
+            user = userService.findByUsername(body.getId());
+        }
+
         FastApiResponse apiResponse;
 
         FastApiEntity findEntity = fastApiRepository.findFirstByUrl(body.getUrl());
@@ -95,7 +100,7 @@ public class FastApiService {
         if (findEntity != null) {
             apiResponse = findEntity.toResponse();
             // user별 insert 여부만 확인
-            if (fastApiRepository.existsByUserAndUrl(user, body.getUrl())) {
+            if (fastApiRepository.existsByUserAndUrl(user, body.getUrl()) || body.getId() == null) {
                 return apiResponse;
             }
         } else {
@@ -114,7 +119,7 @@ public class FastApiService {
         }
         // insert 전에 다시 체크
 
-        if (!fastApiRepository.existsByUserAndUrl(user, body.getUrl())) {
+        if (body.getId() != null && !fastApiRepository.existsByUserAndUrl(user, body.getUrl())) {
             try {
                 self.saveEntity(user, apiResponse);
             } catch (UnexpectedRollbackException e) {

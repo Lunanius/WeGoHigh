@@ -76,7 +76,8 @@ public class SecurityConfig {
                                  "/api/mailSend",
                                  "/api/session-user",
                                  "/api/oauth2/session-user",
-                                 "/api/ads")
+                                 "/api/ads",
+                                 "/broadcast/**")
                         .permitAll().anyRequest().hasRole("USER") )
                 .cors(cors -> cors.configurationSource((CorsConfigurationSource) corsConfigurationSource()))
 
