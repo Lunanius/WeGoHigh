@@ -105,6 +105,7 @@ public class FastApiEntity {
         response.setKeyword(this.getKeywords());
         response.setSentiment(this.sentiment);
         response.setProb(this.prob);
+        response.setCreatedAt(this.createdAt);
         return response;
     }
 
