@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Entity
 @Table(name = "news_articles",
@@ -135,6 +136,7 @@ public class FastApiEntity {
         }
         return this.keywords;
     }
+
 
 
 }
