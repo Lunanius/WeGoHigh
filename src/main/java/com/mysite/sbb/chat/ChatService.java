@@ -18,18 +18,6 @@ public class ChatService {
     private final FastApiRepository fastApiRepository;
     private static int msgId = 0;
 
-    public List<String> extractTags(String message) {
-        // @뒤에 오는 한글, 숫자, 영어 조합 추출
-        Pattern pattern = Pattern.compile("@[가-힣a-zA-Z0-9]+");
-        Matcher matcher = pattern.matcher(message);
-
-        List<String> tags = new ArrayList<>();
-        while (matcher.find()) {
-            tags.add(matcher.group().substring(1)); // '@' 제거
-        }
-        return tags;
-    }
-
     public ChatMessage tagPrediction(Map<String,String> chart, String username) {
         String companyName = chart.get("company");
         String prediction = fastApiRepository.findTopByCompanyOrderByCreatedAt(companyName)
