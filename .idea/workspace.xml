@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a91da593-e2d7-4cd8-bec6-8081f1428a4d" name="변경" comment="로그인&#10;비밀번호 랜덤하게 줘서 sql에 삽입 구현완료&#10;추가로 확인을 누르면 비번 복사되게 구현하였음&#10;아이디 찾기 구현완료">
-      <change afterPath="$PROJECT_DIR$/src/main/java/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/frontend" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/package.json" afterDir="false" />
@@ -15,14 +14,6 @@
       <change beforePath="$PROJECT_DIR$/src/main/frontend/src/components/MyPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/src/components/MyPage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/frontend/src/components/News.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/src/components/News.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/frontend/src/components/setupTests.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/frontend/src/components/setupTests.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mysite/sbb/fastapi/CompanyRankDto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mysite/sbb/fastapi/FastApiDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mysite/sbb/fastapi/FastApiEntity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mysite/sbb/fastapi/FastApiRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mysite/sbb/fastapi/FastApiResponse.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mysite/sbb/fastapi/FastApiService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mysite/sbb/fastapi/NewsController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/mysite/sbb/fastapi/dummy/TestApplication.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -370,7 +361,7 @@
       <workItem from="1759242440238" duration="54000" />
       <workItem from="1759253559904" duration="995000" />
       <workItem from="1759322312112" duration="136000" />
-      <workItem from="1759326404513" duration="2411000" />
+      <workItem from="1759326404513" duration="3009000" />
     </task>
     <task id="LOCAL-00001" summary="zjalt">
       <option name="closed" value="true" />
