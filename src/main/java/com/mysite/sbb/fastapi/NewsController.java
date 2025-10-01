@@ -1,6 +1,4 @@
 package com.mysite.sbb.fastapi;
-
-import com.mysite.sbb.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,7 +6,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -52,6 +49,8 @@ public class NewsController {
         Page<FastApiEntity> posts = fastApiService.getUserById(username, pageable);
         return ResponseEntity.ok(posts);
     }
+
+
 
 
 

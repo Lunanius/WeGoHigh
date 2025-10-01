@@ -19,7 +19,6 @@ public class FastApiResponse {
     private String company;
     private List<Map<String, Object>> keyword;
     private String sentiment;
-//    private Map<String, Double> sentiment_value;
     private String prediction;
     private float prob;
 }
