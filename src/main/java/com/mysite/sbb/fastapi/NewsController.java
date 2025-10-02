@@ -1,6 +1,4 @@
 package com.mysite.sbb.fastapi;
-
-import com.mysite.sbb.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,7 +6,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -53,6 +50,13 @@ public class NewsController {
         return ResponseEntity.ok(posts);
     }
 
+    @GetMapping("/company-posts")
+    public ResponseEntity<Page<FastApiEntity>> getCompanyPosts(
+            @RequestParam("company") String company,
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
+        Page<FastApiEntity> posts = fastApiService.getCompanyRecords(company, pageable);
+        return ResponseEntity.ok(posts);
+    }
 
 }

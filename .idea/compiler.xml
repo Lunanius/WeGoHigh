@@ -11,12 +11,12 @@
         <module name="sbb.main" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel target="17" />
   </component>
   <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_STRING" value="-parameters" />
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="com.mysite.sbb.test" options="-parameters" />
-      <module name="sbb" options="-parameters" />
-      <module name="sbb.main" options="-parameters" />
     </option>
   </component>
 </project>
