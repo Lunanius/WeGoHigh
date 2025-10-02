@@ -1,0 +1,7 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Frontend 폴더
+src/main/frontend/
+src/main/java/com/mysite/sbb/fastapi/dummy/
