@@ -171,4 +171,8 @@ public class FastApiService {
             }
         }
     }
+
+    public Page<FastApiEntity> getCompanyRecords(String company, Pageable pageable) {
+        return fastApiRepository.findByCompanyOrderByCreatedAtDesc(company, pageable);
+    }
 }

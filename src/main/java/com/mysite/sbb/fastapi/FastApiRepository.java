@@ -51,8 +51,10 @@ public interface FastApiRepository extends JpaRepository<FastApiEntity, Long> {
     long countByUser(SiteUser user);
 
     List<FastApiEntity> findByUserOrderByCreatedAtAsc(SiteUser user, Pageable pageable);
+    Page<FastApiEntity> findByCompanyOrderByCreatedAtDesc(String companyName, Pageable pageable);
 
     void deleteByIdIn(List<Long> ids);
+
 
     FastApiEntity findFirstByUrl(String url);
 }

@@ -50,8 +50,13 @@ public class NewsController {
         return ResponseEntity.ok(posts);
     }
 
+    @GetMapping("/company-posts")
+    public ResponseEntity<Page<FastApiEntity>> getCompanyPosts(
+            @RequestParam("company") String company,
+            @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
-
-
+        Page<FastApiEntity> posts = fastApiService.getCompanyRecords(company, pageable);
+        return ResponseEntity.ok(posts);
+    }
 
 }
