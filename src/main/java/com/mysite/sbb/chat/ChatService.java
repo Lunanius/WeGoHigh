@@ -20,7 +20,7 @@ public class ChatService {
 
     public ChatMessage tagPrediction(Map<String,String> chart, String username) {
         String companyName = chart.get("company");
-        String prediction = fastApiRepository.findTopByCompanyOrderByCreatedAt(companyName)
+        String prediction = fastApiRepository.findTopByCompanyOrderByCreatedAtDesc(companyName)
                 .map(FastApiEntity::getPrediction)
                 .orElse("정보 없음");
         return new ChatMessage(++msgId, username, "@" + companyName + " - [" + prediction + "]", "TAG");

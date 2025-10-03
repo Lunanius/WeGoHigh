@@ -56,8 +56,10 @@ public interface FastApiRepository extends JpaRepository<FastApiEntity, Long> {
 
     FastApiEntity findFirstByUrl(String url);
 
-    Optional<FastApiEntity> findTopByCompanyOrderByCreatedAt(String companyName);
+    Optional<FastApiEntity> findTopByCompanyOrderByCreatedAtDesc(String companyName);
     Page<FastApiEntity> findByCompanyOrderByCreatedAtDesc(String companyName, Pageable pageable);
 
     List<FastApiEntity> findByCompanyContainingIgnoreCase(String q);
+
+
 }

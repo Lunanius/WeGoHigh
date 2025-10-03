@@ -18,7 +18,7 @@ public interface UserRepository extends JpaRepository<SiteUser, Long> {
 
 
 
-    public SiteUser findByUsername(String username);
+     SiteUser findByUsername(String username);
 //    Optional<SiteUser> findByUsername(String username);
 
     SiteUser findByNameAndBirthDate(String name, java.sql.Date birthDate);
