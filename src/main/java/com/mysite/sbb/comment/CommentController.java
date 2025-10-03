@@ -1,6 +1,7 @@
 package com.mysite.sbb.comment;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,8 +20,17 @@ public class CommentController {
                 .toList();
     }
     @PostMapping
-    public CommentResponse addComment(@PathVariable String company, @RequestBody CommentRequest request) {
-        CommentEntity comment = commentService.addComment(company, request.getUsername(), request.getContent());
+    public CommentResponse addComment(
+            @PathVariable String company,
+            @RequestBody CommentRequest request,
+            Authentication auth) {  // Spring Security Authentication 사용
+        String username = auth.getName(); // JWT에서 추출
+        CommentEntity comment = commentService.addComment(company, username, request.getContent());
         return CommentResponse.fromEntity(comment);
+    }
+    @DeleteMapping("/{commentId}")
+    public void deleteComment(@PathVariable Long commentId, Authentication auth) {
+        String username = auth.getName();
+        commentService.deleteComment(commentId, username);
     }
 }

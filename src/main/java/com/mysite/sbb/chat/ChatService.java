@@ -24,7 +24,7 @@ public class ChatService {
 
     public ChatMessage tagPrediction(Map<String,String> chart, String username) {
         String companyName = chart.get("company");
-        String prediction = fastApiRepository.findTopByCompanyOrderByCreatedAtDesc(companyName)
+        String prediction = fastApiRepository.findTopByCompanyOrderByCreatedAt(companyName)
                 .map(FastApiEntity::getPrediction)
                 .orElse("정보 없음");
 

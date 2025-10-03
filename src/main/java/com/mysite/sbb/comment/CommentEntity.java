@@ -1,5 +1,6 @@
 package com.mysite.sbb.comment;
 
+import com.mysite.sbb.comment.Reaction.ReactionEntity;
 import com.mysite.sbb.fastapi.FastApiEntity;
 import com.mysite.sbb.user.SiteUser;
 import jakarta.persistence.*;
@@ -8,6 +9,8 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter @Setter
@@ -31,5 +34,9 @@ public class CommentEntity {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    // 댓글 ↔ 리액션 (1:N)
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ReactionEntity> reactions = new HashSet<>();
 
 }
