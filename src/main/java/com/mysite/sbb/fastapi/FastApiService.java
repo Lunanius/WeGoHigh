@@ -1,6 +1,7 @@
 package com.mysite.sbb.fastapi;
 
 import com.mysite.sbb.user.SiteUser;
+import com.mysite.sbb.user.UserRepository;
 import com.mysite.sbb.user.UserService;
 import com.mysite.sbb.util.PostNotFoundException;
 import jakarta.persistence.LockModeType;
@@ -36,12 +37,14 @@ public class FastApiService {
     private final RestTemplate restTemplate;
     // 자기 자신을 주입받아 프록시를 통해 saveEntity를 호출
     private final FastApiService self;
+    private final UserRepository userRepository;
 
-    public FastApiService(FastApiRepository fastApiRepository, UserService userService, RestTemplate restTemplate, @Lazy FastApiService self) {
+    public FastApiService(FastApiRepository fastApiRepository, UserService userService, RestTemplate restTemplate, @Lazy FastApiService self, UserRepository userRepository) {
         this.fastApiRepository = fastApiRepository;
         this.userService = userService;
         this.restTemplate = restTemplate;
         this.self = self;
+        this.userRepository = userRepository;
     }
 
 
@@ -88,11 +91,20 @@ public class FastApiService {
     @Transactional(noRollbackFor = DataIntegrityViolationException.class)
     public FastApiResponse fetchAndSaveNews(FastApiDTO body) {
 
-        SiteUser user = new SiteUser();
-        if(body.getId() != null){
-            user = userService.findByUsername(body.getId());
-        }
 
+        SiteUser user = new SiteUser();
+        if (body.getId() != null) {
+            user = userService.findByUsername(body.getId());
+        } else {
+            // 비회원용 guest 계정 가져오기 또는 생성
+            user = userRepository.findByUsername("guest");
+            if(user == null){
+                SiteUser g = new SiteUser();
+                g.setUsername("guest");
+                g.setPassword("");
+                userRepository.save(g);
+            }
+        }
         FastApiResponse apiResponse;
 
         FastApiEntity findEntity = fastApiRepository.findFirstByUrl(body.getUrl());
@@ -178,6 +190,6 @@ public class FastApiService {
     }
 
     public Page<FastApiEntity> getCompanyRecords(String company, Pageable pageable) {
-        return fastApiRepository.findByCompanyOrderByCreatedAtDesc(company, pageable);
+        return fastApiRepository.findLatestUniqueUrlByCompany(company, pageable);
     }
 }
