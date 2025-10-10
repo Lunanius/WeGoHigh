@@ -1,0 +1,9 @@
+## Gradle
+#.gradle/
+#build/
+#
+## IDE
+#.idea/
+#
+## Frontend
+#src/main/frontend/
