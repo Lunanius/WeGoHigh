@@ -6,6 +6,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 public class NewsController {
 
 
+    private final RestTemplate restTemplate = new RestTemplate();
     private final FastApiService fastApiService;
 
     @PostMapping("/parse-news")
@@ -58,5 +60,17 @@ public class NewsController {
         Page<FastApiEntity> posts = fastApiService.getCompanyRecords(company, pageable);
         return ResponseEntity.ok(posts);
     }
+    @GetMapping("/stock-data")
+    public ResponseEntity<Object> getStockData(@RequestParam String company) {
+
+        // React에서 받은 값 그대로 FastAPI로 전달
+        String url = "http://localhost:8000/ai/stock-data/by-name" + "?company_name=" + company;
+
+        ResponseEntity<Object> response = restTemplate.getForEntity(url, Object.class);
+
+        // FastAPI 응답 그대로 반환
+        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
+    }
+
 
 }

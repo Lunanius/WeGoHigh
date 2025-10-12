@@ -51,10 +51,29 @@ public interface FastApiRepository extends JpaRepository<FastApiEntity, Long> {
     long countByUser(SiteUser user);
 
     List<FastApiEntity> findByUserOrderByCreatedAtAsc(SiteUser user, Pageable pageable);
-    Page<FastApiEntity> findByCompanyOrderByCreatedAtDesc(String companyName, Pageable pageable);
 
     void deleteByIdIn(List<Long> ids);
 
-
     FastApiEntity findFirstByUrl(String url);
+
+    Optional<FastApiEntity> findTopByCompanyOrderByCreatedAt(String companyName);
+    @Query("SELECT f FROM FastApiEntity f " +
+            "WHERE f.company = :company " +
+            // f2가 f보다 더 최신이거나 (createdAt >)
+            // 시간이 같더라도 f2의 ID가 더 큰 (ID >) 레코드가 존재하지 않는 경우만 선택
+            "AND NOT EXISTS (" +
+            "   SELECT f2 FROM FastApiEntity f2 " +
+            "   WHERE f2.company = f.company " +
+            "   AND f2.url = f.url " +
+            "   AND (" +
+            "       f2.createdAt > f.createdAt OR " +
+            "       (f2.createdAt = f.createdAt AND f2.id > f.id)" +
+            "   )" +
+            ") " +
+            "ORDER BY f.createdAt DESC")
+    Page<FastApiEntity> findLatestUniqueUrlByCompany(@Param("company") String company, Pageable pageable);
+
+    List<FastApiEntity> findByCompanyContainingIgnoreCase(String q);
+
+
 }

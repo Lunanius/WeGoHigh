@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Entity
 @Table(name = "news_articles",
@@ -91,7 +92,7 @@ public class FastApiEntity {
     public FastApiEntity() {
 
     }
-// FastApiEntity 안에 DTO로 변환하는 메서드 하나 추가
+    // FastApiEntity 안에 DTO로 변환하는 메서드 하나 추가
     public FastApiResponse toResponse() {
         FastApiResponse response = new FastApiResponse();
         response.setTitle(this.title);
@@ -105,6 +106,7 @@ public class FastApiEntity {
         response.setKeyword(this.getKeywords());
         response.setSentiment(this.sentiment);
         response.setProb(this.prob);
+        response.setCreatedAt(this.createdAt);
         return response;
     }
 
@@ -134,6 +136,7 @@ public class FastApiEntity {
         }
         return this.keywords;
     }
+
 
 
 }
