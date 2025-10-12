@@ -3,7 +3,6 @@ package com.mysite.sbb.fastapi;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +19,7 @@ public class FastApiResponse {
     private String company;
     private List<Map<String, Object>> keyword;
     private String sentiment;
-//    private Map<String, Double> sentiment_value;
+    //    private Map<String, Double> sentiment_value;
     private String prediction;
     private float prob;
     private LocalDateTime createdAt;
