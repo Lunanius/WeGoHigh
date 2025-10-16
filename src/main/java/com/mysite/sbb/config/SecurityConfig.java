@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -31,7 +32,7 @@ import java.util.List;
 public class SecurityConfig {
     private final PrincipalOauth2UserService principalOauth2UserService;
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
-//    private final UserRepository userRepository;
+    //    private final UserRepository userRepository;
     private final AuthenticationConfiguration authenticationConfiguration;
     private final UserDetailsService userDetailsService;
     private final JwtTokenProvider jwtTokenProvider;
@@ -64,17 +65,22 @@ public class SecurityConfig {
 //                        new AntPathRequestMatcher("/api/login")
 //                ).permitAll().anyRequest().authenticated())
                 .authorizeHttpRequests(auth -> auth
-                         .requestMatchers( "/api/signup/**",
-                                 "/api/IdFind",
-                                 "/api/pwFind",
-                                 "/api/login",
-                                 "/api/oauth2/**",
-                                 "/api/parse-news",
-                                 "/api/ranking",
-                                 "/api/mailCheck",
-                                 "/api/mailSend",
-                                 "/api/session-user",
-                                 "/api/oauth2/session-user")
+                        .requestMatchers( "/api/signup/**",
+                                "/api/IdFind",
+                                "/api/pwFind",
+                                "/api/login",
+                                "/api/oauth2/**",
+                                "/api/parse-news",
+                                "/api/ranking",
+                                "/api/mailCheck",
+                                "/api/mailSend",
+                                "/api/session-user",
+                                "/api/oauth2/session-user",
+                                "/api/ads",
+                                "/broadcast/**",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs.yaml")
                         .permitAll().anyRequest().hasRole("USER") )
                 .cors(cors -> cors.configurationSource((CorsConfigurationSource) corsConfigurationSource()))
 
@@ -96,7 +102,7 @@ public class SecurityConfig {
                         .successHandler(oAuth2LoginSuccessHandler) // ✅ OAuth2 로그인 성공 시 커스텀 핸들러 사용
                 );
 
-                ;
+        ;
 
         return http.build();
     }
@@ -121,5 +127,23 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", config);
 
         return source;
+    }
+
+
+    /// RestTemplate 빈을 생성 -> 기존 방식은
+    /// RestTemplate을 로컬에서 바로 생성해서 쓰는 방식
+    /// 이렇게 하면 빈 등록 없이도 사용 가능
+    ///
+    /// 다만 장점은 제한적임:
+    ///
+    /// 설정 공유 어려움 – 예: 타임아웃, 인터셉터, 메시지 컨버터
+    ///
+    /// 테스트, Mocking 어려움 – DI로 주입된 빈을 사용하면 단위 테스트에서 쉽게 Mock 가능
+    ///
+    /// 재사용성 낮음 – 여러 서비스에서 매번 new RestTemplate() 생성해야 함
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
     }
 }
